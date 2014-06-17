@@ -14,38 +14,28 @@ Client Library
 
     .save(filePath)
 
-**Saves a distant or local file to your Phantombuster persistent storage.**
+Saves a distant or local file to your Phantombuster persistent storage.
 
 If a file with the same name already exists on your storage, it is overwritten.
 
 ``filePath`` (``String``)
-    **Path of the file to be saved.**
+    Path of the file to be saved.
 
-    If ``filePath`` starts with ``http://`` or ``https://``, a download attempt will be made first. If the download attempt fails, the file will be looked for on disk.
-
-    Example values:
-
-    - ``https://www.google.com/images/srpr/logo11w.png``
-    - ``my_screenshot.jpg``
-    - ``https://soundcloud.com/``
-    - ``foo/bar.zip``
+    - ``https://www.google.com/images/srpr/logo11w.png`` (from the web)
+    - ``foo/my_screenshot.jpg`` (from your agent's disk)
+    - ``https://soundcloud.com/`` (you'll get the HTML content of their homepage)
 
 ``saveAs`` (``String``)
-    **Where to put the file on your storage.**
+    Where to put the file on your storage (optional).
 
-    If omitted or *null*, the last portion of ``filePath`` will be used if possible (for example ``https://www.google.com/images/srpr/logo11w.png`` will be saved as ``logo11w.png``).
+    - ``foo/`` will save ``http://example.com/bar.png`` as ``foo/bar.png``
+    - *null* will save ``http://example.com/bar.png`` as ``bar.png``
+    - ``foo/`` will fail on ``http://example.com/`` with ``could not determine filename``
+    - ``foo/a`` will save ``http://example.com/bar.png`` as ``foo/a``
 
-    If ``saveAs`` ends with ``/``, the last portion of ``filePath`` will be added at the end if possible (for example ``https://www.google.com/images/srpr/logo11w.png`` will be saved as ``foo/logo11w.png`` if ``saveAs`` is ``foo/``).
-
-    There is no need to create intermediate directories: ``long/path/to/some/directory/`` is valid and will immediately work.
-
-    Example values:
-
-    - *null*
-    - ``/``
-    - ``foo.jpg``
-    - ``foo/bar/``
+    You do not need to create any intermediate directory (``a/b/c/d/e.jpg`` will work).
 
 ``headers`` (``PlainObject``)
+    HTTP headers to use (optional).
 
 ``callback`` (``Function(String err)``)
