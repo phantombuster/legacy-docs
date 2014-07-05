@@ -16,8 +16,6 @@ Client Library
 
 Saves a distant or local file to your agent's persistent storage.
 
-If a file with the same name already exists on your agent's storage, it is overwritten.
-
 ``filePath`` (``String``)
     Path of the file to be saved.
 
@@ -26,9 +24,9 @@ If a file with the same name already exists on your agent's storage, it is overw
     - ``http://soundcloud.com/`` (you'll get the HTML content of their homepage)
 
 ``saveAs`` (``String``)
-    Where to put the file on your storage (optional).
+    Where to put the file on your storage (optional). If a file with the same name already exists on your agent's storage, it is overwritten.
 
-    - ``foo/`` will save ``http://example.com/bar.png`` as ``foo/bar.png``
+    - ``foo/`` will save ``http://example.com/baz/bar.png`` as ``foo/bar.png``
     - *null* will save ``http://example.com/foo/bar.png`` as ``bar.png``
     - ``foo/`` will fail on ``http://example.com/`` with ``could not determine filename``
     - ``foo/a`` will save ``http://example.com/bar.png`` as ``foo/a``
@@ -38,4 +36,5 @@ If a file with the same name already exists on your agent's storage, it is overw
 ``headers`` (``PlainObject``)
     HTTP headers to use (optional).
 
-``callback`` (``Function(String err)``)
+``callback`` (``Function(String err, String url)``)
+    Function to call when finished. When there is no error, ``err`` is *null* and ``url`` contains the URL of your file.
