@@ -89,11 +89,8 @@ This script will output:
     This is executed a few ticks after saveText()
     And this is executed last
 
-Reference
----------
-
 buster.argument
-~~~~~~~~~~~~~~~
+---------------
 
 ::
 
@@ -102,7 +99,7 @@ buster.argument
 Contains the agent's argument as a plain object. On Phantombuster, each agent receives a JSON object as argument, which can be set each time they are launched.
 
 buster.apiKey
-~~~~~~~~~~~~~~~
+-------------
 
 ::
 
@@ -111,7 +108,7 @@ buster.apiKey
 Contains your Phantombuster API key as a string. This is useful for making requests to the Phantombuster API from within the agent.
 
 buster.save()
-~~~~~~~~~~~~~
+-------------
 
 ::
 
@@ -153,7 +150,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     Function to call when finished. When there is no error, ``err`` is *null* and ``url`` contains the full URL to the file on your persistent storage.
 
 buster.download()
-~~~~~~~~~~~~~~~~~
+-----------------
 
 ::
 
@@ -192,7 +189,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     Function to call when finished (optional). When there is no error, ``err`` is *null* and ``path`` contains the path to the file on your agent's disk.
 
 buster.saveFolder()
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 ::
 
@@ -229,7 +226,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     Function to call when finished (optional). When there is no error, ``err`` is *null* and ``url`` contains the full URL to the folder in your persistent storage.
 
 buster.saveText()
-~~~~~~~~~~~~~~~~~~~
+-----------------
 
 ::
 
@@ -266,7 +263,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     Function to call when finished (optional). When there is no error, ``err`` is *null* and ``url`` contains the full URL to the file in your persistent storage.
 
 buster.saveBase64()
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 ::
 
@@ -303,7 +300,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     Function to call when finished (optional). When there is no error, ``err`` is *null* and ``url`` contains the full URL to the file in your persistent storage.
 
 buster.mail()
-~~~~~~~~~~~~~
+-------------
 
 ::
 
