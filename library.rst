@@ -1,5 +1,5 @@
-Agent Module Reference
-======================
+Agent Module
+============
 
 Initialization
 --------------
@@ -24,7 +24,7 @@ When using the agent module in conjunction with CasperJS, you must pass the Casp
     mouse = require('mouse').create(casper);
     buster = require('phantombuster').create(casper);
 
-When using PhantomJS, ``create()`` should be called with no arguments.
+When using PhantomJS, call ``create()`` with no arguments.
 
 Important note about asynchronous methods
 -----------------------------------------
@@ -53,8 +53,45 @@ This is better:
         }
     });
 
+In addition, if the agent module is instantiated with a CasperJS instance passed in ``create()``, its methods will block the current navigation step of CasperJS for your convenience. For example:
+
+::
+
+    casper = require('casper').create();
+    buster = require('phantombuster').create(casper); // pass the CasperJS instance
+
+    casper.start('https://example.com');
+    casper.then(function() {
+        buster.saveText('foo bar baz', 'foo.txt', function() {
+            console.log('Text saved!');
+        });
+        console.log('Navigation step 1');
+    });
+
+    // this step will wait for the end of all the previous agent module calls
+    casper.then(function() {
+        console.log('This is executed after saveText()');
+    });
+
+    casper.run(function() {
+        console.log('And this is executed last');
+        casper.exit()
+    });
+
+This script will output:
+
+::
+
+    Navigation step 1
+    This is executed after saveText()
+    Text saved!
+    And this is executed last
+
+Reference
+---------
+
 buster.argument
----------------
+~~~~~~~~~~~~~~~
 
 ::
 
@@ -63,7 +100,7 @@ buster.argument
 Contains the agent's argument as a plain object. On Phantombuster, each agent receives a JSON object as argument, which can be set each time they are launched.
 
 buster.apiKey
----------------
+~~~~~~~~~~~~~~~
 
 ::
 
@@ -72,7 +109,7 @@ buster.apiKey
 Contains your Phantombuster API key as a string. This is useful for making requests to the Phantombuster API from within the agent.
 
 buster.save()
--------------
+~~~~~~~~~~~~~
 
 ::
 
@@ -114,7 +151,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     Function to call when finished. When there is no error, ``err`` is *null* and ``url`` contains the full URL to the file on your persistent storage.
 
 buster.download()
------------------
+~~~~~~~~~~~~~~~~~
 
 ::
 
@@ -153,7 +190,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     Function to call when finished (optional). When there is no error, ``err`` is *null* and ``path`` contains the path to the file on your agent's disk.
 
 buster.saveFolder()
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 ::
 
@@ -190,7 +227,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     Function to call when finished (optional). When there is no error, ``err`` is *null* and ``url`` contains the full URL to the folder in your persistent storage.
 
 buster.saveText()
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 ::
 
@@ -227,7 +264,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     Function to call when finished (optional). When there is no error, ``err`` is *null* and ``url`` contains the full URL to the file in your persistent storage.
 
 buster.saveBase64()
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 ::
 
@@ -264,7 +301,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     Function to call when finished (optional). When there is no error, ``err`` is *null* and ``url`` contains the full URL to the file in your persistent storage.
 
 buster.mail()
--------------
+~~~~~~~~~~~~~
 
 ::
 
