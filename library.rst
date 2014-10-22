@@ -4,7 +4,7 @@ Agent Module
 Initialization
 --------------
 
-The agent module is named ``phantombuster``. Call ``require()`` and ``create()`` to instantiate it.
+The agent module is named ``phantombuster``. Use ``require('phantombuster')`` and call ``create()`` to instantiate it.
 
 ::
 
