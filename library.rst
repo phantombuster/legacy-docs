@@ -4,7 +4,7 @@ Agent Module
 Initialization
 --------------
 
-The agent module is named ``phantombuster`` and is required like a normal module. Call ``create()`` to instantiate it.
+The agent module is named ``phantombuster``. Call ``require()`` and ``create()`` to instantiate it.
 
 ::
 
@@ -29,7 +29,7 @@ When using PhantomJS, call ``create()`` with no arguments.
 Important note about asynchronous methods
 -----------------------------------------
 
-All methods of the agent module are asynchronous. You have to use the callback function to know when and if a function finished successfully.
+Following the philosophy of Node.js, all methods of the agent module are asynchronous. You have to use the callback function to know when and if a call finished successfully.
 
 For example, this is bad:
 
@@ -53,24 +53,26 @@ This is better:
         }
     });
 
-In addition, if the agent module is instantiated with a CasperJS instance passed in ``create()``, its methods will block the current navigation step of CasperJS for your convenience. For example:
+If the agent module is instantiated with a CasperJS instance passed in ``create()``, its methods will block the current navigation step for your convenience. For example:
 
 ::
 
     casper = require('casper').create();
     buster = require('phantombuster').create(casper); // pass the CasperJS instance
 
-    casper.start('https://example.com');
-    casper.then(function() {
+    casper.start('https://example.com', function() {
+
+        // method calls signal to CasperJS to not go to the next step until they are finished
         buster.saveText('foo bar baz', 'foo.txt', function() {
             console.log('Text saved!');
         });
+
         console.log('Navigation step 1');
     });
 
-    // this step will wait for the end of all the previous agent module calls
+    // steps will wait for the end of all the previous agent module calls
     casper.then(function() {
-        console.log('This is executed after saveText()');
+        console.log('This is executed a few ticks after saveText()');
     });
 
     casper.run(function() {
@@ -83,8 +85,8 @@ This script will output:
 ::
 
     Navigation step 1
-    This is executed after saveText()
     Text saved!
+    This is executed a few ticks after saveText()
     And this is executed last
 
 Reference
