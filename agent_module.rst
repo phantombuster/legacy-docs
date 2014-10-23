@@ -138,7 +138,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     When saving a distant file, the `MIME type <https://en.wikipedia.org/wiki/Internet_media_type>`_ is taken from the ``Content-Type`` HTTP header (if present). When saving a local file, the MIME type is guessed from the file extension (if this fails, no MIME type is set).
 
 ``saveAs`` (``String``)
-    Where to put the file on your persistent storage (optional). If a file with the same name already exists, it is overwritten.
+    Where to put the file on your persistent storage (optional). By default, the name will be taken from ``urlOrPath`` and the file will be saved at the root of your agent's foler in your persistent storage. If a file with the same name already exists, it is overwritten.
 
     - ``foo/`` (saves ``http://example.com/baz/bar.png`` as ``foo/bar.png``)
     - *null* (saves ``http://example.com/foo/bar.png`` as ``bar.png``)
@@ -177,7 +177,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     - ``http://soundcloud.com/`` (you'll get the HTML content of their homepage)
 
 ``saveAs`` (``String``)
-    Where to put the file on your agent's disk (optional). If a file with the same name already exists, it is overwritten.
+    Where to put the file on your agent's disk (optional). By default, the name will be taken from ``url`` and the file will be saved in the current working directory on your agent's disk. If a file with the same name already exists, it is overwritten.
 
     - ``foo/`` (saves ``http://example.com/baz/bar.png`` as ``foo/bar.png``)
     - *null* (saves ``http://example.com/foo/bar.png`` as ``bar.png``)
@@ -218,7 +218,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     Each file has its `MIME type <https://en.wikipedia.org/wiki/Internet_media_type>`_ guessed from its extension (if this fails, no MIME type is set).
 
 ``saveAs`` (``String``)
-    Where to put the folder on your persistent storage (optional). If files with the same name already exist, they are overwritten.
+    Where to put the folder on your persistent storage (optional). By default, the folder will be saved at the root of your agent's folder in your persistent storage. If files with the same name already exist, they are overwritten.
 
     - ``/`` or empty string (root of your agent's folder in your persistent storage)
     - ``any/sub/directory``

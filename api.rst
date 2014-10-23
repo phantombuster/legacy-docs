@@ -6,7 +6,7 @@ Introduction
 
 The Phantombuster API is composed of HTTPS endpoints returning JSON data. Right now the API is not totally finished and is subject to major (breaking) changes. However it is usable and allows you to do interesting stuff with Phantombuster!
 
-We deliberately made the API extremely simple. Any developer should be able to get responses in a matter of minutes.
+We deliberately made the API extremely simple to use. Any developer should be able to get responses in a matter of minutes.
 
 Response format
 ---------------
@@ -76,7 +76,7 @@ agent/{id}/launch.json
 
 Add an agent to the launch queue. This call always succeeds — to know if the agent was successfully added to the launch queue, call either ``/api/v1/agent/{id}/output.json`` or ``/api/v1/user.json``.
 
-``{id}`` (``Integer``)
+``{id}`` (``Number``)
     The ID of the agent to launch.
 
 ``command`` (``String``)
@@ -87,3 +87,56 @@ Add an agent to the launch queue. This call always succeeds — to know if the a
 
 ``saveLaunchOptions`` (``String``)
     If present and not empty, ``command`` and ``argument`` will be saved as the default launch options for the agent.
+
+Sample response:
+
+::
+
+    {
+        "status": "success",
+        "data": null
+    }
+
+agent/{id}/output.json
+----------------------
+
+::
+
+    /api/v1/agent/{id}/output.json
+
+Get data from an agent: status, messages, console output, and launch number.
+
+``{id}`` (``Number``)
+    The ID of the agent from which to retrieve the output.
+
+``fromMessageId`` (``Number``)
+    Return the agent's messages starting from this ID (optional). If not present, returns a few last messages.
+
+``fromOutputPos`` (``Number``)
+    Return the agent's console output starting from this position (optional). If not present, assumes ``0``.
+
+``launchNumber`` (``Number``)
+    Get console output from a specific launch (optional). If not present, all the console output from the agent's output cache is returned. If specified and equal to the launch number of the currently running agent, the current console output is returned. If specified and not equal to the launch number of the running agent, the console output cache is returned (if available).
+
+Sample response:
+
+::
+
+    {
+        "status": "success",
+        "data": {
+            "status": "running",
+            "launchNumber": 94,
+            "messages": [
+                {
+                    "id": 65444,
+                    "date": 1414080820,
+                    "dateUtc": 1414080820,
+                    "text": "Agent started",
+                    "type": "normal"
+                }
+            ],
+            "output": "* Container a255b8220379 started in directory /home/phantom/agent",
+            "outputPos": 8
+        }
+    }
