@@ -10,7 +10,7 @@ The agent module is named ``phantombuster``. Use ``require('phantombuster')`` an
 
     buster = require('phantombuster').create(casperInstance);
 
-You can require a specific version of the agent module by using ``phantombuster-vX`` where ``X`` is the version number (for now there is only version ``1``). This can be useful if you want your script to continue working even after we make braking changes to newer versions of the agent module.
+You can require a specific version of the agent module by using ``phantombuster-vX`` where ``X`` is the version number (for now there is only version ``1``). This can be useful if you want your script to continue working even after we make breaking changes to newer versions of the agent module.
 
 ::
 
@@ -24,7 +24,11 @@ When using the agent module in conjunction with CasperJS, you must pass the Casp
     mouse = require('mouse').create(casper);
     buster = require('phantombuster').create(casper);
 
-When using PhantomJS, call ``create()`` with no arguments.
+When using PhantomJS, call ``create()`` with no arguments:
+
+::
+
+    buster = require('phantombuster').create();
 
 Important note about asynchronous methods
 -----------------------------------------
@@ -144,7 +148,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     You do not need to create any intermediate directory (``a/b/c/d/e.jpg`` will work).
 
 ``headers`` (``PlainObject``)
-    HTTP headers to use when requesting for the file (optional). No need to worries about cookies, they are set by default.
+    HTTP headers to use when requesting the file (optional). No need to worry about cookies, they are set by default.
 
 ``callback`` (``Function(String err, String url)``)
     Function to call when finished. When there is no error, ``err`` is *null* and ``url`` contains the full URL to the file on your persistent storage.
@@ -183,7 +187,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     Intermediate directories are not created automatically on your agent's disk.
 
 ``headers`` (``PlainObject``)
-    HTTP headers to use when requesting for the file (optional).
+    HTTP headers to use when requesting the file (optional). No need to worry about cookies, they are set by default.
 
 ``callback`` (``Function(String err, String path)``)
     Function to call when finished (optional). When there is no error, ``err`` is *null* and ``path`` contains the path to the file on your agent's disk.
@@ -236,7 +240,7 @@ buster.saveText()
 
     buster.saveText(text, saveAs, mime, callback)
 
-Saves a string to a file on your persistent storage.
+Saves a string to a file in your persistent storage.
 
 This method is asynchronous and returns nothing. Use the callback to know when it has finished.
 
