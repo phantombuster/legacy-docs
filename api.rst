@@ -293,3 +293,27 @@ Sample response:
             ]
         }
     }
+
+mail.json
+---------
+
+::
+
+    /api/v1/mail.json
+
+Send an email to the address associated with your Phantombuster account and substract 1 to your daily email counter.
+
+``subject`` (``String``)
+    Subject of the email.
+
+``text`` (``String``)
+    Plain text contents of the email.
+
+Sample response:
+
+::
+
+    {
+        "status": "success",
+        "data": null
+    }
