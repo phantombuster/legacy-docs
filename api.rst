@@ -228,7 +228,7 @@ Get a script record.
     ID of the script to retrieve.
 
 ``{ext}`` (``String``)
-    
+    Either ``json`` or ``txt``. If ``txt`` is used, the script is returned as raw text data, without any JSON.
 
 Sample response:
 
@@ -236,5 +236,60 @@ Sample response:
 
     {
         "status": "success",
-        "data": null
+        "data": {
+            "id": 1902,
+            "name": "nice_agent.coffee",
+            "source": "phantombuster",
+            "url": null,
+            "text": " ... script contents ... ",
+            "httpHeaders": null,
+        }
+    }
+
+user.json
+---------
+
+::
+
+    /api/v1/user.json
+
+Get information about your Phantombuster account and your agents.
+
+Sample response:
+
+::
+
+    {
+        "status": "success",
+        "data": {
+            "email": "excellent.customer@gmail.com",
+            "plan": {
+                "key": "startup",
+                "name": "Start-Up",
+                "executionTime": 14400,
+                "emails": 100,
+                "size": 10000000000
+            },
+            "timeLeft": 14087,
+            "emailsLeft": 100,
+            "storageLeft": 9991347906,
+            "agents": [
+                {
+                    "id": 1388,
+                    "name": "My first agent",
+                    "scriptId": 0,
+                    "lastEndMessage": "Agent has no associated script",
+                    "lastEndStatus": "launch failed",
+                    "running": false
+                },
+                {
+                    "id": 1713,
+                    "name": "My second agent",
+                    "scriptId": 2003,
+                    "lastEndMessage": "Agent finished with exit code 0",
+                    "lastEndStatus": "success",
+                    "running": true
+                }
+            ]
+        }
     }
