@@ -67,6 +67,59 @@ Here are some error HTTP codes you might encounter:
 - ``404``: the requested object was not found (bad ID?)
 - ``500``: for some reason our servers could not handle your request
 
+agent/{id}.json
+---------------
+
+::
+
+    /api/v1/agent/{id}.json
+
+Get an agent record.
+
+``{id}`` (``Number``)
+    ID of the agent to retrieve.
+
+``withScript`` (``String``)
+    If present and not empty, and if the agent has an associated script, also return the script record.
+
+Sample response:
+
+::
+
+    {
+        "status": "success",
+        "data": {
+            "id": 1763,
+            "name": "Nice Agent",
+            "scriptId": 1902,
+            "proxy": "none",
+            "proxyAddress": null,
+            "proxyUsername": null,
+            "proxyPassword": null,
+            "disableWebSecurity": false,
+            "ignoreSslErrors": false,
+            "loadImages": true,
+            "launch": "manually",
+            "nbLaunches": 94,
+            "showDebug": true,
+            "awsFolder": "nVFRid8kvsuPeuCL80DnBg",
+            "executionTimeLimit": 5,
+            "fileMgmt": "folders",
+            "fileMgmtMaxFolders": 10,
+            "lastEndMessage": "Execution time limit reached",
+            "lastEndStatus": "error",
+            "userAwsFolder": "QwYH17CB0Xj",
+            "script": {
+                "id": 1902,
+                "name": "nice_agent.coffee",
+                "source": "phantombuster",
+                "url": null,
+                "text": " ... script contents ... ",
+                "httpHeaders": null,
+            }
+        }
+    }
+
 agent/{id}/launch.json
 ----------------------
 
@@ -77,7 +130,7 @@ agent/{id}/launch.json
 Add an agent to the launch queue. This call always succeeds — to know if the agent was successfully added to the launch queue, call either ``/api/v1/agent/{id}/output.json`` or ``/api/v1/user.json``.
 
 ``{id}`` (``Number``)
-    The ID of the agent to launch.
+    ID of the agent to launch.
 
 ``command`` (``String``)
     Command to use when launching the agent (optional). Can be either ``casperjs`` or ``phantomjs``.
@@ -97,6 +150,27 @@ Sample response:
         "data": null
     }
 
+agent/{id}/abort.json
+---------------------
+
+::
+
+    /api/v1/agent/{id}/abort.json
+
+Abort a running agent.
+
+``{id}`` (``Number``)
+    ID of the agent to stop.
+
+Sample response:
+
+::
+
+    {
+        "status": "success",
+        "data": null
+    }
+
 agent/{id}/output.json
 ----------------------
 
@@ -104,10 +178,10 @@ agent/{id}/output.json
 
     /api/v1/agent/{id}/output.json
 
-Get data from an agent: status, messages, console output, and launch number.
+Get data from an agent: status, messages, console output, and launch number. You can call this endpoint multiple times and get only fresh output data by specifying ``fromMessageId``, ``fromOutputPos`` and ``launchNumber`` based on the last response you received.
 
 ``{id}`` (``Number``)
-    The ID of the agent from which to retrieve the output.
+    ID of the agent from which to retrieve the output.
 
 ``fromMessageId`` (``Number``)
     Return the agent's messages starting from this ID (optional). If not present, returns a few last messages.
@@ -139,4 +213,28 @@ Sample response:
             "output": "* Container a255b8220379 started in directory /home/phantom/agent",
             "outputPos": 8
         }
+    }
+
+script/{id}.{ext}
+-----------------
+
+::
+
+    /api/v1/script/{id}.{ext}
+
+Get a script record.
+
+``{id}`` (``Number``)
+    ID of the script to retrieve.
+
+``{ext}`` (``String``)
+    
+
+Sample response:
+
+::
+
+    {
+        "status": "success",
+        "data": null
     }
