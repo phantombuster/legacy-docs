@@ -6,4 +6,3 @@ Phantombuster's documentation
 
    agent_module
    api
-

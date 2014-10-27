@@ -1,12 +1,16 @@
 API
 ===
 
-Introduction
-------------
-
-The Phantombuster API is composed of HTTPS endpoints returning JSON data. Right now the API is not totally finished and is subject to major (breaking) changes. However it is usable and allows you to do interesting stuff with Phantombuster!
+The Phantombuster API is composed of HTTPS endpoints returning JSON data.
 
 We deliberately made the API extremely simple to use. Any developer should be able to get responses in a matter of minutes.
+
+Versioning
+----------
+
+All API endpoints URLs start with ``https://phantombuster.com/api/vX/`` where ``X`` is the version number of the API. For now, only version ``1`` exists.
+
+When breaking changes will be made to the API, this version number will increase.
 
 Response format
 ---------------
@@ -44,7 +48,7 @@ You can also put your API key as a ``GET`` parameter. This is not recommended be
     GET /api/v1/agent/785/launch.json?command=casperjs&saveLaunchOptions=1&key=YOUR_API_KEY HTTP/1.1
     Host: phantombuster.com
 
-Please be aware that your key is precious as anyone who knows it can launch your agents. Do not hesitate to generate a new one if you think it has been compromised.
+Please be aware that your key is precious as anyone who knows it can launch your agents (and do other mean things). Do not hesitate to generate a new one if you think it has been compromised.
 
 Errors
 ------
