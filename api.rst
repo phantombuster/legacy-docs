@@ -182,19 +182,19 @@ agent/{id}/output.json
 
     /api/v1/agent/{id}/output.json
 
-Get data from an agent: status, messages, console output, and launch number. You can call this endpoint multiple times and get only fresh output data by specifying ``fromMessageId``, ``fromOutputPos`` and ``launchNumber`` based on the last response you received.
+Get data from an agent: console output, status and messages. This API endpoint is specifically designed so that it's easy to get incremental data from a running agent. To do so, your first call should have all parameters set to ``0``. From then on, all subsequent calls should have parameters set to the values returned by Phantombuster on the previous call.
 
 ``{id}`` (``Number``)
-    ID of the agent from which to retrieve the output.
+    ID of the agent from which to retrieve the output, status and messages.
 
 ``fromMessageId`` (``Number``)
-    Return the agent's messages starting from this ID (optional). If not present, returns a few last messages.
+    Return the agent's messages starting from this ID (optional, ``0`` by default). If not present or ``0``, returns a few last messages. Use the biggest message ID you received on a previous call to only get fresh messages.
 
 ``fromOutputPos`` (``Number``)
-    Return the agent's console output starting from this position (optional). If not present, assumes ``0``.
+    Return the agent's console output starting from this position (optional, ``0`` by default). This is an arbitrary number somewhat corresponding to the line number in the console output. Use the last ``outputPos`` you received on a previous call to only get new lines.
 
-``launchNumber`` (``Number``)
-    Get console output from a specific launch (optional). If not present, all the console output from the agent's output cache is returned. If specified and equal to the launch number of the currently running agent, the current console output is returned. If specified and not equal to the launch number of the running agent, the console output cache is returned (if available).
+``containerId`` (``Number``)
+    Get console output from a specific launch (optional, ``0`` by default). If not present or ``0``, Phantombuster will select the most relevant launch (either a running agent or the last finished run). Use the last ``containerId`` you received on a previous call to always get relevant console output lines. When you receive a different ``containerId`` than the one you requested with, you know that at least one new agent launch occurred.
 
 Sample response:
 
@@ -204,14 +204,20 @@ Sample response:
         "status": "success",
         "data": {
             "status": "running",
-            "launchNumber": 94,
+            "runningContainers": 1,
+            "queuedContainers": 0,
+            "containerId": 76427,
             "messages": [
                 {
                     "id": 65444,
                     "date": 1414080820,
                     "dateUtc": 1414080820,
                     "text": "Agent started",
-                    "type": "normal"
+                    "type": "normal",
+                    "context": [
+                        "Launch type: manual",
+                        "Execution time limit: 60s"
+                    ]
                 }
             ],
             "output": "* Container a255b8220379 started in directory /home/phantom/agent",
@@ -284,7 +290,8 @@ Sample response:
                     "scriptId": 0,
                     "lastEndMessage": "Agent has no associated script",
                     "lastEndStatus": "launch failed",
-                    "running": false
+                    "queuedContainers": 2
+                    "runningContainers": 0
                 },
                 {
                     "id": 1713,
@@ -292,7 +299,8 @@ Sample response:
                     "scriptId": 2003,
                     "lastEndMessage": "Agent finished with exit code 0",
                     "lastEndStatus": "success",
-                    "running": true
+                    "queuedContainers": 0
+                    "runningContainers": 1
                 }
             ]
         }
