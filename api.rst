@@ -290,7 +290,7 @@ Sample response:
                     "scriptId": 0,
                     "lastEndMessage": "Agent has no associated script",
                     "lastEndStatus": "launch failed",
-                    "queuedContainers": 2
+                    "queuedContainers": 2,
                     "runningContainers": 0
                 },
                 {
@@ -299,7 +299,7 @@ Sample response:
                     "scriptId": 2003,
                     "lastEndMessage": "Agent finished with exit code 0",
                     "lastEndStatus": "success",
-                    "queuedContainers": 0
+                    "queuedContainers": 0,
                     "runningContainers": 1
                 }
             ]
