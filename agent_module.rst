@@ -336,7 +336,7 @@ buster.progressHint()
 
 Reports the progress state of the agent. This affects the width and content of the progress bar displayed in the agent console on Phantombuster.
 
-This is useful for debugging purposes and is not required for the agent to function properly. It is also very nice to see the progress of your agent in real-time.
+This is useful for debugging purposes and is not required for the agent to function properly. Sometimes it's just nice to see the progress of your agent in real-time.
 
 ``progress`` (``Number``)
     Progress float value between ``0`` and ``1``. ``1`` means 100% of the work was completed, and ``0`` means 0%. If *null*, defaults to ``1``.
