@@ -324,3 +324,22 @@ This method is asynchronous and returns nothing. Use the callback to know when i
 
 ``callback`` (``Function(String err)``)
     Function to call when finished (optional). When there is no error, ``err`` is *null*.
+
+buster.progressHint()
+---------------------
+
+::
+
+    buster.progressHint(progress)
+
+    buster.progressHint(progress, label)
+
+Reports the progress state of the agent. This affects the width and content of the progress bar displayed in the agent console on Phantombuster.
+
+This is useful for debugging purposes and is not required for the agent to function properly. It is also very nice to see the progress of your agent in real-time.
+
+``progress`` (``Number``)
+    Progress float value between ``0`` and ``1``. ``1`` means 100% of the work was completed, and ``0`` means 0%. If *null*, defaults to ``1``.
+
+``label`` (``String``)
+    Optional textual description of the state of your agent (clipped to 50 characters). This shows up as a text inside the progress bar displayed in the agent console.
