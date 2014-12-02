@@ -191,7 +191,7 @@ Get data from an agent: console output, status and messages. This API endpoint i
     Return the agent's messages starting from this ID (optional, ``0`` by default). If not present or ``0``, returns a few last messages. Use the biggest message ID you received on a previous call to only get fresh messages.
 
 ``fromOutputPos`` (``Number``)
-    Return the agent's console output starting from this position (optional, ``0`` by default). This is an arbitrary number somewhat corresponding to the line number in the console output. Use the last ``outputPos`` you received on a previous call to only get new lines.
+    Return the agent's console output starting from this position (optional, ``0`` by default). This number roughly corresponds to the number of bytes emitted by the agent. Use the last ``outputPos`` you received on a previous call to only get new output data.
 
 ``containerId`` (``Number``)
     Get console output from a specific launch (optional, ``0`` by default). If not present or ``0``, Phantombuster will select the most relevant launch (either a running agent or the last finished run). Use the last ``containerId`` you received on a previous call to always get relevant console output lines. When you receive a different ``containerId`` than the one you requested with, you know that at least one new agent launch occurred.
@@ -221,7 +221,7 @@ Sample response:
                 }
             ],
             "output": "* Container a255b8220379 started in directory /home/phantom/agent",
-            "outputPos": 8
+            "outputPos": 245
         }
     }
 
