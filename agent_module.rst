@@ -355,12 +355,12 @@ buster.overrideTimeLimit()
 
     buster.overrideTimeLimit(seconds, callback)
 
-Overrides the execution time limit of the agent.
+Overrides the execution time limit of the agent. When the execution time reaches the specified number of seconds, the agent is stopped.
 
 This method is asynchronous and returns nothing. Use the callback to know when it has finished.
 
 ``seconds`` (``Number``)
-    New time limit of the agent in seconds (integer). When the execution time reaches this number of seconds, the agent is stopped. If the specified number of seconds is already lower than the current execution time, the agent is stopped right away.
+    New time limit of the agent in seconds (integer), or ``0`` to disable the time limit. If the specified number of seconds is already lower than the current execution time, the agent is stopped right away.
 
 ``callback`` (``Function(String err)``)
     Function to call when finished (optional). When there is no error, ``err`` is *null*.
