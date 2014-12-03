@@ -338,8 +338,29 @@ Reports the progress state of the agent. This affects the width and content of t
 
 This is useful for debugging purposes and is not required for the agent to function properly. Sometimes it's just nice to see the progress of your agent in real-time.
 
+This method returns nothing and has no callback.
+
 ``progress`` (``Number``)
     Progress float value between ``0`` and ``1``. ``1`` means 100% of the work was completed, and ``0`` means 0%. If *null*, defaults to ``1``.
 
 ``label`` (``String``)
     Optional textual description of the state of your agent (clipped to 50 characters). This shows up as a text inside the progress bar displayed in the agent console.
+
+buster.overrideTimeLimit()
+---------------------
+
+::
+
+    buster.overrideTimeLimit(seconds)
+
+    buster.overrideTimeLimit(seconds, callback)
+
+Overrides the execution time limit of the agent.
+
+This method is asynchronous and returns nothing. Use the callback to know when it has finished.
+
+``seconds`` (``Number``)
+    New time limit of the agent in seconds (integer). When the execution time reaches this number of seconds, the agent is stopped. If the specified number of seconds is already lower than the current execution time, the agent is stopped right away.
+
+``callback`` (``Function(String err)``)
+    Function to call when finished (optional). When there is no error, ``err`` is *null*.
