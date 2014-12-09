@@ -161,7 +161,7 @@ agent/{id}/abort.json
 
     /api/v1/agent/{id}/abort.json
 
-Abort a running agent.
+Abort all running instances of the agent.
 
 ``{id}`` (``Number``)
     ID of the agent to stop.
@@ -194,7 +194,7 @@ Get data from an agent: console output, status and messages. This API endpoint i
     Return the agent's console output starting from this position (optional, ``0`` by default). This number roughly corresponds to the number of bytes emitted by the agent. Use the last ``outputPos`` you received on a previous call to only get new output data.
 
 ``containerId`` (``Number``)
-    Get console output from a specific launch (optional, ``0`` by default). If not present or ``0``, Phantombuster will select the most relevant launch (either a running agent or the last finished run). Use the last ``containerId`` you received on a previous call to always get relevant console output lines. When you receive a different ``containerId`` than the one you requested with, you know that at least one new agent launch occurred.
+    Launch tracking number (optional, ``0`` by default). This is used internally by Phantombuster to return relevant values for ``outputPos``. Use the last ``containerId`` and ``outputPos`` you received on a previous call to always get relevant console output lines. When you receive a different ``containerId`` than the one you made the request with, you know that at least one new launch has occurred.
 
 Sample response:
 
@@ -225,20 +225,51 @@ Sample response:
         }
     }
 
-script/{id}.{ext}
------------------
+script/by-id/{mode}/{id}
+------------------------
 
 ::
 
-    /api/v1/script/{id}.{ext}
+    /api/v1/script/by-id/{mode}/{id}
 
-Get a script record.
+Get a script record by ID.
 
 ``{id}`` (``Number``)
     ID of the script to retrieve.
 
-``{ext}`` (``String``)
-    Either ``json`` or ``txt``. If ``txt`` is used, the script is returned as raw text data, without any JSON.
+``{mode}`` (``String``)
+    Either ``json`` or ``raw``. If ``raw`` is used, the script is returned as raw text data, without any JSON.
+
+Sample response:
+
+::
+
+    {
+        "status": "success",
+        "data": {
+            "id": 1902,
+            "name": "nice_agent.coffee",
+            "source": "phantombuster",
+            "url": null,
+            "text": " ... script contents ... ",
+            "httpHeaders": null,
+        }
+    }
+
+script/by-name/{mode}/{name}
+----------------------------
+
+::
+
+    /api/v1/script/by-name/{mode}/{name}
+
+Get a script record by name.
+
+``{name}`` (``String``)
+    Name of the script to retrieve.
+
+``{mode}`` (``String``)
+    Either ``json`` or ``raw``. If ``raw`` is used, the script is returned as raw text data, without any JSON.
 
 Sample response:
 
