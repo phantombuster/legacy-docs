@@ -131,7 +131,7 @@ agent/{id}/launch.json
 
     /api/v1/agent/{id}/launch.json
 
-Add an agent to the launch queue. This call always succeeds — to know if the agent was successfully added to the launch queue, call either ``/api/v1/agent/{id}/output.json`` or ``/api/v1/user.json``.
+Add an agent to the launch queue.
 
 ``{id}`` (``Number``)
     ID of the agent to launch.
@@ -151,7 +151,9 @@ Sample response:
 
     {
         "status": "success",
-        "data": null
+        "data": {
+            "containerId": 76426
+        }
     }
 
 agent/{id}/abort.json
@@ -182,19 +184,31 @@ agent/{id}/output.json
 
     /api/v1/agent/{id}/output.json
 
-Get data from an agent: console output, status and messages. This API endpoint is specifically designed so that it's easy to get incremental data from a running agent. To do so, your first call should have all parameters set to ``0``. From then on, all subsequent calls should have parameters set to the values returned by Phantombuster on the previous call.
+Get data from an agent: console output, status, progress and messages. This API endpoint is specifically designed so that it's easy to get incremental data from an agent.
+
+Two types of requests can be made to this endpoint :
+
+    - "Most Relevant" mode (by setting ``mode`` to ``most-relevant``, which is the default) to get console output from the most recent instance of the agent. In this mode, your first call should have parameter ``containerId`` set to ``0``. From then on, all subsequent calls must have parameter ``containerId`` set to the previously returned container ID (when a new instance of the agent is started, a different ``containerId`` will be returned).
+
+    ~ or ~
+
+    - "Specific Container" mode (by setting ``mode`` to ``specific-container``) to get console output from a particular instance of the agent. In this mode, requests must have the ``containerId`` parameter set to the instance's ID from which you wish to get console output.
+
 
 ``{id}`` (``Number``)
     ID of the agent from which to retrieve the output, status and messages.
 
+``mode`` (``String``)
+    Either ``most-relevant`` or ``specific-container`` (optional, ``most-relevant`` by default). This controls from which instance of the agent the output data is returned. In "Most Relevant" mode, the most recent instance is selected each time a request is made. In "Specific Container" mode, only the console output from a particular instance is returned, as specified by the ``containerId`` parameter.
+
+``containerId`` (``Number``)
+    ID of the instance from which to get console output (optional, ``0`` by default). In "Most Relevant" mode, always use the last ``containerId`` you received on a previous call or ``0`` for the first call. In "Specific Container" mode, always set this parameter to the instance's ID from which you wish to get console ouput.
+
 ``fromMessageId`` (``Number``)
-    Return the agent's messages starting from this ID (optional, ``0`` by default). If not present or ``0``, returns a few last messages. Use the biggest message ID you received on a previous call to only get fresh messages.
+    Return the agent's messages starting from this ID (optional, ``-1`` by default). If not present or ``-1``, no messages are returned. Use the biggest message ID you received on a previous call to only get fresh messages.
 
 ``fromOutputPos`` (``Number``)
     Return the agent's console output starting from this position (optional, ``0`` by default). This number roughly corresponds to the number of bytes emitted by the agent. Use the last ``outputPos`` you received on a previous call to only get new output data.
-
-``containerId`` (``Number``)
-    Launch tracking number (optional, ``0`` by default). This is used internally by Phantombuster to return relevant values for ``outputPos``. Use the last ``containerId`` and ``outputPos`` you received on a previous call to always get relevant console output lines. When you receive a different ``containerId`` than the one you made the request with, you know that at least one new launch has occurred.
 
 Sample response:
 
@@ -203,10 +217,15 @@ Sample response:
     {
         "status": "success",
         "data": {
-            "status": "running",
+            "agentStatus": "running",
             "runningContainers": 1,
             "queuedContainers": 0,
             "containerId": 76427,
+            "progress": {
+                "progress": 0.1,
+                "label": "Initializing...",
+                "runtime": 3
+            },
             "messages": [
                 {
                     "id": 65444,
