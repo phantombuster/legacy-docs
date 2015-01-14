@@ -133,8 +133,23 @@ agent/{id}/launch.json
 
 Add an agent to the launch queue.
 
+Three types of requests can be made to this endpoint:
+
+    - JSON mode (by setting ``mode`` to ``json``, which is the default) to simply add the agent to the launch queue and get back a ``containerId`` in JSON.
+
+    ~ or ~
+
+    - "Event Stream" mode (by setting ``mode`` to ``event-stream``).
+
+    ~ or ~
+
+    - "Raw" mode (by setting ``mode`` to ``raw``) to get an HTTP ``text/plain``, chunked, streaming response of the raw console output of the agent. This is NOT recommended as almost all HTTP clients will timeout at one point or another, especially if your agent stays in queue for a few minutes (in which case the endpoint will send exactly zero bytes for a few minutes, waiting for the agent to start).
+
 ``{id}`` (``Number``)
     ID of the agent to launch.
+
+``mode`` (``String``)
+    Either ``json``, ``event-stream`` or ``raw`` (optional, default to ``json``). This allows you to choose what type of response to receive.
 
 ``command`` (``String``)
     Command to use when launching the agent (optional). Can be either ``casperjs`` or ``phantomjs``.
@@ -186,29 +201,30 @@ agent/{id}/output.json
 
 Get data from an agent: console output, status, progress and messages. This API endpoint is specifically designed so that it's easy to get incremental data from an agent.
 
-Two types of requests can be made to this endpoint :
+Two types of requests can be made to this endpoint:
 
-    - "Most Relevant" mode (by setting ``mode`` to ``most-relevant``, which is the default) to get console output from the most recent instance of the agent. In this mode, your first call should have parameter ``containerId`` set to ``0``. From then on, all subsequent calls must have parameter ``containerId`` set to the previously returned container ID (when a new instance of the agent is started, a different ``containerId`` will be returned).
+    - "Track" mode (by setting ``mode`` to ``track``, which is the default when a ``containerId`` is specified) to get console output from a particular instance of the agent. In this mode, requests must have the ``containerId`` parameter set to the instance's ID from which you wish to get console output.
 
     ~ or ~
 
-    - "Specific Container" mode (by setting ``mode`` to ``specific-container``) to get console output from a particular instance of the agent. In this mode, requests must have the ``containerId`` parameter set to the instance's ID from which you wish to get console output.
-
+    - "Most Recent" mode (by setting ``mode`` to ``most-recent``, which is the default when ``containerId`` is left at ``0``) to get console output from the most recent instance of the agent. In this mode, your first call should have parameter ``containerId`` left at ``0``. From then on, all subsequent calls must have parameter ``containerId`` set to the previously returned container ID (when a new instance of the agent is started, a different ``containerId`` will be returned).
 
 ``{id}`` (``Number``)
     ID of the agent from which to retrieve the output, status and messages.
 
 ``mode`` (``String``)
-    Either ``most-relevant`` or ``specific-container`` (optional, ``most-relevant`` by default). This controls from which instance of the agent the output data is returned. In "Most Relevant" mode, the most recent instance is selected each time a request is made. In "Specific Container" mode, only the console output from a particular instance is returned, as specified by the ``containerId`` parameter.
+    Either ``track`` or ``most-recent`` (optional, defaults to ``most-recent`` if ``containerId`` is left at ``0``, otherwise defaults to ``track``). This controls from which instance of the agent the console output is returned. In "Most Recent" mode, the most recent instance is selected each time a request is made. In "Track" mode, the console output from a particular instance is returned, as specified by the ``containerId`` parameter.
 
 ``containerId`` (``Number``)
-    ID of the instance from which to get console output (optional, ``0`` by default). In "Most Relevant" mode, always use the last ``containerId`` you received on a previous call or ``0`` for the first call. In "Specific Container" mode, always set this parameter to the instance's ID from which you wish to get console ouput.
+    ID of the instance from which to get console output (optional, ``0`` by default). In "Most Recent" mode, always use the last ``containerId`` you received on a previous call or ``0`` for the first call. In "Track" mode, always set this parameter to the instance's ID from which you wish to get console ouput.
 
 ``fromMessageId`` (``Number``)
     Return the agent's messages starting from this ID (optional, ``-1`` by default). If not present or ``-1``, no messages are returned. Use the biggest message ID you received on a previous call to only get fresh messages.
 
 ``fromOutputPos`` (``Number``)
-    Return the agent's console output starting from this position (optional, ``0`` by default). This number roughly corresponds to the number of bytes emitted by the agent. Use the last ``outputPos`` you received on a previous call to only get new output data.
+    Return the agent's console output starting from this position (optional, ``0`` by default). This number corresponds to the number of bytes emitted by the agent. Use the last ``outputPos`` you received on a previous call to only get new output data.
+
+Note: The ``agentStatus`` and ``containerStatus`` fields have 3 possible values: ``running``, ``queued`` or ``not running``. The ``containerStatus`` field is only present in "Track" mode and represents the status of the tracked agent instance.
 
 Sample response:
 
@@ -218,6 +234,7 @@ Sample response:
         "status": "success",
         "data": {
             "agentStatus": "running",
+            "containerStatus": "running",
             "runningContainers": 1,
             "queuedContainers": 0,
             "containerId": 76427,
