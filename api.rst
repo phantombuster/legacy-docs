@@ -124,31 +124,31 @@ Sample response:
         }
     }
 
-agent/{id}/launch.json
-----------------------
+agent/{id}/launch
+-----------------
 
 ::
 
-    /api/v1/agent/{id}/launch.json
+    /api/v1/agent/{id}/launch
 
 Add an agent to the launch queue.
 
-Three types of requests can be made to this endpoint:
+This endpoint supports three types of outputs:
 
-    - JSON mode (by setting ``mode`` to ``json``, which is the default) to simply add the agent to the launch queue and get back a ``containerId`` in JSON.
-
-    ~ or ~
-
-    - "Event Stream" mode (by setting ``mode`` to ``event-stream``).
+    - JSON output (by setting ``output`` to ``json``, which is the default) to get back a ``containerId`` in JSON. This ID can later be used to track this launch and get console output by calling ``/api/v1/agent/{agentId}/output.json?containerId={containerId}``.
 
     ~ or ~
 
-    - "Raw" mode (by setting ``mode`` to ``raw``) to get an HTTP ``text/plain``, chunked, streaming response of the raw console output of the agent. This is NOT recommended as almost all HTTP clients will timeout at one point or another, especially if your agent stays in queue for a few minutes (in which case the endpoint will send exactly zero bytes for a few minutes, waiting for the agent to start).
+    - `Event stream <https://developer.mozilla.org/en-US/docs/Server-sent_events/Using_server-sent_events>`_ output (by setting ``output`` to ``event-stream``) to get a ``text/event-stream`` HTTP response. Each line of console output is sent as an event stream message starting with ``data:`` and a space. When you receive the first message, you know the agent has started. When the agent has finished, the connection is closed. At regular intervals, event stream comments (starting with ``:``) are sent to keep the connection alive.
+
+    ~ or ~
+
+    - Raw output (by setting ``output`` to ``raw``) to get an HTTP ``text/plain``, chunked, streaming response of the raw console output of the agent. This is NOT recommended as almost all HTTP clients will timeout at one point or another, especially if your agent stays in queue for a few minutes (in which case the endpoint will send *zero* bytes for a few minutes, waiting for the agent to start — even cURL and Wget struggle to handle non-transmitting HTTP responses).
 
 ``{id}`` (``Number``)
     ID of the agent to launch.
 
-``mode`` (``String``)
+``output`` (``String``)
     Either ``json``, ``event-stream`` or ``raw`` (optional, default to ``json``). This allows you to choose what type of response to receive.
 
 ``command`` (``String``)
@@ -160,7 +160,7 @@ Three types of requests can be made to this endpoint:
 ``saveLaunchOptions`` (``String``)
     If present and not empty, ``command`` and ``argument`` will be saved as the default launch options for the agent.
 
-Sample response:
+Sample response of JSON output:
 
 ::
 
@@ -170,6 +170,33 @@ Sample response:
             "containerId": 76426
         }
     }
+
+Sample response of event stream output:
+
+::
+
+    : container 76426 in queue
+
+    : container 76426 in queue
+
+    data: This a console output line!
+    data: 
+
+    : container 76426 still running
+
+    data: And this is
+
+    data: another one :)
+    data: 
+
+    : container 76426 ended
+
+Sample response of raw output:
+
+::
+
+    This is a console output line!
+    And this is another one :)
 
 agent/{id}/abort.json
 ---------------------
@@ -201,7 +228,7 @@ agent/{id}/output.json
 
 Get data from an agent: console output, status, progress and messages. This API endpoint is specifically designed so that it's easy to get incremental data from an agent.
 
-Two types of requests can be made to this endpoint:
+This endpoint has two modes:
 
     - "Track" mode (by setting ``mode`` to ``track``, which is the default when a ``containerId`` is specified) to get console output from a particular instance of the agent. In this mode, requests must have the ``containerId`` parameter set to the instance's ID from which you wish to get console output.
 
