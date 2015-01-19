@@ -1,5 +1,5 @@
-Phantombuster's documentation
-=============================
+Documentation
+=============
 
 .. toctree::
     :maxdepth: 3
