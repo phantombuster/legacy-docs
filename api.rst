@@ -139,7 +139,7 @@ This endpoint supports three types of outputs:
 
     ~ or ~
 
-    - `Event stream <https://developer.mozilla.org/en-US/docs/Server-sent_events/Using_server-sent_events>`_ output (by setting ``output`` to ``event-stream``) to get a ``text/event-stream`` HTTP response. Each line of console output is sent as an event stream message starting with ``data:``. When you receive the first message, you know the agent has started. When the agent has finished, the connection is closed. At regular intervals, event stream comments (starting with ``:``) are sent to keep the connection alive.
+    - `Event stream <https://developer.mozilla.org/en-US/docs/Server-sent_events/Using_server-sent_events>`_ output (by setting ``output`` to ``event-stream``) to get a ``text/event-stream`` HTTP response. Each line of console output is sent as an event stream message starting with ``data:``. When you receive the first message, you know the agent has started. When the agent has finished, the connection is closed. At regular intervals, event stream comments (starting with ``:``) are sent to keep the connection alive. `See a demo of this endpoint in action. <http://demo.phantombuster.com/event-stream.html>`_
 
     ~ or ~
 
@@ -152,7 +152,7 @@ This endpoint supports three types of outputs:
     Either ``json``, ``event-stream`` or ``raw`` (optional, default to ``json``). This allows you to choose what type of response to receive.
 
 ``command`` (``String``)
-    Command to use when launching the agent (optional). Can be either ``casperjs`` or ``phantomjs``.
+    Command to use when launching the agent (optional). Can be either ``casperjs``, ``phantomjs`` or ``node``.
 
 ``argument`` (``String``)
     JSON argument as a string (optional). The argument can be retrieved with ``buster.argument`` in the agent's script.

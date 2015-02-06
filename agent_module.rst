@@ -24,7 +24,7 @@ When using the agent module in conjunction with CasperJS, you must pass the Casp
     mouse = require('mouse').create(casper);
     buster = require('phantombuster').create(casper);
 
-When using PhantomJS, call ``create()`` with no arguments:
+When using PhantomJS or Node, call ``create()`` with no arguments:
 
 ::
 
@@ -148,7 +148,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     You do not need to create any intermediate directory (``a/b/c/d/e.jpg`` will work).
 
 ``headers`` (``PlainObject``)
-    HTTP headers to use when requesting the file (optional). No need to worry about cookies, they are set by default.
+    HTTP headers to use when requesting the file (optional). Cookies are automatically set when using CasperJS or PhantomJs.
 
 ``callback`` (``Function(String err, String url)``)
     Function to call when finished. When there is no error, ``err`` is *null* and ``url`` contains the full URL to the file on your persistent storage.
@@ -187,7 +187,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     Intermediate directories are not created automatically on your agent's disk.
 
 ``headers`` (``PlainObject``)
-    HTTP headers to use when requesting the file (optional). No need to worry about cookies, they are set by default.
+    HTTP headers to use when requesting the file (optional). Cookies are automatically set when using CasperJS or PhantomJs.
 
 ``callback`` (``Function(String err, String path)``)
     Function to call when finished (optional). When there is no error, ``err`` is *null* and ``path`` contains the path to the file on your agent's disk.
