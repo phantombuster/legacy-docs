@@ -274,7 +274,6 @@ Sample response:
                 {
                     "id": 65444,
                     "date": 1414080820,
-                    "dateUtc": 1414080820,
                     "text": "Agent started",
                     "type": "normal",
                     "context": [
