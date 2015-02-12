@@ -1,6 +1,18 @@
 Agent Module
 ============
 
+The Agent Module (also called ``buster``) is a special module made by the Phantombuster team. It provides some cool features and is linked to your Phantombuster account.
+
+Here's a short list of what you can do with our module:
+
+- Save files to your persistent storage
+- Indicate the progress of your agent
+- Set or reset the time limit of your agent
+- Send emails
+- ...
+
+This module is compatible with all the Phantombuster commands (CapserJS, PhantomJS and Node).
+
 Initialization
 --------------
 
@@ -271,11 +283,11 @@ buster.saveBase64()
 
 ::
 
-    buster.saveText(base64String, saveAs)
+    buster.saveBase64(base64String, saveAs)
 
-    buster.saveText(base64String, saveAs, callback)
+    buster.saveBase64(base64String, saveAs, callback)
 
-    buster.saveText(base64String, saveAs, mime, callback)
+    buster.saveBase64(base64String, saveAs, mime, callback)
 
 Saves a `Base64 <https://en.wikipedia.org/wiki/Base64>`_ encoded file to your persistent storage.
 

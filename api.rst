@@ -1,7 +1,16 @@
 API
 ===
 
-The Phantombuster API is composed of HTTPS endpoints returning JSON data.
+The Phantombuster API gives you control over your account. It is composed of HTTPS endpoints returning JSON data.
+
+Here's a short list of what the API allows:
+
+- Launch and abort agents
+- Get console output, status, progress and messages from an agent
+- Get streaming console output from an agent
+- Get user, agent and script records
+- Send emails
+- ...
 
 We deliberately made the API extremely simple to use. Any developer should be able to get responses in a matter of minutes.
 
@@ -53,7 +62,7 @@ Please be aware that your key is precious as anyone who knows it can launch your
 Errors
 ------
 
-If something bad happened, the HTTP code will be ``4XX`` or ``5XX`` and the response will look like this:
+If something bad happens, the HTTP code will be ``4XX`` or ``5XX`` and the response will look like this:
 
 ::
 

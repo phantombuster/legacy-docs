@@ -8,7 +8,7 @@ If you need us to install a specific module, contact us at contact@phantombuster
 For CasperJS, PhantomJS or Node
 -------------------------------
 
-These modules are compatible with all the Phantombuster commands. Require them at will.
+These modules are compatible with all the Phantombuster commands (CasperJS, PhantomJS and Node). Require them at will.
 
 - `async <https://www.npmjs.com/package/async>`_ — Higher-order functions and common patterns for asynchronous code
 - `mime <https://www.npmjs.com/package/mime>`_ — Mime-type mapping
@@ -22,6 +22,24 @@ These modules are compatible with all the Phantombuster commands. Require them a
 For Node only
 -------------
 
-These modules are only compatible with the Node command.
+These modules are only compatible with Node.
 
 - `needle <https://www.npmjs.com/package/needle>`_, `request <https://www.npmjs.com/package/request>`_ — HTTP client
+- `mkdirp <https://www.npmjs.com/package/mkdirp>`_, `fs-extra <https://www.npmjs.com/package/fs-extra>`_ — File system utilities
+- `wrench <https://www.npmjs.com/package/wrench>`_ — Recursive file system (and other) operations
+- `through <https://www.npmjs.com/package/through>`_, `through2 <https://www.npmjs.com/package/through2>`_ — Simplified stream construction
+- `aws-sdk <https://www.npmjs.com/package/aws-sdk>`_ — The official AWS SDK for JavaScript
+- `tinderjs <https://www.npmjs.com/package/tinderjs>`_ — Programmatically access the Tinder dating service API
+
+Other modules
+-------------
+
+These modules are also available and compatible with Node. However, we have not yet tested them for CasperJS or PhantomJS compatibility.
+
+- `when <https://www.npmjs.com/package/when>`_ — Lightweight promises/A+ and when() implementation
+- `q <https://www.npmjs.com/package/q>`_ — Library for promises (CommonJS/Promises/A,B,D)
+- `xml2js <https://www.npmjs.com/package/xml2js>`_ — XML to JavaScript object converter
+- `jsdom <https://www.npmjs.com/package/jsdom>`_ — Implementation of the DOM and HTML standards
+- `cheerio <https://www.npmjs.com/package/cheerio>`_ — Implementation of core jQuery for the server
+- `lodash <https://www.npmjs.com/package/lodash>`_ — JavaScript utility library
+- `qs <https://www.npmjs.com/package/qs>`_ — Querystring parser
