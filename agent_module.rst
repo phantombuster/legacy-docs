@@ -6,6 +6,7 @@ The Agent Module (also called ``buster``) is a special module made by the Phanto
 Here's a short list of what you can do with our module:
 
 - Save files to your persistent storage
+- Download files to your agent's disk
 - Indicate the progress of your agent
 - Set or reset the time limit of your agent
 - Send emails

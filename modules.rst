@@ -10,6 +10,7 @@ For CasperJS, PhantomJS or Node
 
 These modules are compatible with all the Phantombuster commands (CasperJS, PhantomJS and Node). Require them at will.
 
+- `phantombuster <agent_module.html>`_ — Access Phantombuster's services (download and save files, send emails, ...)
 - `async <https://www.npmjs.com/package/async>`_ — Higher-order functions and common patterns for asynchronous code
 - `mime <https://www.npmjs.com/package/mime>`_ — Mime-type mapping
 - `jstoxml <https://www.npmjs.com/package/jstoxml>`_, `jsontoxml <https://www.npmjs.com/package/jsontoxml>`_, `easyxml <https://www.npmjs.com/package/easyxml>`_, `data2xml <https://www.npmjs.com/package/data2xml>`_ — Convert objects or JSON to XML
