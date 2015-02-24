@@ -124,6 +124,15 @@ buster.apiKey
 
 Contains your Phantombuster API key as a string. This is useful for making requests to the Phantombuster API from within the agent.
 
+buster.agentId
+--------------
+
+::
+
+    buster.agentId
+
+Contains the ID of the currently running agent as a number. This is useful for making requests to the Phantombuster API from within the agent.
+
 buster.save()
 -------------
 
@@ -360,7 +369,7 @@ This method returns nothing and has no callback.
     Optional textual description of the state of your agent (clipped to 50 characters). This shows up as a text inside the progress bar displayed in the agent console.
 
 buster.overrideTimeLimit()
----------------------
+--------------------------
 
 ::
 

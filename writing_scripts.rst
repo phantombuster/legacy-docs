@@ -11,6 +11,9 @@ Each script can be launched on the Phantombuster platform by one of the followin
 - `PhantomJS <http://phantomjs.org/>`_ — Headless, scriptable WebKit browser (where Phantombuster got its name from)
 - `Node <https://nodejs.org/>`_ — Execute your scripts on Chrome's JavaScript runtime
 
+Context of scripts
+------------------
+
 Requiring other scripts
 -----------------------
 
@@ -46,7 +49,7 @@ When the name of a script starts with ``lib``, its launch will be disabled. This
 
     // In script "my-script.js"
 
-    "phantombuster dependencies: lib-Foo.js"
+    "phantombuster dependencies: lib-Foo.js";
 
     require("lib-Foo").foo(); // outputs "bar"
 

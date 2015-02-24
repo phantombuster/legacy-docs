@@ -46,7 +46,7 @@ Request parameters should be put in the HTTP ``GET`` query string, like a normal
 
 ::
 
-    GET /api/v1/agent/785/launch.json?command=casperjs&saveLaunchOptions=1 HTTP/1.1
+    GET /api/v1/agent/785/launch?command=casperjs&saveLaunchOptions=1 HTTP/1.1
     Host: phantombuster.com
     X-Phantombuster-Key-1: YOUR_API_KEY
 
@@ -54,7 +54,7 @@ You can also put your API key as a ``GET`` parameter. This is not recommended be
 
 ::
 
-    GET /api/v1/agent/785/launch.json?command=casperjs&saveLaunchOptions=1&key=YOUR_API_KEY HTTP/1.1
+    GET /api/v1/agent/785/launch?command=casperjs&saveLaunchOptions=1&key=YOUR_API_KEY HTTP/1.1
     Host: phantombuster.com
 
 Please be aware that your key is precious as anyone who knows it can launch your agents (and do other mean things). Do not hesitate to generate a new one if you think it has been compromised.
