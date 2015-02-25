@@ -169,6 +169,8 @@ This endpoint supports three types of outputs:
 ``saveLaunchOptions`` (``String``)
     If present and not empty, ``command`` and ``argument`` will be saved as the default launch options for the agent.
 
+Note: ``command`` and ``argument`` work together. When setting one, always set the other. When one or both are set, the saved launch options of the agent are ignored.
+
 Sample response of JSON output:
 
 ::
