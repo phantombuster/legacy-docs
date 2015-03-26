@@ -121,6 +121,7 @@ Sample response:
             "fileMgmtMaxFolders": 10,
             "lastEndMessage": "Execution time limit reached",
             "lastEndStatus": "error",
+            "maxParallelExecs": 1,
             "userAwsFolder": "QwYH17CB0Xj",
             "script": {
                 "id": 1902,
