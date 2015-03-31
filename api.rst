@@ -299,6 +299,50 @@ Sample response:
         }
     }
 
+agent/{id}/containers.json
+----------------------
+
+::
+
+    /api/v1/agent/{id}/containers.json
+
+Get a list of ended containers for an agent, ordered by date. Useful for listing the last available output logs from an agent.
+
+``{id}`` (``Number``)
+    ID of the agent from which to retrieve the containers.
+
+Sample response:
+
+::
+
+    {
+        "status": "success",
+        "data": [
+            {
+                "id": 195119,
+                "queueDate": 1427810471,
+                "launchDate": 1427810471,
+                "launchType": "automatic",
+                "launchNumber": 476,
+                "endDate": 1427812088,
+                "lastEndMessage": "Agent finished (error)",
+                "lastEndStatus": "error",
+                "exitCode": 1
+            },
+            {
+                "id": 195050,
+                "queueDate": 1427806874,
+                "launchDate": 1427806874,
+                "launchType": "automatic",
+                "launchNumber": 475,
+                "endDate": 1427810029,
+                "lastEndMessage": "Agent finished (success)",
+                "lastEndStatus": "success",
+                "exitCode": 0
+            }
+        ]
+    }
+
 script/by-id/{mode}/{id}
 ------------------------
 
