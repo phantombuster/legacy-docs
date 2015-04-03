@@ -300,7 +300,7 @@ Sample response:
     }
 
 agent/{id}/containers.json
-----------------------
+--------------------------
 
 ::
 
