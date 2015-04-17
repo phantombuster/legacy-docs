@@ -347,6 +347,29 @@ This method is asynchronous and returns nothing. Use the callback to know when i
 ``callback`` (``Function(String err)``)
     Function to call when finished (optional). When there is no error, ``err`` is *null*.
 
+buster.solveCaptcha()
+---------------------
+
+::
+
+    buster.solveCaptcha(selector, callback)
+
+**CasperJS only.**
+
+Tries to solve a CAPTCHA image. This method takes a screenshot of the area indicated by ``selector`` and sends it to one of our partners for solving.
+
+If your CAPTCHA image is trivial, an OCR algorithm will quickly return the text, otherwise a human will solve it. This process generally takes less than 30 seconds and accuracy is >90%.
+
+When a result string is returned, 1 is substracted from your daily CAPTCHA counter. In approximately 10% of the cases the result will be incorrect — retry at will.
+
+This method is asynchronous and returns nothing. Use the callback to know when it has finished.
+
+``selector`` (``String``)
+    CSS3 selector pointing to the CAPTCHA image.
+
+``callback`` (``Function(String err, String result)``)
+    Function to call when finished. When there is no error, ``err`` is *null* and ``result`` contains the solved CAPTCHA text.
+
 buster.progressHint()
 ---------------------
 
