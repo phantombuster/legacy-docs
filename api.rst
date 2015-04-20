@@ -392,6 +392,9 @@ Get a script record by name.
 ``{mode}`` (``String``)
     Either ``json`` or ``raw``. If ``raw`` is used, the script is returned as raw text data, without any JSON.
 
+``withoutText`` (``String``)
+    If present and not empty, do not send the script's contents but only its metadata (only in JSON mode).
+
 Sample response:
 
 ::
