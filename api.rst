@@ -455,7 +455,12 @@ Sample response:
                     "lastEndMessage": "Agent finished with exit code 0",
                     "lastEndStatus": "success",
                     "queuedContainers": 0,
-                    "runningContainers": 1
+                    "runningContainers": 1,
+                    "progress": {
+                        "progress": 0.544,
+                        "label": "A progress label",
+                        "runtime": 477
+                    }
                 }
             ]
         }
