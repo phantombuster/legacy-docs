@@ -334,7 +334,9 @@ buster.mail()
 
     buster.mail(subject, text, callback)
 
-Sends an email to the address associated with your Phantombuster account and substracts 1 to your daily email counter.
+    buster.mail(subject, text, to, callback)
+
+Sends an email from Phantombuster and substracts 1 to your daily email counter.
 
 This method is asynchronous and returns nothing. Use the callback to know when it has finished.
 
@@ -343,6 +345,9 @@ This method is asynchronous and returns nothing. Use the callback to know when i
 
 ``text`` (``String``)
     Plain text contents of the email.
+
+``to`` (``String``)
+    Where to send the email (optional). When omitted, the email will be sent to the address associated with your Phantombuster account.
 
 ``callback`` (``Function(String err)``)
     Function to call when finished (optional). When there is no error, ``err`` is *null*.
