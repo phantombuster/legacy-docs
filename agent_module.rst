@@ -133,6 +133,15 @@ buster.agentId
 
 Contains the ID of the currently running agent as a number. This is useful for making requests to the Phantombuster API from within the agent.
 
+buster.containerId
+------------------
+
+::
+
+    buster.containerId
+
+Contains the ID of the currently running container as a number. This is useful for making requests to the Phantombuster API from within the agent.
+
 buster.save()
 -------------
 
