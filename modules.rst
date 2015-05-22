@@ -31,6 +31,7 @@ These modules are only compatible with Node.
 - `through <https://www.npmjs.com/package/through>`_, `through2 <https://www.npmjs.com/package/through2>`_ — Simplified stream construction
 - `aws-sdk <https://www.npmjs.com/package/aws-sdk>`_ — The official AWS SDK for JavaScript
 - `tinderjs <https://www.npmjs.com/package/tinderjs>`_ — Programmatically access the Tinder dating service API
+- `fast-csv <https://www.npmjs.com/package/fast-csv>`_ — CSV parser and writer
 
 Other modules
 -------------
