@@ -24,7 +24,7 @@ When breaking changes will be made to the API, this version number will increase
 Response format
 ---------------
 
-All endpoints return JSON following the `JSend <http://labs.omniti.com/labs/jsend>`_ specification. It basically means all successfull responses have HTTP code ``200`` and look like this:
+All endpoints return JSON following the `JSend <http://labs.omniti.com/labs/jsend>`_ specification. It basically means all successfull responses have HTTP code ``2XX`` and look like this:
 
 ::
 
@@ -35,6 +35,8 @@ All endpoints return JSON following the `JSend <http://labs.omniti.com/labs/jsen
         }
     }
 
+Date fields are Unix/POSIX timestamps (in seconds).
+
 Authentication and request format
 ---------------------------------
 
@@ -42,19 +44,19 @@ Authentication is dead simple: put your API key in the ``X-Phantombuster-Key-1``
 
 To get your API key, simply go to your `settings page <https://phantombuster.com/settings>`_ and click ``Reveal``.
 
-Request parameters should be put in the HTTP ``GET`` query string, like a normal HTTP ``GET`` request. Here is how a typical request looks like:
+Parameters can be put in the query string or in the request body for ``POST`` requests. Here is how a typical request looks like:
 
 ::
 
-    GET /api/v1/agent/785/launch?command=casperjs&saveLaunchOptions=1 HTTP/1.1
+    POST /api/v1/agent/785/launch?command=casperjs&saveLaunchOptions=1 HTTP/1.1
     Host: phantombuster.com
     X-Phantombuster-Key-1: YOUR_API_KEY
 
-You can also put your API key as a ``GET`` parameter. This is not recommended because your key might show up in log files:
+You can also put your API key as a parameter. This is not recommended because your key might show up in log files:
 
 ::
 
-    GET /api/v1/agent/785/launch?command=casperjs&saveLaunchOptions=1&key=YOUR_API_KEY HTTP/1.1
+    POST /api/v1/agent/785/launch?command=casperjs&saveLaunchOptions=1&key=YOUR_API_KEY HTTP/1.1
     Host: phantombuster.com
 
 Please be aware that your key is precious as anyone who knows it can launch your agents (and do other mean things). Do not hesitate to generate a new one if you think it has been compromised.
@@ -80,12 +82,12 @@ Here are some error HTTP codes you might encounter:
 - ``404``: the requested object was not found (bad ID?)
 - ``500``: for some reason our servers could not handle your request
 
-agent/{id}.json
----------------
+Get an agent record
+-------------------
 
 ::
 
-    /api/v1/agent/{id}.json
+    GET /api/v1/agent/{id}.json
 
 Get an agent record.
 
@@ -134,12 +136,12 @@ Sample response:
         }
     }
 
-agent/{id}/launch
------------------
+Launch an agent
+---------------
 
 ::
 
-    /api/v1/agent/{id}/launch
+    POST /api/v1/agent/{id}/launch
 
 Add an agent to the launch queue.
 
@@ -171,6 +173,8 @@ This endpoint supports three types of outputs:
     If present and not empty, ``command`` and ``argument`` will be saved as the default launch options for the agent.
 
 Note: ``command`` and ``argument`` work together. When setting one, always set the other. When one or both are set, the saved launch options of the agent are ignored.
+
+Note: The ``GET`` HTTP method is also allowed for this endpoint.
 
 Sample response of JSON output:
 
@@ -210,17 +214,19 @@ Sample response of raw output:
     This is a console output line!
     And this is another one :)
 
-agent/{id}/abort.json
----------------------
+Abort an agent
+--------------
 
 ::
 
-    /api/v1/agent/{id}/abort.json
+    POST /api/v1/agent/{id}/abort.json
 
 Abort all running instances of the agent.
 
 ``{id}`` (``Number``)
     ID of the agent to stop.
+
+Note: The ``GET`` HTTP method is also allowed for this endpoint.
 
 Sample response:
 
@@ -231,12 +237,12 @@ Sample response:
         "data": null
     }
 
-agent/{id}/output.json
-----------------------
+Get data from a running agent
+-----------------------------
 
 ::
 
-    /api/v1/agent/{id}/output.json
+    GET /api/v1/agent/{id}/output.json
 
 Get data from an agent: console output, status, progress and messages. This API endpoint is specifically designed so that it's easy to get incremental data from an agent.
 
@@ -299,12 +305,12 @@ Sample response:
         }
     }
 
-agent/{id}/containers.json
---------------------------
+Get container records
+---------------------
 
 ::
 
-    /api/v1/agent/{id}/containers.json
+    GET /api/v1/agent/{id}/containers.json
 
 Get a list of ended containers for an agent, ordered by date. Useful for listing the last available output logs from an agent.
 
@@ -343,12 +349,12 @@ Sample response:
         ]
     }
 
-script/by-id/{mode}/{id}
-------------------------
+Get a script by its ID
+----------------------
 
 ::
 
-    /api/v1/script/by-id/{mode}/{id}
+    GET /api/v1/script/by-id/{mode}/{id}
 
 Get a script record by ID.
 
@@ -377,12 +383,12 @@ Sample response:
         }
     }
 
-script/by-name/{mode}/{name}
-----------------------------
+Get a script by its name
+------------------------
 
 ::
 
-    /api/v1/script/by-name/{mode}/{name}
+    GET /api/v1/script/by-name/{mode}/{name}
 
 Get a script record by name.
 
@@ -411,12 +417,12 @@ Sample response:
         }
     }
 
-user.json
----------
+Get account information
+-----------------------
 
 ::
 
-    /api/v1/user.json
+    GET /api/v1/user.json
 
 Get information about your Phantombuster account and your agents.
 
@@ -466,12 +472,12 @@ Sample response:
         }
     }
 
-mail.json
----------
+Send email
+----------
 
 ::
 
-    /api/v1/mail.json
+    POST /api/v1/mail.json
 
 Send an email from Phantombuster and substract 1 to your daily email counter.
 
