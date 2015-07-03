@@ -45,3 +45,4 @@ These modules are also available and compatible with Node. However, we have not 
 - `cheerio <https://www.npmjs.com/package/cheerio>`_ — Implementation of core jQuery for the server
 - `lodash <https://www.npmjs.com/package/lodash>`_ — JavaScript utility library
 - `qs <https://www.npmjs.com/package/qs>`_ — Querystring parser
+- `deep-diff <https://www.npmjs.com/package/deep-diff>`_ — Calculate object differences
