@@ -471,30 +471,3 @@ Sample response:
             ]
         }
     }
-
-Send email
-----------
-
-::
-
-    POST /api/v1/mail.json
-
-Send an email from Phantombuster and substract 1 to your daily email counter.
-
-``subject`` (``String``)
-    Subject of the email.
-
-``text`` (``String``)
-    Plain text contents of the email.
-
-``to`` (``String``)
-    Where to send the email (optional). When omitted, the email will be sent to the address associated with your Phantombuster account.
-
-Sample response:
-
-::
-
-    {
-        "status": "success",
-        "data": null
-    }

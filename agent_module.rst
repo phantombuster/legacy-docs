@@ -361,6 +361,40 @@ This method is asynchronous and returns nothing. Use the callback to know when i
 ``callback`` (``Function(String err)``)
     Function to call when finished (optional). When there is no error, ``err`` is *null*.
 
+buster.notify()
+---------------
+
+::
+
+    buster.notify(message)
+
+    buster.notify(message, callback)
+
+    buster.notify(message, options, callback)
+
+Sends a push notification to your device(s) using Pushover. For this call to work, you must have set a Pushover user key in your `settings <https://phantombuster.com/settings>`_.
+
+This method is asynchronous and returns nothing. Use the callback to know when it has finished.
+
+``message`` (``String``)
+    Text contents of the notification.
+
+``options`` (``PlainObject``)
+    Additionnal parameters to send to Pushover.
+
+    - ``device`` - your device name to send the message directly to that device, rather than all of your devices (multiple devices may be separated by a comma)
+    - ``title`` - your message's title, otherwise *Phantombuster* is used
+    - ``url`` - a supplementary URL to show with your message
+    - ``url_title`` - a title for your supplementary URL, otherwise just the URL is shown
+    - ``priority`` - send as ``-2`` to generate no notification/alert, ``-1`` to always send as a quiet notification or ``1`` to display as high-priority and bypass your quiet hours
+    - ``timestamp`` - a Unix timestamp of your message's date and time to display, rather than the time the message is received by Pushover
+    - ``sound`` - the name of one of the sounds supported by device clients to override your default sound choice
+
+    Note: at the moment this method does not support the receipt system of Pushover (``priority`` set to ``2``).
+
+``callback`` (``Function(String err)``)
+    Function to call when finished (optional). When there is no error, ``err`` is *null*.
+
 buster.solveCaptcha()
 ---------------------
 
