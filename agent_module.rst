@@ -372,7 +372,7 @@ buster.notify()
 
     buster.notify(message, options, callback)
 
-Sends a push notification to your device(s) using Pushover. For this call to work, you must have set a Pushover user key in your `settings <https://phantombuster.com/settings>`_.
+Sends a push notification to your device(s) using Pushover. For this call to work, you must have set a Pushover user key in your `settings <https://phantombuster.com/settings>`_ and have installed a `Pushover client <https://pushover.net/clients>`_ on at least one of your devices.
 
 This method is asynchronous and returns nothing. Use the callback to know when it has finished.
 
@@ -380,7 +380,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     Text contents of the notification.
 
 ``options`` (``PlainObject``)
-    Additionnal parameters to send to Pushover.
+    Additionnal parameters to send to Pushover. Get the full details at the `Pushover API documentation <https://pushover.net/api>`_.
 
     - ``device`` - your device name to send the message directly to that device, rather than all of your devices (multiple devices may be separated by a comma)
     - ``title`` - your message's title, otherwise *Phantombuster* is used
