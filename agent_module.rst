@@ -46,7 +46,7 @@ When using PhantomJS or Node, call ``create()`` with no arguments:
 Important note about asynchronous methods
 -----------------------------------------
 
-Following the philosophy of Node.js, all methods of the agent module are asynchronous. You have to use the callback function to know when and if a call finished successfully.
+Following the philosophy of Node.js, most methods of the agent module are asynchronous. You have to use the callback function to know when (and if) a call finished successfully.
 
 For example, this is bad:
 
@@ -99,12 +99,14 @@ If the agent module is instantiated with a CasperJS instance passed in ``create(
 
 This script will output:
 
-::
+.. code-block:: text
 
     Navigation step 1
     Text saved!
     This is executed a few ticks after saveText()
     And this is executed last
+
+Internally, the agent module makes calls to `buster.blockSteps()`_ and `buster.unblockSteps()`_. You can also use these methods for stopping the execution of steps when calling other asynchronous functions.
 
 buster.argument
 ---------------
@@ -457,3 +459,31 @@ This method is asynchronous and returns nothing. Use the callback to know when i
 
 ``callback`` (``Function(String err)``)
     Function to call when finished (optional). When there is no error, ``err`` is *null*.
+
+buster.blockSteps()
+-------------------
+
+::
+
+    buster.blockSteps()
+
+**CasperJS only.**
+
+Stops the execution of CasperJS steps until `buster.unblockSteps()`_ is called (behind the scenes, it uses the same system as ``casper.wait()``).
+
+This is very useful when calling asynchronous functions if you want to wait for the callback before continuing your CasperJS navigation. Simply call ``blockSteps()`` before the asynchronous call, and ``unblockSteps()`` in the callback.
+
+**After, unblockSteps() must be called the same number of times, otherwise navigation will be blocked.**
+
+buster.unblockSteps()
+---------------------
+
+::
+
+    buster.unblockSteps()
+
+**CasperJS only.**
+
+Signals CasperJS to continue the execution of its steps. Goes in pair with `buster.blockSteps()`_.
+
+**This method must be called the same number of times blockSteps() was called, otherwise navigation will be blocked.**

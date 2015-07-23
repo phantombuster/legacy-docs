@@ -46,7 +46,7 @@ To get your API key, simply go to your `settings page <https://phantombuster.com
 
 Parameters can be put in the query string or in the request body for ``POST`` requests. Here is how a typical request looks like:
 
-::
+.. code-block:: http
 
     POST /api/v1/agent/785/launch?command=casperjs&saveLaunchOptions=1 HTTP/1.1
     Host: phantombuster.com
@@ -54,7 +54,7 @@ Parameters can be put in the query string or in the request body for ``POST`` re
 
 You can also put your API key as a parameter. This is not recommended because your key might show up in log files:
 
-::
+.. code-block:: http
 
     POST /api/v1/agent/785/launch?command=casperjs&saveLaunchOptions=1&key=YOUR_API_KEY HTTP/1.1
     Host: phantombuster.com
@@ -189,7 +189,7 @@ Sample response of JSON output:
 
 Sample response of event stream output:
 
-::
+.. code-block:: text
 
     : container 76426 in queue
 
@@ -209,7 +209,7 @@ Sample response of event stream output:
 
 Sample response of raw output:
 
-::
+.. code-block:: text
 
     This is a console output line!
     And this is another one :)
