@@ -434,16 +434,11 @@ Sample response:
         "status": "success",
         "data": {
             "email": "excellent.customer@gmail.com",
-            "plan": {
-                "key": "startup",
-                "name": "Start-Up",
-                "executionTime": 14400,
-                "emails": 100,
-                "size": 10000000000
-            },
             "timeLeft": 14087,
             "emailsLeft": 100,
+            "captchasLeft": 10,
             "storageLeft": 9991347906,
+            "databaseLeft": 239222784,
             "agents": [
                 {
                     "id": 1388,

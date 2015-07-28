@@ -43,8 +43,8 @@ When using PhantomJS or Node, call ``create()`` with no arguments:
 
     buster = require('phantombuster').create();
 
-Important note about asynchronous methods
------------------------------------------
+Asynchronous methods
+--------------------
 
 Following the philosophy of Node.js, most methods of the agent module are asynchronous. You have to use the callback function to know when (and if) a call finished successfully.
 
@@ -69,6 +69,9 @@ This is better:
             phantom.exit(0);
         }
     });
+
+CasperJS steps blocking
+-----------------------
 
 If the agent module is instantiated with a CasperJS instance passed in ``create()``, its methods will block the current navigation step for your convenience. For example:
 
