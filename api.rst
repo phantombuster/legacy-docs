@@ -125,6 +125,7 @@ Sample response:
             "lastEndStatus": "error",
             "maxParallelExecs": 1,
             "userAwsFolder": "QwYH17CB0Xj",
+            "nonce": 123,
             "script": {
                 "id": 1902,
                 "name": "nice_agent.coffee",
@@ -380,6 +381,8 @@ Sample response:
             "url": null,
             "text": " ... script contents ... ",
             "httpHeaders": null,
+            "lastSaveDate": 1427806874,
+            "nonce": 123
         }
     }
 

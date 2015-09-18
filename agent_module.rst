@@ -490,3 +490,79 @@ buster.unblockSteps()
 Signals CasperJS to continue the execution of its steps. Goes in pair with `buster.blockSteps()`_.
 
 **This method must be called the same number of times blockSteps() was called, otherwise navigation will be blocked.**
+
+buster.setAgentObject()
+-----------------------
+
+::
+
+    buster.setAgentObject(object)
+
+    buster.setAgentObject(object, callback)
+
+    buster.setAgentObject(agentId, object, callback)
+
+Sets the object of an agent. It's recommended to first fetch the object with `buster.getAgentObject()`_ (to update it) because **this method overwrites the whole object**.
+
+This method is asynchronous and returns nothing. Use the callback to know when it has finished.
+
+``object`` (``PlainObject``)
+    Object to save.
+
+``agentId`` (``Number``)
+    ID of the agent which will get its object set (optional). By default, this is the ID of the currently running agent.
+
+``callback`` (``Function(String err)``)
+    Function to call when finished (optional). When there is no error, ``err`` is *null*.
+
+buster.getAgentObject()
+-----------------------
+
+::
+
+    buster.getAgentObject(callback)
+
+    buster.getAgentObject(agentId, callback)
+
+Gets the object of an agent.
+
+This method is asynchronous and returns nothing. Use the callback to know when it has finished.
+
+``agentId`` (``String``)
+    ID of the agent from which to get the object (optional). By default, this is the ID of the currently running agent.
+
+``callback`` (``Function(String err, PlainObject object)``)
+    Function to call when finished. When there is no error, ``err`` is *null* and ``object`` is a valid object (which may be empty but never *null*).
+
+buster.setGlobalObject()
+------------------------
+
+::
+
+    buster.setAgentObject(object)
+
+    buster.setAgentObject(object, callback)
+
+Sets the global object of your account. It's recommended to first fetch the global object with `buster.getGlobalObject()`_ (to update it) because **this method overwrites the whole object**.
+
+This method is asynchronous and returns nothing. Use the callback to know when it has finished.
+
+``object`` (``PlainObject``)
+    Object to save.
+
+``callback`` (``Function(String err)``)
+    Function to call when finished (optional). When there is no error, ``err`` is *null*.
+
+buster.getGlobalObject()
+------------------------
+
+::
+
+    buster.getGlobalObject(callback)
+
+Gets the global object of your account.
+
+This method is asynchronous and returns nothing. Use the callback to know when it has finished.
+
+``callback`` (``Function(String err, PlainObject object)``)
+    Function to call when finished. When there is no error, ``err`` is *null* and ``object`` is a valid object (which may be empty but never *null*).
