@@ -46,3 +46,4 @@ These modules are also available and compatible with Node. However, we have not 
 - `cheerio <https://www.npmjs.com/package/cheerio>`_ — Implementation of core jQuery for the server
 - `lodash <https://www.npmjs.com/package/lodash>`_ — JavaScript utility library
 - `qs <https://www.npmjs.com/package/qs>`_ — Querystring parser
+- `is-my-json-valid <https://www.npmjs.com/package/is-my-json-valid>`_, `jsen <https://www.npmjs.com/package/jsen>`_ — JSON Schema validation
