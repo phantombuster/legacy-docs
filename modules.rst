@@ -14,7 +14,7 @@ These modules are compatible with all the Phantombuster commands (CasperJS, Phan
 - `async <https://www.npmjs.com/package/async>`_ — Higher-order functions and common patterns for asynchronous code
 - `mime <https://www.npmjs.com/package/mime>`_ — Mime-type mapping
 - `jstoxml <https://www.npmjs.com/package/jstoxml>`_, `jsontoxml <https://www.npmjs.com/package/jsontoxml>`_, `easyxml <https://www.npmjs.com/package/easyxml>`_, `data2xml <https://www.npmjs.com/package/data2xml>`_ — Convert objects or JSON to XML
-- `xmltojson <https://www.npmjs.com/package/xmltojson>`_, `xml2json <https://www.npmjs.com/package/xml2json>`_ — Convert XML to objects or JSON
+- `xmltojson <https://www.npmjs.com/package/xmltojson>`_ — Convert XML to objects or JSON
 - `pretty-data <https://www.npmjs.com/package/pretty-data>`_ — Pretty-print or minify XML, JSON, CSS and SQL files
 - `linq <https://www.npmjs.com/package/linq>`_ — Microsoft's Language Integrated Query (LINQ) for JavaScript
 - `underscore <https://www.npmjs.com/package/underscore>`_ — Functional programming helper library
@@ -33,7 +33,7 @@ These modules are only compatible with Node.
 - `aws-sdk <https://www.npmjs.com/package/aws-sdk>`_ — The official AWS SDK for JavaScript
 - `tinderjs <https://www.npmjs.com/package/tinderjs>`_ — Programmatically access the Tinder dating service API
 - `fast-csv <https://www.npmjs.com/package/fast-csv>`_ — CSV parser and writer
-- `xml2js <https://www.npmjs.com/package/xml2js>`_ — XML to JavaScript object converter
+- `xml2js <https://www.npmjs.com/package/xml2js>`_, `xml2json <https://www.npmjs.com/package/xml2json>`_ — XML to JavaScript object converter
 
 Other modules
 -------------
