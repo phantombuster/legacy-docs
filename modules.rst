@@ -33,6 +33,7 @@ These modules are only compatible with Node.
 - `aws-sdk <https://www.npmjs.com/package/aws-sdk>`_ — The official AWS SDK for JavaScript
 - `tinderjs <https://www.npmjs.com/package/tinderjs>`_ — Programmatically access the Tinder dating service API
 - `fast-csv <https://www.npmjs.com/package/fast-csv>`_ — CSV parser and writer
+- `xml2js <https://www.npmjs.com/package/xml2js>`_ — XML to JavaScript object converter
 
 Other modules
 -------------
@@ -41,7 +42,6 @@ These modules are also available and compatible with Node. However, we have not 
 
 - `when <https://www.npmjs.com/package/when>`_ — Lightweight promises/A+ and when() implementation
 - `q <https://www.npmjs.com/package/q>`_ — Library for promises (CommonJS/Promises/A,B,D)
-- `xml2js <https://www.npmjs.com/package/xml2js>`_ — XML to JavaScript object converter
 - `jsdom <https://www.npmjs.com/package/jsdom>`_ — Implementation of the DOM and HTML standards
 - `cheerio <https://www.npmjs.com/package/cheerio>`_ — Implementation of core jQuery for the server
 - `lodash <https://www.npmjs.com/package/lodash>`_ — JavaScript utility library

@@ -48,7 +48,7 @@ Parameters can be put in the query string or in the request body for ``POST`` re
 
 .. code-block:: http
 
-    POST /api/v1/agent/785/launch?command=casperjs&saveLaunchOptions=1 HTTP/1.1
+    GET /api/v1/agent/785/launch?command=casperjs&saveLaunchOptions=1 HTTP/1.1
     Host: phantombuster.com
     X-Phantombuster-Key-1: YOUR_API_KEY
 
@@ -56,7 +56,7 @@ You can also put your API key as a parameter. This is not recommended because yo
 
 .. code-block:: http
 
-    POST /api/v1/agent/785/launch?command=casperjs&saveLaunchOptions=1&key=YOUR_API_KEY HTTP/1.1
+    GET /api/v1/agent/785/launch?command=casperjs&saveLaunchOptions=1&key=YOUR_API_KEY HTTP/1.1
     Host: phantombuster.com
 
 Please be aware that your key is precious as anyone who knows it can launch your agents (and do other mean things). Do not hesitate to generate a new one if you think it has been compromised.
@@ -396,7 +396,7 @@ Get a script by its name
 Get a script record by name.
 
 ``{name}`` (``String``)
-    Name of the script to retrieve.
+    Name of the script to retrieve, with its extension (``.js`` or ``.coffee``).
 
 ``{mode}`` (``String``)
     Either ``json`` or ``raw``. If ``raw`` is used, the script is returned as raw text data, without any JSON.
@@ -418,6 +418,30 @@ Sample response:
             "text": " ... script contents ... ",
             "httpHeaders": null,
         }
+    }
+
+Update or create a script
+-------------------------
+
+::
+
+    POST /api/v1/script/{name}
+
+Update an existing script or create a new one if it does not exist (in this case, the new script ID is returned in the ``data`` field).
+
+``{name}`` (``String``)
+    Name of the script to update or create, with its extension (``.js`` or ``.coffee``).
+
+``text`` (``String``)
+    Full text contents of the script. This parameter must be in the request body in ``x-www-form-urlencoded`` format.
+
+Sample response:
+
+::
+
+    {
+        "status": "success",
+        "data": 345
     }
 
 Get account information
