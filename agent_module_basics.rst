@@ -1,5 +1,5 @@
-Agent Module
-============
+Agent Module: The basics
+========================
 
 The Agent Module (also called ``buster``) is a special module made by the Phantombuster team. It provides some cool features and is linked to your Phantombuster account.
 
@@ -118,7 +118,7 @@ buster.argument
 
     buster.argument
 
-Contains the agent's argument as a plain object. On Phantombuster, each agent receives a JSON object as argument, which can be set each time they are launched.
+Contains the agent's argument as a ``PlainObject``. On Phantombuster, each agent receives a JSON object as argument, which can be set each time they are launched.
 
 buster.apiKey
 -------------
@@ -127,7 +127,7 @@ buster.apiKey
 
     buster.apiKey
 
-Contains your Phantombuster API key as a string. This is useful for making requests to the Phantombuster API from within the agent.
+Contains your Phantombuster API key as a ``String``. This is useful for making requests to the Phantombuster API from within the agent.
 
 buster.agentId
 --------------
@@ -136,7 +136,7 @@ buster.agentId
 
     buster.agentId
 
-Contains the ID of the currently running agent as a number. This is useful for making requests to the Phantombuster API from within the agent.
+Contains the ID of the currently running agent as a ``Number``. This is useful for making requests to the Phantombuster API from within the agent.
 
 buster.containerId
 ------------------
@@ -145,64 +145,25 @@ buster.containerId
 
     buster.containerId
 
-Contains the ID of the currently running container as a number. This is useful for making requests to the Phantombuster API from within the agent.
+Contains the ID of the currently running container as a ``Number``. This is useful for making requests to the Phantombuster API from within the agent.
 
-buster.save()
--------------
+buster.proxyAddress
+-------------------
 
 ::
 
-    buster.save(urlOrPath)
+    buster.proxyAddress
 
-    buster.save(urlOrPath, callback)
-
-    buster.save(urlOrPath, saveAs, callback)
-
-    buster.save(urlOrPath, saveAs, headers, callback)
-
-Saves a distant or local file to your persistent storage.
-
-This method is asynchronous and returns nothing. Use the callback to know when it has finished.
-
-``urlOrPath`` (``String``)
-    URL or path of the file to be saved.
-
-    - ``https://www.google.com/images/srpr/logo11w.png`` (from the web)
-    - ``foo/my_screenshot.jpg`` (from your agent's disk)
-    - ``http://soundcloud.com/`` (you'll get the HTML content of their homepage)
-
-    When saving a distant file, the `MIME type <https://en.wikipedia.org/wiki/Internet_media_type>`_ is taken from the ``Content-Type`` HTTP header (if present). When saving a local file, the MIME type is guessed from the file extension (if this fails, no MIME type is set).
-
-``saveAs`` (``String``)
-    Where to put the file on your persistent storage (optional). By default, the name will be taken from ``urlOrPath`` and the file will be saved at the root of your agent's folder in your persistent storage. If a file with the same name already exists, it is overwritten.
-
-    - ``foo/`` (saves ``http://example.com/baz/bar.png`` as ``foo/bar.png``)
-    - *null* (saves ``http://example.com/foo/bar.png`` as ``bar.png``)
-    - ``foo/`` (fails on ``http://example.com/`` with ``could not determine filename``)
-    - ``foo/a`` (saves ``http://example.com/bar.png`` as ``foo/a``)
-
-    You do not need to create any intermediate directory (``a/b/c/d/e.jpg`` will work).
-
-``headers`` (``PlainObject``)
-    HTTP headers to use when requesting the file (optional). Cookies are automatically set when using CasperJS or PhantomJs.
-
-``callback`` (``Function(String err, String url)``)
-    Function to call when finished. When there is no error, ``err`` is *null* and ``url`` contains the full URL to the file on your persistent storage.
+Contains the proxy address currently being used by your agent as a ``String`` (PhantomJS/CasperJs only), or an empty string if there is no proxy in use. This is useful to know which proxy was selected from a pool.
 
 buster.download()
 -----------------
 
 ::
 
-    buster.download(url)
+    buster.download(url [, saveAs, headers, callback])
 
-    buster.download(url, callback)
-
-    buster.download(url, saveAs, callback)
-
-    buster.download(url, saveAs, headers, callback)
-
-Downloads a distant file to your agent's disk (not to your persistent storage).
+Downloads a distant file to your agent's disk (not to your persistent storage). If you do not save the file to your persistent storage (see :ref:`agent-module-file-storage`), **it will be lost when your agent exits**.
 
 This method is asynchronous and returns nothing. Use the callback to know when it has finished.
 
@@ -228,127 +189,12 @@ This method is asynchronous and returns nothing. Use the callback to know when i
 ``callback`` (``Function(String err, String path)``)
     Function to call when finished (optional). When there is no error, ``err`` is *null* and ``path`` contains the path to the file on your agent's disk.
 
-buster.saveFolder()
--------------------
-
-::
-
-    buster.saveFolder()
-
-    buster.saveFolder(path)
-
-    buster.saveFolder(path, callback)
-
-    buster.saveFolder(path, saveAs, callback)
-
-Saves a folder from your agent's disk to your persistent storage.
-
-This method is asynchronous and returns nothing. Use the callback to know when it has finished.
-
-``path`` (``String``)
-    Path of the folder to save (optional, defaults to ``.``).
-
-    - ``.`` (everything from your current working directory)
-    - ``any/sub/../sub/directory``
-
-    Each file has its `MIME type <https://en.wikipedia.org/wiki/Internet_media_type>`_ guessed from its extension (if this fails, no MIME type is set).
-
-``saveAs`` (``String``)
-    Where to put the folder on your persistent storage (optional). By default, the folder will be saved at the root of your agent's folder in your persistent storage. If files with the same name already exist, they are overwritten.
-
-    - ``/`` or empty string (root of your agent's folder in your persistent storage)
-    - ``any/sub/directory``
-    - ``dir/foo.txt`` (this will create a directory named ``foo.txt``, obviously not recommended)
-
-    You do not need to create any intermediate directory (``a/b/c/d`` will work).
-
-``callback`` (``Function(String err, String url)``)
-    Function to call when finished (optional). When there is no error, ``err`` is *null* and ``url`` contains the full URL to the folder in your persistent storage.
-
-buster.saveText()
------------------
-
-::
-
-    buster.saveText(text, saveAs)
-
-    buster.saveText(text, saveAs, callback)
-
-    buster.saveText(text, saveAs, mime, callback)
-
-Saves a string to a file in your persistent storage.
-
-This method is asynchronous and returns nothing. Use the callback to know when it has finished.
-
-``text`` (``String``)
-    Contents of the file to save. Can be anything, really.
-
-``saveAs`` (``String``)
-    Where to put the file on your persistent storage. If a file with the same name already exists, it is overwritten.
-
-    - ``file.txt``
-    - ``any/sub/directory/file.json``
-    - ``dir/`` (fails because no file name was given)
-
-    You do not need to create any intermediate directory (``a/b/c/d`` will work).
-
-``mime`` (``String``)
-    `MIME type <https://en.wikipedia.org/wiki/Internet_media_type>`_ of the file being saved (optional). By default it is guessed from the file extension of the ``saveAs`` parameter (if this fails, no MIME type is set).
-
-    - ``application/json``
-    - ``text/csv``
-    - ``text/html``
-
-``callback`` (``Function(String err, String url)``)
-    Function to call when finished (optional). When there is no error, ``err`` is *null* and ``url`` contains the full URL to the file in your persistent storage.
-
-buster.saveBase64()
--------------------
-
-::
-
-    buster.saveBase64(base64String, saveAs)
-
-    buster.saveBase64(base64String, saveAs, callback)
-
-    buster.saveBase64(base64String, saveAs, mime, callback)
-
-Saves a `Base64 <https://en.wikipedia.org/wiki/Base64>`_ encoded file to your persistent storage.
-
-This method is asynchronous and returns nothing. Use the callback to know when it has finished.
-
-``base64String`` (``String``)
-    Contents of the file to save. Can be pure Base64 or a `Data URI Scheme <https://en.wikipedia.org/wiki/Data_URI_scheme>`_ string starting with ``data:``.
-
-``saveAs`` (``String``)
-    Where to put the file on your persistent storage. If a file with the same name already exists, it is overwritten.
-
-    - ``file.jpg``
-    - ``any/sub/directory/file.png``
-    - ``dir/`` (fails because no file name was given)
-
-    You do not need to create any intermediate directory (``a/b/c/d`` will work).
-
-``mime`` (``String``)
-    `MIME type <https://en.wikipedia.org/wiki/Internet_media_type>`_ of the file being saved (optional). By default it is guessed either from the Data URI Scheme string or from the file extension of the ``saveAs`` parameter (if this fails, no MIME type is set).
-
-    - ``image/jpeg``
-    - ``image/png``
-    - ``image/svg+xml``
-
-``callback`` (``Function(String err, String url)``)
-    Function to call when finished (optional). When there is no error, ``err`` is *null* and ``url`` contains the full URL to the file in your persistent storage.
-
 buster.mail()
 -------------
 
 ::
 
-    buster.mail(subject, text)
-
-    buster.mail(subject, text, callback)
-
-    buster.mail(subject, text, to, callback)
+    buster.mail(subject [, text, to, callback])
 
 Sends an email from Phantombuster and substracts 1 to your daily email counter.
 
@@ -371,11 +217,7 @@ buster.notify()
 
 ::
 
-    buster.notify(message)
-
-    buster.notify(message, callback)
-
-    buster.notify(message, options, callback)
+    buster.notify(message [, options , callback])
 
 Sends a push notification to your device(s) using Pushover. For this call to work, you must have set a Pushover user key in your `settings <https://phantombuster.com/settings>`_ and have installed a `Pushover client <https://pushover.net/clients>`_ on at least one of your devices.
 
@@ -405,7 +247,7 @@ buster.solveCaptcha()
 
 ::
 
-    buster.solveCaptcha(selector, callback)
+    buster.solveCaptcha(selector [, casperInstance], callback)
 
 **CasperJS only.**
 
@@ -420,6 +262,9 @@ This method is asynchronous and returns nothing. Use the callback to know when i
 ``selector`` (``String``)
     CSS3 selector pointing to the CAPTCHA image.
 
+``casperInstance`` (``CasperJS``)
+    Optional CasperJS instance that will be used for capturing the image. Ignore this parameter if you called ``create()`` with a CasperJS instance already.
+
 ``callback`` (``Function(String err, String result)``)
     Function to call when finished. When there is no error, ``err`` is *null* and ``result`` contains the solved CAPTCHA text.
 
@@ -428,9 +273,7 @@ buster.progressHint()
 
 ::
 
-    buster.progressHint(progress)
-
-    buster.progressHint(progress, label)
+    buster.progressHint(progress [, label])
 
 Reports the progress state of the agent. This affects the width and content of the progress bar displayed in the agent console on Phantombuster.
 
@@ -449,9 +292,7 @@ buster.overrideTimeLimit()
 
 ::
 
-    buster.overrideTimeLimit(seconds)
-
-    buster.overrideTimeLimit(seconds, callback)
+    buster.overrideTimeLimit(seconds [, callback])
 
 Overrides the execution time limit of the agent. When the execution time reaches the specified number of seconds, the agent is stopped.
 
@@ -496,21 +337,17 @@ buster.setAgentObject()
 
 ::
 
-    buster.setAgentObject(object)
+    buster.setAgentObject([agentId,] object [, callback])
 
-    buster.setAgentObject(object, callback)
-
-    buster.setAgentObject(agentId, object, callback)
-
-Sets the object of an agent. It's recommended to first fetch the object with `buster.getAgentObject()`_ (to update it) because **this method overwrites the whole object**.
+Sets (in fact, **replaces**) the object of an agent. It's recommended to first fetch the object with `buster.getAgentObject()`_ (to update it) because **this method overwrites the whole object**.
 
 This method is asynchronous and returns nothing. Use the callback to know when it has finished.
 
-``object`` (``PlainObject``)
-    Object to save.
-
 ``agentId`` (``Number``)
     ID of the agent which will get its object set (optional). By default, this is the ID of the currently running agent.
+
+``object`` (``PlainObject``)
+    Object to save.
 
 ``callback`` (``Function(String err)``)
     Function to call when finished (optional). When there is no error, ``err`` is *null*.
@@ -520,9 +357,7 @@ buster.getAgentObject()
 
 ::
 
-    buster.getAgentObject(callback)
-
-    buster.getAgentObject(agentId, callback)
+    buster.getAgentObject([agentId,] callback)
 
 Gets the object of an agent.
 
@@ -539,11 +374,9 @@ buster.setGlobalObject()
 
 ::
 
-    buster.setAgentObject(object)
+    buster.setAgentObject(object [, callback])
 
-    buster.setAgentObject(object, callback)
-
-Sets the global object of your account. It's recommended to first fetch the global object with `buster.getGlobalObject()`_ (to update it) because **this method overwrites the whole object**.
+Sets (in fact, **replaces**) the global object of your account. It's recommended to first fetch the global object with `buster.getGlobalObject()`_ (to update it) because **this method overwrites the whole object**.
 
 This method is asynchronous and returns nothing. Use the callback to know when it has finished.
 
@@ -566,3 +399,22 @@ This method is asynchronous and returns nothing. Use the callback to know when i
 
 ``callback`` (``Function(String err, PlainObject object)``)
     Function to call when finished. When there is no error, ``err`` is *null* and ``object`` is a valid object (which may be empty but never *null*).
+
+buster.setResultObject()
+------------------------
+
+::
+
+    buster.setResultObject(object [, callback])
+
+Sets (in fact, **replaces**) the result object of your agent. Think of the result object as the output value of your agent. This is useful for returning a small set of JSON fields containing whatever your agent might want to return when it exits.
+
+Use this method in conjunction with the :ref:`launch-an-agent` API endpoint (with ``output`` set to ``result-object``) to launch **and** get the result of your agent in one single HTTP request.
+
+This method is asynchronous and returns nothing. Use the callback to know when it has finished.
+
+``object`` (``PlainObject``)
+    Object to set as result object.
+
+``callback`` (``Function(String err)``)
+    Function to call when finished (optional). When there is no error, ``err`` is *null*.

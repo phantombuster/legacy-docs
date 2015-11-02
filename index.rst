@@ -7,5 +7,6 @@ Documentation
     quickstart
     writing_scripts
     modules
-    agent_module
+    agent_module_basics
+    agent_module_file_storage
     api

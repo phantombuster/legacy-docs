@@ -1,5 +1,5 @@
-Available Modules
-=================
+Modules
+=======
 
 This page lists all the installed modules. All modules come from NPM and are Node-compatible.
 
@@ -34,6 +34,7 @@ These modules are only compatible with Node.
 - `tinderjs <https://www.npmjs.com/package/tinderjs>`_ — Programmatically access the Tinder dating service API
 - `fast-csv <https://www.npmjs.com/package/fast-csv>`_ — CSV parser and writer
 - `xml2js <https://www.npmjs.com/package/xml2js>`_, `xml2json <https://www.npmjs.com/package/xml2json>`_ — XML to JavaScript object converter
+- `mongodb <https://www.npmjs.com/package/mongodb>`_, `mongoose <https://www.npmjs.com/package/mongoose>`_ — MongoDB
 
 Other modules
 -------------

@@ -35,7 +35,7 @@ All endpoints return JSON following the `JSend <http://labs.omniti.com/labs/jsen
         }
     }
 
-Date fields are Unix/POSIX timestamps (in seconds).
+Date/time fields are Unix/POSIX timestamps (in seconds).
 
 Authentication and request format
 ---------------------------------
@@ -137,6 +137,8 @@ Sample response:
         }
     }
 
+.. _launch-an-agent:
+
 Launch an agent
 ---------------
 
@@ -148,27 +150,47 @@ Add an agent to the launch queue.
 
 This endpoint supports three types of outputs:
 
-    - JSON output (by setting ``output`` to ``json``, which is the default) to get back a ``containerId`` in JSON. This ID can later be used to track this launch and get console output by calling ``/api/v1/agent/{agentId}/output.json?containerId={containerId}``.
+    - Standard JSON output (by setting ``output`` to ``json``, which is the default) to get back a ``containerId`` in JSON.
 
-    ~ or ~
+        This ID can later be used to track this launch and get console output by calling ``/api/v1/agent/{agentId}/output.json?containerId={containerId}``.
 
-    - `Event stream <https://developer.mozilla.org/en-US/docs/Server-sent_events/Using_server-sent_events>`_ output (by setting ``output`` to ``event-stream``) to get a ``text/event-stream`` HTTP response. Each line of console output is sent as an event stream message starting with ``data:``. When you receive the first message, you know the agent has started. When the agent has finished, the connection is closed. At regular intervals, event stream comments (starting with ``:``) are sent to keep the connection alive. `See a demo of this endpoint in action. <http://demo.phantombuster.com/event-stream.html>`_
+    **~ or ~**
 
-    ~ or ~
+    - Result object output (by setting ``output`` to ``result-object``) to get a blocking JSON response which will close when your agent finishes.
 
-    - Raw output (by setting ``output`` to ``raw``) to get an HTTP ``text/plain``, chunked, streaming response of the raw console output of the agent. This is NOT recommended as almost all HTTP clients will timeout at one point or another, especially if your agent stays in queue for a few minutes (in which case the endpoint will send *zero* bytes for a few minutes, waiting for the agent to start — even cURL and Wget struggle to handle non-transmitting HTTP responses).
+        The response will contain your agent's exit code (``Number``) and its result object (``PlainObject``) if it was set (using ). This endpoint is very useful for getting a response from your agents "synchronously" — just make one request and wait for your result object/exit code.
+
+        Obviously this endpoint can be very slow to terminate (if your agent takes a long time or is queued). To prevent any risk of timeout, a space character is sent every 10 seconds to keep the HTTP socket alive (spaces do not prevent JSON parsing).
+
+        Use ``result-object-with-output`` to get the console output of your agent in addition to all the other fields.
+
+        Note: The HTTP headers are sent before your agent finishes, so you'll get a ``HTTP 200`` even if your agent fails during execution (but not if it fails to launch).
+
+    **~ or ~**
+
+    - `Event stream <https://developer.mozilla.org/en-US/docs/Server-sent_events/Using_server-sent_events>`_ output (by setting ``output`` to ``event-stream``) to get a ``text/event-stream`` HTTP response.
+
+        Each line of console output is sent as an event stream message starting with ``data:``. When you receive the first message, you know the agent has started. When the agent has finished, the connection is closed. At regular intervals, event stream comments (starting with ``:``) are sent to keep the connection alive.
+
+        `See a demo of this endpoint in action. <http://demo.phantombuster.com/event-stream.html>`_
+
+    **~ or ~**
+
+    - Raw output (by setting ``output`` to ``raw``) to get an HTTP ``text/plain``, chunked, streaming response of the raw console output of the agent.
+
+        **This is not recommended** as almost all HTTP clients will timeout at one point or another, especially if your agent stays in queue for a few minutes (in which case the endpoint will send *zero* bytes for a few minutes, waiting for the agent to start — even cURL and Wget struggle to handle non-transmitting HTTP responses).
 
 ``{id}`` (``Number``)
     ID of the agent to launch.
 
 ``output`` (``String``)
-    Either ``json``, ``event-stream`` or ``raw`` (optional, default to ``json``). This allows you to choose what type of response to receive.
+    Either ``json``, ``result-object``, ``result-object-with-output``, ``event-stream`` or ``raw`` (optional, default to ``json``). This allows you to choose what type of response to receive.
 
 ``command`` (``String``)
     Command to use when launching the agent (optional). Can be either ``casperjs``, ``phantomjs`` or ``node``.
 
 ``argument`` (``String``)
-    JSON argument as a string (optional). The argument can be retrieved with ``buster.argument`` in the agent's script.
+    JSON argument as a ``String`` (optional). The argument can be retrieved with ``buster.argument`` in the agent's script.
 
 ``saveLaunchOptions`` (``String``)
     If present and not empty, ``command`` and ``argument`` will be saved as the default launch options for the agent.
@@ -177,7 +199,7 @@ Note: ``command`` and ``argument`` work together. When setting one, always set t
 
 Note: The ``GET`` HTTP method is also allowed for this endpoint.
 
-Sample response of JSON output:
+Sample response of ``json`` output:
 
 ::
 
@@ -188,7 +210,48 @@ Sample response of JSON output:
         }
     }
 
-Sample response of event stream output:
+Sample response of ``result-object`` output:
+
+::
+
+    {
+        "status": "success",
+        "message": "Agent finished (success)",
+        "data": {
+            "containerId": 76426,
+            "executionTime": 17,
+            "exitCode": 0,
+            "resultObject": {
+                "your": "data",
+                "is": {
+                    "here": [123]
+                }
+            }
+        }
+    }
+
+Sample response of ``result-object-with-output`` output:
+
+::
+
+    {
+        "status": "success",
+        "message": "Agent finished (success)",
+        "data": {
+            "containerId": 76426,
+            "executionTime": 17,
+            "exitCode": 0,
+            "resultObject": {
+                "your": "data",
+                "is": {
+                    "here": [123]
+                }
+            }
+            "output": "This is a console output line!\r\nAnd this is another one :)\r\n"
+        }
+    }
+
+Sample response of ``event-stream`` output:
 
 .. code-block:: text
 
@@ -208,7 +271,7 @@ Sample response of event stream output:
 
     : container 76426 ended
 
-Sample response of raw output:
+Sample response of ``raw`` output:
 
 .. code-block:: text
 
@@ -249,11 +312,15 @@ Get data from an agent: console output, status, progress and messages. This API 
 
 This endpoint has two modes:
 
-    - "Track" mode (by setting ``mode`` to ``track``, which is the default when a ``containerId`` is specified) to get console output from a particular instance of the agent. In this mode, requests must have the ``containerId`` parameter set to the instance's ID from which you wish to get console output.
+    - "Track" mode (by setting ``mode`` to ``track``, which is the default when a ``containerId`` is specified) to get console output from a particular instance of the agent.
+
+        In this mode, requests must have the ``containerId`` parameter set to the instance's ID from which you wish to get console output.
 
     ~ or ~
 
-    - "Most Recent" mode (by setting ``mode`` to ``most-recent``, which is the default when ``containerId`` is left at ``0``) to get console output from the most recent instance of the agent. In this mode, your first call should have parameter ``containerId`` left at ``0``. From then on, all subsequent calls must have parameter ``containerId`` set to the previously returned container ID (when a new instance of the agent is started, a different ``containerId`` will be returned).
+    - "Most Recent" mode (by setting ``mode`` to ``most-recent``, which is the default when ``containerId`` is left at ``0``) to get console output from the most recent instance of the agent.
+
+        In this mode, your first call should have parameter ``containerId`` left at ``0``. From then on, all subsequent calls must have parameter ``containerId`` set to the previously returned container ID (when a new instance of the agent is started, a different ``containerId`` will be returned).
 
 ``{id}`` (``Number``)
     ID of the agent from which to retrieve the output, status and messages.
