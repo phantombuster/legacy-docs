@@ -5,10 +5,12 @@ Agent Module: File storage
 
 These four methods allow you to store files in your persitent storage.
 
-Files that are on your agent's disk but not saved to your persistent storage will be lost when your agent exits.
+Files that are on your agent's disk but not saved to your persistent storage **will be lost** when your agent exits.
 
-buster.save()
--------------
+Before these methods can be used, you need to :ref:`require() and create() the agent module <agent-module>`.
+
+save()
+------
 
 ::
 
@@ -43,8 +45,41 @@ This method is asynchronous and returns nothing. Use the callback to know when i
 ``callback`` (``Function(String err, String url)``)
     Function to call when finished. When there is no error, ``err`` is *null* and ``url`` contains the full URL to the file on your persistent storage.
 
-buster.saveFolder()
--------------------
+saveBase64()
+------------
+
+::
+
+    buster.saveBase64(base64String, saveAs [, mime, callback])
+
+Saves a `Base64 <https://en.wikipedia.org/wiki/Base64>`_ encoded file to your persistent storage.
+
+This method is asynchronous and returns nothing. Use the callback to know when it has finished.
+
+``base64String`` (``String``)
+    Contents of the file to save. Can be pure Base64 or a `Data URI Scheme <https://en.wikipedia.org/wiki/Data_URI_scheme>`_ string starting with ``data:``.
+
+``saveAs`` (``String``)
+    Where to put the file on your persistent storage. If a file with the same name already exists, it is overwritten.
+
+    - ``file.jpg``
+    - ``any/sub/directory/file.png``
+    - ``dir/`` (fails because no file name was given)
+
+    You do not need to create any intermediate directory (``a/b/c/d`` will work).
+
+``mime`` (``String``)
+    `MIME type <https://en.wikipedia.org/wiki/Internet_media_type>`_ of the file being saved (optional). By default it is guessed either from the Data URI Scheme string or from the file extension of the ``saveAs`` parameter (if this fails, no MIME type is set).
+
+    - ``image/jpeg``
+    - ``image/png``
+    - ``image/svg+xml``
+
+``callback`` (``Function(String err, String url)``)
+    Function to call when finished (optional). When there is no error, ``err`` is *null* and ``url`` contains the full URL to the file in your persistent storage.
+
+saveFolder()
+------------
 
 ::
 
@@ -74,8 +109,8 @@ This method is asynchronous and returns nothing. Use the callback to know when i
 ``callback`` (``Function(String err, String url)``)
     Function to call when finished (optional). When there is no error, ``err`` is *null* and ``url`` contains the full URL to the folder in your persistent storage.
 
-buster.saveText()
------------------
+saveText()
+----------
 
 ::
 
@@ -103,39 +138,6 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     - ``application/json``
     - ``text/csv``
     - ``text/html``
-
-``callback`` (``Function(String err, String url)``)
-    Function to call when finished (optional). When there is no error, ``err`` is *null* and ``url`` contains the full URL to the file in your persistent storage.
-
-buster.saveBase64()
--------------------
-
-::
-
-    buster.saveBase64(base64String, saveAs [, mime, callback])
-
-Saves a `Base64 <https://en.wikipedia.org/wiki/Base64>`_ encoded file to your persistent storage.
-
-This method is asynchronous and returns nothing. Use the callback to know when it has finished.
-
-``base64String`` (``String``)
-    Contents of the file to save. Can be pure Base64 or a `Data URI Scheme <https://en.wikipedia.org/wiki/Data_URI_scheme>`_ string starting with ``data:``.
-
-``saveAs`` (``String``)
-    Where to put the file on your persistent storage. If a file with the same name already exists, it is overwritten.
-
-    - ``file.jpg``
-    - ``any/sub/directory/file.png``
-    - ``dir/`` (fails because no file name was given)
-
-    You do not need to create any intermediate directory (``a/b/c/d`` will work).
-
-``mime`` (``String``)
-    `MIME type <https://en.wikipedia.org/wiki/Internet_media_type>`_ of the file being saved (optional). By default it is guessed either from the Data URI Scheme string or from the file extension of the ``saveAs`` parameter (if this fails, no MIME type is set).
-
-    - ``image/jpeg``
-    - ``image/png``
-    - ``image/svg+xml``
 
 ``callback`` (``Function(String err, String url)``)
     Function to call when finished (optional). When there is no error, ``err`` is *null* and ``url`` contains the full URL to the file in your persistent storage.

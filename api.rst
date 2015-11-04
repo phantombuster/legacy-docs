@@ -7,9 +7,10 @@ Here's a short list of what the API allows:
 
 - Launch and abort agents
 - Get console output, status, progress and messages from an agent
-- Get streaming console output from an agent
+- Get real-time console output from an agent
 - Get user, agent and script records
 - Send emails
+- Write scripts
 - ...
 
 We deliberately made the API extremely simple to use. Any developer should be able to get responses in a matter of minutes.
@@ -17,9 +18,9 @@ We deliberately made the API extremely simple to use. Any developer should be ab
 Versioning
 ----------
 
-All API endpoints URLs start with ``https://phantombuster.com/api/vX/`` where ``X`` is the version number of the API. For now, only version ``1`` exists.
+All API endpoints URLs start with ``https://phantombuster.com/api/v1/``.
 
-When breaking changes will be made to the API, this version number will increase.
+Only version ``1`` exists for now.
 
 Response format
 ---------------
@@ -158,13 +159,15 @@ This endpoint supports three types of outputs:
 
     - Result object output (by setting ``output`` to ``result-object``) to get a blocking JSON response which will close when your agent finishes.
 
-        The response will contain your agent's exit code (``Number``) and its result object (``PlainObject``) if it was set (using ). This endpoint is very useful for getting a response from your agents "synchronously" — just make one request and wait for your result object/exit code.
+        The response will contain your agent's exit code (``Number``) and its result object (``PlainObject``) if it was set (using :ref:`buster-set-result-object`). This endpoint is very useful for getting a response from your agents "synchronously" — just make a single HTTP request and wait for your result object/exit code.
+
+        Use ``first-result-object`` instead to have the request terminate immediately after the first call to :ref:`buster-set-result-object`. This is the fastest way to get a response from an agent using the API. However you will only get the result object and nothing else (no exit code or console output for example).
+
+        Use ``result-object-with-output`` instead to get the console output of your agent in addition to all the other fields.
 
         Obviously this endpoint can be very slow to terminate (if your agent takes a long time or is queued). To prevent any risk of timeout, a space character is sent every 10 seconds to keep the HTTP socket alive (spaces do not prevent JSON parsing).
 
-        Use ``result-object-with-output`` to get the console output of your agent in addition to all the other fields.
-
-        Note: The HTTP headers are sent before your agent finishes, so you'll get a ``HTTP 200`` even if your agent fails during execution (but not if it fails to launch).
+        Note: The HTTP headers are sent before your agent finishes, so you'll get a ``200 OK`` even if your agent fails during execution (but not if it fails to queue).
 
     **~ or ~**
 
@@ -184,7 +187,7 @@ This endpoint supports three types of outputs:
     ID of the agent to launch.
 
 ``output`` (``String``)
-    Either ``json``, ``result-object``, ``result-object-with-output``, ``event-stream`` or ``raw`` (optional, default to ``json``). This allows you to choose what type of response to receive.
+    One of ``json``, ``result-object``, ``first-result-object``, ``result-object-with-output``, ``event-stream`` or ``raw`` (optional, default to ``json``). This allows you to choose what type of response to receive.
 
 ``command`` (``String``)
     Command to use when launching the agent (optional). Can be either ``casperjs``, ``phantomjs`` or ``node``.
@@ -221,6 +224,23 @@ Sample response of ``result-object`` output:
             "containerId": 76426,
             "executionTime": 17,
             "exitCode": 0,
+            "resultObject": {
+                "your": "data",
+                "is": {
+                    "here": [123]
+                }
+            }
+        }
+    }
+
+Sample response of ``first-result-object`` output:
+
+::
+
+    {
+        "status": "success",
+        "data": {
+            "containerId": 76426,
             "resultObject": {
                 "your": "data",
                 "is": {
@@ -337,7 +357,11 @@ This endpoint has two modes:
 ``fromOutputPos`` (``Number``)
     Return the agent's console output starting from this position (optional, ``0`` by default). This number corresponds to the number of bytes emitted by the agent. Use the last ``outputPos`` you received on a previous call to only get new output data.
 
-Note: The ``agentStatus`` and ``containerStatus`` fields have 3 possible values: ``running``, ``queued`` or ``not running``. The ``containerStatus`` field is only present in "Track" mode and represents the status of the tracked agent instance.
+Note: The ``agentStatus`` and ``containerStatus`` fields have 3 possible values: ``running``, ``queued`` or ``not running``.
+
+Note: The ``containerStatus`` field is only present in "Track" mode and represents the status of the tracked agent instance.
+
+Note: The ``resultObject`` field is only present when a result object was set using :ref:`buster.setResultObject() <buster-set-result-object>`.
 
 Sample response:
 
@@ -369,7 +393,13 @@ Sample response:
                 }
             ],
             "output": "* Container a255b8220379 started in directory /home/phantom/agent",
-            "outputPos": 245
+            "outputPos": 245,
+            "resultObject": {
+                "your": "data",
+                "is": {
+                    "here": [123]
+                }
+            }
         }
     }
 
@@ -381,6 +411,8 @@ Get container records
     GET /api/v1/agent/{id}/containers.json
 
 Get a list of ended containers for an agent, ordered by date. Useful for listing the last available output logs from an agent.
+
+Container history is saved for up to 7 days.
 
 ``{id}`` (``Number``)
     ID of the agent from which to retrieve the containers.
@@ -424,7 +456,7 @@ Get a script by its ID
 
     GET /api/v1/script/by-id/{mode}/{id}
 
-Get a script record by ID.
+Get a script record by its ID.
 
 ``{id}`` (``Number``)
     ID of the script to retrieve.
@@ -460,7 +492,7 @@ Get a script by its name
 
     GET /api/v1/script/by-name/{mode}/{name}
 
-Get a script record by name.
+Get a script record by its name.
 
 ``{name}`` (``String``)
     Name of the script to retrieve, with its extension (``.js`` or ``.coffee``).
@@ -511,8 +543,8 @@ Sample response:
         "data": 345
     }
 
-Get account information
------------------------
+List running agents and account info
+------------------------------------
 
 ::
 

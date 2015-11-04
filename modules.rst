@@ -1,7 +1,7 @@
 Modules
 =======
 
-This page lists all the installed modules. All modules come from NPM and are Node-compatible.
+This page lists all the installed modules that you can ``require()`` within your scripts. All modules come from NPM and are Node-compatible.
 
 If you need us to install a specific module, contact us at contact@phantombuster.com and we'll do what we can.
 
