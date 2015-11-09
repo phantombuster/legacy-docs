@@ -1,7 +1,7 @@
 .. _agent-module:
 
-Agent Module: Main functionality
-================================
+Agent Module
+============
 
 The Agent Module (also called ``buster``) is a special module made by the Phantombuster team. It provides some cool features and is linked to your Phantombuster account.
 
@@ -34,7 +34,6 @@ The agent module is named ``phantombuster``. Use ``require('phantombuster')`` an
     ::
 
         casper = require('casper').create();
-        mouse = require('mouse').create(casper);
         buster = require('phantombuster').create(casper);
 
 Asynchronous methods

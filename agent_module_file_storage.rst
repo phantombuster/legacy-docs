@@ -1,7 +1,7 @@
 .. _agent-module-file-storage:
 
-Agent Module: File storage
-==========================
+Agent Module: Store files
+=========================
 
 These four methods allow you to store files in your persitent storage.
 
