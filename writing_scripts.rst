@@ -70,15 +70,19 @@ More technical details (for the nerds):
 **Phantombuster's SDK**
 -----------------------
 
-All your scripts can easily be written right on our website, in our custom CoffeeScript/JavaScript editor.
+All your scripts can easily be written right on our website, in the provided CoffeeScript/JavaScript web editor.
 
-However, you might prefer using your own editor, locally on your machine. We made Phantombuster's SDK specifically for this. First, you need to have ``npm`` installed. Then do this:
+However, you might prefer using your own editor, locally on your machine. We made `Phantombuster's SDK <https://www.npmjs.com/package/phantombuster-sdk>`_ specifically for this.
+
+The SDK will **monitor a directory** on your disk for changes in your scripts. As soon as a change is detected, the script will be uploaded in your Phantombuster account.
+
+First, you need to have ``npm`` installed. Then do this:
 
 ::
 
-    npm install -g phantombuster-sdk
+    # npm install -g phantombuster-sdk
 
-It will install the ``phantombuster`` command. :ref:`Discover how to use it → <SDK>`
+It will globally install the ``phantombuster`` command. :ref:`Discover how to use it → <SDK>`
 
 Requiring other scripts
 -----------------------

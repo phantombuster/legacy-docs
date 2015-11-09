@@ -43,7 +43,7 @@ Authentication and request format
 
 Authentication is dead simple: put your API key in the ``X-Phantombuster-Key-1`` HTTP header (or in the ``key`` parameter) of every request you make.
 
-To get your API key, simply go to your `settings page <https://phantombuster.com/settings>`_ and click ``Reveal``.
+To get your API key, simply go to your `settings page <https://phantombuster.com/settings>`_ and click *Reveal*.
 
 Parameters can be put in the query string or in the request body for ``POST`` requests. Here is how a typical request looks like:
 
