@@ -1,7 +1,7 @@
 .. _nick:
 
-Nick: Phantombuster's custom navigation module
-==============================================
+Nick
+====
 
 Nick is a special module made by the Phantombuster team. It provides an easy navigation/web automation/scraping system based on CasperJS, written in CoffeeScript.
 
@@ -13,18 +13,20 @@ This module is compatible with CapserJS commands (not with PhantomJS and Node.js
 
 Initialization
 --------------
+
 The module is named ``Nick``. Use ``require('lib-Nick-beta3')`` and create an instance ``var nick = new Nick()`` to use it.
 
 ::
 
     Nick = require('lib-Nick-beta3');
-    nick = new Nick();
+    
+    var nick = new Nick();
 
 Or
 
 ::
 
-    nick = new (require('lib-Nick-beta3'))
+    var nick = new (require('lib-Nick-beta3'))
 
 
 Asynchronous methods
@@ -54,18 +56,24 @@ This is better:
         }
     });
 
-open
-----
+open()
+------
 
 ::
 
     nick.open(url [,options,] callback);
 
+Performs an HTTP request for opening a given ``url``. You can forge GET, POST, PUT, DELETE and HEAD requests.
+
+This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
+
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#open
+
 ``url (string)``
     URL of the page to visit.
 
 ``options (object)``
-    Optional request headers
+    Optional request headers.
 
     ::
 
@@ -81,124 +89,228 @@ open
         }
 
 ``callback (Function())``
-    Function to call when finished. This function never fails, no arguments will be passed.
+    Function called when finish. This function never fails, no arguments will be passed.
 
 Example:
 
     ::
 
-        Nick = require('lib-Nick-beta3');
-
-        nick = new Nick();
-        nick.open("https://phantombuster.com", function() {
+        nick.open("https://phantombuster.com/cloud-services", function() {
             console.log("The page is loaded");
         });
 
-
-wait
-----
+wait()
+------
 
 ::
 
     nick.wait(duration, callback);
 
+Wait for a ``duration`` time before calling ``callback``
+
+This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
+
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#wait
+
 ``duration (number)``
     Milliseconds to wait before calling ``callback`` function
 
 ``callback (Function())``
-    Function to call when finished. This function never fails, no arguments will be passed.
+    Function called when finish. This function never fails, no arguments will be passed.
 
 Example:
 
     ::
 
-        Nick = require('lib-Nick-beta3');
-
-        nick = new Nick();
-        nick.open("https://phantombuster.com", function() {
+        nick.open("https://phantombuster.com/cloud-services", function() {
             console.log('Hello ')
             nick.wait(1000, function() {
                 console.log('world!');
             })
         });
 
-
-click
------
+waitUntilPresent
+----------------
 
 ::
 
-    nick.click(selector, callback);
+    nick.waitUntilPresent(selectors, timeout[, operator], callback);
 
-``selector (string)``
+Wait until a DOM element, matching the provided selector, is present. If the method has to wait more than ``timeout`` milliseconds, ``callback`` is called with an timout error. A wait* method has to be called before working on selectors.
 
-``callback (Function(String err))``
-    Function to call when finished. When there is no error, err is null and object is a valid object (which may be empty but never null).
+This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
+
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#waitforselector
+
+``selectors (array)``
+    An array of CSS3 or XPath expression that describe the path to DOM elements.
+
+``timeout (number)``
+    Milliseconds to wait before calling ``callback`` function with an error.
+
+``condition (string)``
+    If ``selectors`` is an array, this argument set the condition to wait. If ``condition`` is ``"and"``, the method will wait for every ``selectors`` to be present. Otherwise if ``condition`` is ``"or"``, the method will wait for the first ``selector`` of the array to be present.
+
+``callback (Function(String err, String sel))``
+    Function called when finish. When there is no error, ``err`` is null.
+    
+    - In case of success:
+        - if ``condition`` is ``"and"`` then, ``sel`` is ``null`` because all selectors are present
+        - if ``condition`` is ``"or"`` then, ``sel`` is the first present selector of the given array
+    
+    - In case of failure:
+        - if ``condition`` is ``"and"`` then, ``sel`` is the first not present selector of the given array
+        - if ``condition`` is ``"or"`` then, ``sel`` is ``null`` because no selectors were found
 
 Example:
 
     ::
 
-        Nick = require('lib-Nick-beta3');
-
-        nick = new Nick();
-        nick.open("https://phantombuster.com", function() {
+        nick.waitUntilVisible(selector, 2000, function(err) {
+            if (err) {
+                console.log(err);
+                phantom.exit(1);
+            }
+            console.log('');
         });
 
+waitWhilePresent
+----------------
 
-getCurrentUrl
--------------
+waitUntilVisible
+----------------
 
-::
+waitWhileVisible
+----------------
 
-    nick.getCurrentUrl    },
+evaluate
+--------
 
-``, callback
-
-
-    Nick = r
-
-    ``callback (Function(String err, String path))equire('li');``
-
-    nick = new Nick();
-
-
-
-getCurrentUrlOrNull
--------------------
-
-::
-
-    nick.getCurrentUrlOrNull    },
-
-``, callback
-
-
-    Nick = r
-
-    ``callback (Function(String err, String path))equire('li');``
-
-    nick = new Nick();
-
-
-
-getHtml
+click()
 -------
 
 ::
 
-    nick.getHtml    },
+    nick.click(selector, callback);
 
-``, callback
+Performs a click on the element matching the provided ``selector`` expression.
 
+This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
 
-    Nick = r
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#click
 
-    ``callback (Function(String err, String path))equire('li');``
+``selector (string)``
+    A CSS3 or XPath expression that describe the path to DOM elements.
 
-    nick = new Nick();
+``callback (Function(String err))``
+    Function called when finish. When there is no error, ``err`` is null and object is a valid object (which may be empty but never null).
 
+Example:
 
+    ::
+
+        var selector = "a.btn-warning";
+
+        nick.waitUntilVisible(selector, 2000, function(err) {
+            if (err) {
+                console.log(err)
+                phantom.exit(1);
+            }
+            nick.click(selector, function(err) {
+                if (err) {
+                    console.log(err)
+                    phantom.exit(1);
+                }
+                console.log("Click on 'TRY FREE' button done.");
+                phantom.exit(0);
+            });
+        });
+
+getCurrentUrl()
+---------------
+
+::
+
+    nick.getCurrentUrl(callback)
+
+Retrieves current page URL and call the ``callback`` function with the URL in second argument. Note that the url will be url-decoded.
+
+This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
+
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#getcurrenturl
+
+``callback (Function(String err, String decodeddUrl))``
+    Function called when finish. When there is no error, ``err`` is null and ``decodeddUrl`` is a url-decoded string.
+
+Example:
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.getCurrentUrl(function(err, url) {
+                if (err) {
+                    console.log(err);
+                    phantom.exit(1);
+                }
+                console.log("Current Url: ", url);
+            });
+        });
+
+getCurrentUrlOrNull()
+---------------------
+
+::
+
+    nick.getCurrentUrlOrNull()
+
+This method is synchronous and returns null if it fails otherwise it returns a the current URL (String). Note that the url will be url-decoded.
+
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#getcurrenturl
+
+This function takes no arguments.
+
+Example:
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            var url = nick.getCurrentUrlOrNull();
+            if (url == null) {
+                console.log("The url is null");
+                phantom.exit(1);
+            }
+            console.log("Current Url: ", url);
+        });
+
+getHtml()
+---------
+
+::
+
+    nick.getHtml(callback)
+
+Retrieves current page HTML and call the ``callback`` function with the HTML in second argument.
+
+This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
+
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#gethtml
+
+``callback (Function(String err, String html))``
+    Function called when finish. When there is no error, ``err`` is null and ``html`` is the HTML string.
+
+Example:
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.getHtml(function(err, html) {
+                if (err) {
+                    console.log(err);
+                    phantom.exit(1);
+                }
+                console.log("HTML: ", html);
+            });
+        });
 
 getHtmlOrNull
 -------------
@@ -207,161 +319,325 @@ getHtmlOrNull
 
     nick.getHtmlOrNull    },
 
-``, callback
+This method is synchronous and returns null if it fails otherwise it returns a the page HTML (String).
 
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#gethtml
 
-    Nick = r
+This function takes no arguments.
 
-    ``callback (Function(String err, String path))equire('li');``
+Example:
 
-    nick = new Nick();
+    ::
 
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            var html = nick.getHtmlOrNull();
+            if (html == null) {
+                console.log("html is null");
+                phantom.exit(1);
+            }
+            console.log("HTML: ", url);
+        });
 
-
-getPageContent
---------------
-
-::
-
-    nick.getPageContent    },
-
-``, callback
-
-
-    Nick = r
-
-    ``callback (Function(String err, String path))equire('li');``
-
-    nick = new Nick();
-
-
-
-getPageContentOrNull
---------------------
+getPageContent()
+----------------
 
 ::
 
-    nick.getPageContentOrNul    },
+    nick.getPageContent(callback)
 
-``, callback
+Retrieves current page content and call the ``callback`` function with the page content in second argument.
 
+This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
 
-    Nick = r
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#getpagecontent
 
-    ``callback (Function(String err, String path))equire('li');``
+``callback (Function(String err, String html))``
+    Function called when finish. When there is no error, ``err`` is null and ``html`` is the HTML string.
 
-    nick = new Nick();
+Example:
 
+    ::
 
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.getPageContent(function(err, content) {
+                if (err) {
+                    console.log(err);
+                    phantom.exit(1);
+                }
+                console.log("Page content: ", content);
+            });
+        });
 
-getTitle
---------
-
-::
-
-    nick.getTitle    },
-
-``, callback
-
-
-    Nick = r
-
-    ``callback (Function(String err, String path))equire('li');``
-
-    nick = new Nick();
-
-
-
-getTitleOrNull
---------------
+getPageContentOrNull()
+----------------------
 
 ::
 
-    nick.getTitleOrNull    },
+    nick.getPageContentOrNull
 
-``, callback
+This method is synchronous and returns null if it fails otherwise it returns a the page content (String).
 
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#getpagecontent
 
-    Nick = r
+This function takes no arguments.
 
-    ``callback (Function(String err, String path))equire('li');``
+Example:
 
-    nick = new Nick();
+    ::
 
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            var content = nick.getPageContentOrNull();
+            if (content == null) {
+                console.log("content is null");
+                phantom.exit(1);
+            }
+            console.log("Content: ", content);
+        });
 
-
-fill
-----
-
-::
-
-    nick.fill(selector 'params object'], optional: ['submit boolean'], callback);
-
-``selector (string)``
-
-``callback (Function(String err))``
-
-// ', 'params object'], optional: ['submit boolean'] },
-
-
-
-
-
-::
-
-    Nick = require('lib-Nick-beta3');
-
-    nick = new Nick();
-
-
-
-screenshot
+getTitle()
 ----------
 
 ::
 
-nick.screenshot(filena, callbackme
+    nick.getTitle(callback)
 
-``filename (st)``
+Retrieves current page title and call the ``callback`` function with the title in second argument.
 
+This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
+
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#gettitle
+
+``callback (Function(String err, String title))``
+    Function called when finish. When there is no error, ``err`` is null and ``title`` is the current page title string.
+
+Example:
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.getTitle(function(err, title) {
+                if (err) {
+                    console.log(err);
+                    phantom.exit(1);
+                }
+                console.log("Page title: ", title);
+            });
+        });
+
+
+getTitleOrNull()
+----------------
+
+::
+
+    nick.getTitleOrNull()
+
+This method is synchronous and returns null if it fails otherwise it returns a the current page title string.
+
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#gettitle
+
+This function takes no arguments.
+
+Example:
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            var title = nick.getTitleOrNull();
+            if (title == null) {
+                console.log("title is null");
+                phantom.exit(1);
+            }
+            console.log("Title: ", title);
+        });
+
+fill()
+------
+
+::
+
+    nick.fill(selector, inputs [, submit], callback);
+
+Fills form inputs with given values and optionally submits it. inputs are referenced by their name attribute.
+
+This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
+
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#gettitle
+
+``selector (string)``
+    A CSS3 or XPath expression that describe the path to DOM elements.
+
+``inputs (object)``
+    An object composed by name:value, with name, the input name and value, the value to set.
+
+``submit (boolean)``
+    If ``true`` the form will be automatically sent.
 
 ``callback (Function(String err))``
-// 
+    Function called when finish. When there is no error, ``err`` is null.
 
 
+Example with simple HTML form:
+
+    ::
+
+        <form action="/contact" id="contact-form" enctype="multipart/form-data">
+            <input type="text" name="subject"/>
+            <textearea name="content"></textearea>
+            <input type="radio" name="civility" value="Mr"/> Mr
+            <input type="radio" name="civility" value="Mrs"/> Mrs
+            <input type="text" name="name"/>
+            <input type="email" name="email"/>
+            <input type="file" name="attachment"/>
+            <input type="checkbox" name="cc"/> Receive a copy
+            <input type="submit"/>
+        </form>
+
+A Nick script filling the form and sending it:
+
+    ::
+
+        nick.open("https://some.url", function() {
+            nick.fill('form#contact-form', {
+                'subject': 'I am watching you',
+                'content': 'So be careful.',
+                'civility': 'Mr',
+                'name': 'Chuck Norris',
+                'email': 'chuck@norris.com',
+                'cc': true,
+                'attachment': '/Users/chuck/roundhousekick.doc'
+            }, true, function(err) {
+                if (err) {
+                    console.log(err);
+                    phantom.exit(1);
+                }
+                console.log("Form sent!");
+            });
+        });
 
 
+screenshot()
+------------
 
-::
+    ::
 
-    Nick = require('lib-Nick-beta3');
+        nick.screenshot(filename, [clipRect, imgOptions,] callback)
 
-    nick = new Nick();
+Take a screenshot of the current page. Without optional arguments, this method take a screenshot of the entire page.
 
+This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
 
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#capture
 
-sendKeys
---------
+``path (string)``
+    The path of the screenshot. The format is defined by the file extention. 'image.jpg' will create a JPEG image in the current folder.
 
-::
+``clipRect (object)``
+    This optional argument set the position and the size of the screenshot square.
+    
+    Example:
+    
+    ::
+        
+        clipRect = {
+            top: 100,
+            left: 100,
+            width: 500,
+            height: 400
+        }
 
-    nick.sendKeys(select, callbackor
+``imgOptions (object)``
+    This optional argument set the two avalaible image options. Such as the format and the quality of the screenshot image.
 
-``selector (str)``
+    Example:
+    
+    ::
+
+        imgOptions = {
+            format: 'jpg',
+            quality: 50
+        }
 
 ``callback (Function(String err))``
+    Function called when finish. When there is no error, ``err`` is null.
 
-// 
+Example:
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.screenshot('./image.jpg', function(err) {
+                if (err) {
+                    console.log(err);
+                    phantom.exit(1);
+                }
+                console.log("Screenshot saved!")
+            });
+        });
 
 
 
-
+sendKeys()
+----------
 
 ::
 
-    Nick = require('lib-Nick-beta3');
+    nick.sendKeys(selector, keys[, options], callback)
 
-    nick = new Nick();
+Write keys in an ``input`, ``textarea`` of every DOM element with ``contenteditable="true"`` of the current page.
+
+This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
+
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#sendkeys
+
+``selector (string)``
+    A CSS3 or XPath expression that describe the path to DOM elements.
+
+``keys (string)``
+    The keys to send in an ``input`, ``textarea`` of every DOM element with ``contenteditable="true"`` attribute.
+
+``options (object)``
+    The three options avalable are:
+        * reset (boolean), remove the content of the targetd element.
+        * keepFocus (boolean), keep the focus in the editable DOM element after keys have been sent.
+        * modifiers (object), modifier string appent by a '+'. Available modifiers are ``ctrl``, ``alt``, ``shift``, ``meta`` and ``keypad``
+
+``callback (Function(String err))``
+    Function called when finish. When there is no error, ``err`` is null.
+
+Example:
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.sendKeys('#message', "Boo!", function(err) {
+                if (err) {
+                    console.log(err);
+                    phantom.exit(1);
+                }
+                console.log("Keys sent!")
+            });
+        });
+
+
+Example with optional argument:
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.sendKeys('#message', "s", {
+                reset: false,
+                keepFocus: true,
+                modifiers: "ctrl+alt+shift"
+            }, function(err) {
+                if (err) {
+                    console.log(err);
+                    phantom.exit(1);
+                }
+                console.log("Keys sent!")
+            });
+        });
+
 
 
 
