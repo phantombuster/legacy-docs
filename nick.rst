@@ -185,6 +185,7 @@ waitWhileVisible
 
 evaluate()
 ----------
+
     ::
 
         nick.evaluate(sandboxedFunction[, argumentObject], callback);
@@ -221,6 +222,36 @@ Example:
             }
             console.log("Evaluation succeeded. Return value is", ret); // "Evaluation succeeded. Return value is 42"
         });
+
+inject()
+--------
+
+    ::
+
+        nick.inject(url, callback);
+
+Inject script to the current DOM page context. The script can be hosted locally or on a remote server
+
+This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
+
+``url (object)``
+    Path to a script hosted locally or remotely.
+
+``callback (Function(String err))``
+    Function called when finish. When there is no error, ``err`` is null.
+
+Example:
+
+    ::
+
+        nick.inject("https://code.jquery.com/jquery-2.1.4.min.js", function(err) {
+            if (err) {
+                console.log(err);
+                phantom.exit(1);
+            }
+            console.log("Jquery script inserted!");
+        });
+
 
 click()
 -------
