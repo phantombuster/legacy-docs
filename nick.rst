@@ -18,7 +18,7 @@ The module is named ``Nick``. Use ``require('lib-Nick-beta3')`` and create an in
 
 ::
 
-    Nick = require('lib-Nick-beta3');
+    var Nick = require('lib-Nick-beta3');
     
     var nick = new Nick();
 
@@ -97,6 +97,7 @@ Example:
 
         nick.open("https://phantombuster.com/cloud-services", function() {
             console.log("The page is loaded");
+            phantom.exit(1)
         });
 
 wait()
@@ -126,6 +127,7 @@ Example:
             console.log('Hello ')
             nick.wait(1000, function() {
                 console.log('world!');
+                phantom.exit(1)
             })
         });
 
@@ -134,9 +136,9 @@ waitUntilPresent
 
 ::
 
-    nick.waitUntilPresent(selectors, timeout[, operator], callback);
+    nick.waitUntilPresent(selectors, timeout[, operator = "and"], callback);
 
-Wait until a DOM element, matching the provided selector, is present. If the method has to wait more than ``timeout`` milliseconds, ``callback`` is called with an timout error. A wait* method has to be called before working on selectors.
+Wait until a DOM element, matching the provided selector, is present. If the method has to wait more than ``timeout`` milliseconds, ``callback`` is called with an timout error. If ``operator`` is note defined, the value is automatically set to ``"and"``. A wait* method has to be called before working on selectors.
 
 This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
 
@@ -162,16 +164,66 @@ More info: http://docs.casperjs.org/en/latest/modules/casper.html#waitforselecto
         - if ``condition`` is ``"and"`` then, ``sel`` is the first not present selector of the given array
         - if ``condition`` is ``"or"`` then, ``sel`` is ``null`` because no selectors were found
 
-Example:
+Example with selector argument as a strind:
 
     ::
 
-        nick.waitUntilVisible(selector, 2000, function(err) {
-            if (err) {
-                console.log(err);
-                phantom.exit(1);
-            }
-            console.log('');
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.waitUntilPresent('html', 2000, function(err) {
+                if (err) {
+                    console.log(err);
+                    phantom.exit(1);
+                }
+                console.log("'html' selector is present");
+                phantom.exit(0);
+            });
+        });
+
+Example with selectors argument as an array of one element:
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.waitUntilPresent(['html'], 2000, function(err) {
+                if (err) {
+                    console.log(err);
+                    phantom.exit(1);
+                }
+                console.log("'html' selector is present");
+                phantom.exit(0);
+            });
+        });
+
+Example succeed if all selectors are present in the DOM
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.waitUntilPresent(['html', 'foo', 'bar'], 2000, 'and', function(err, selector) {
+                if (err) {
+                    console.log(err);
+                    console.log("First missing selector:", selector);
+                    phantom.exit(1);
+                }
+                console.log("'html', 'foo', 'bar' selectors are present");
+                phantom.exit(0);
+            });
+        });
+
+Example succeed if one selector is present in the DOM
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.waitUntilPresent(['foo', 'html', 'bar'], 2000, 'or', function(err, selector) {
+                if (err) {
+                    console.log(err);
+                    console.log("'foo', 'html', 'bar' selectors are missing");
+                    phantom.exit(1);
+                }
+                console.log("First matching selector:", selector);
+                phantom.exit(0);
+            });
         });
 
 waitWhilePresent
@@ -221,6 +273,7 @@ Example:
                 phantom.exit(1);
             }
             console.log("Evaluation succeeded. Return value is", ret); // "Evaluation succeeded. Return value is 42"
+            phantom.exit(0);
         });
 
 inject()
@@ -250,8 +303,8 @@ Example:
                 phantom.exit(1);
             }
             console.log("Jquery script inserted!");
+            phantom.exit(0);
         });
-
 
 click()
 -------
@@ -278,27 +331,29 @@ Example:
 
         var selector = "a.btn-warning";
 
-        nick.waitUntilVisible(selector, 2000, function(err) {
-            if (err) {
-                console.log(err)
-                phantom.exit(1);
-            }
-            nick.click(selector, function(err) {
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.waitUntilVisible(selector, 2000, function(err) {
                 if (err) {
                     console.log(err)
                     phantom.exit(1);
                 }
-                console.log("Click on 'TRY FREE' button done.");
-                phantom.exit(0);
+                nick.click(selector, function(err) {
+                    if (err) {
+                        console.log(err)
+                        phantom.exit(1);
+                    }
+                    console.log("Click on 'TRY FREE' button done.");
+                    phantom.exit(0);
+                });
             });
         });
 
 getCurrentUrl()
 ---------------
 
-::
+    ::
 
-    nick.getCurrentUrl(callback)
+        nick.getCurrentUrl(callback)
 
 Retrieves current page URL and call the ``callback`` function with the URL in second argument. Note that the url will be url-decoded.
 
@@ -320,6 +375,7 @@ Example:
                     phantom.exit(1);
                 }
                 console.log("Current Url: ", url);
+                phantom.exit(0);
             });
         });
 
@@ -342,11 +398,13 @@ Example:
 
         nick.open("https://phantombuster.com/cloud-services", function() {
             var url = nick.getCurrentUrlOrNull();
+
             if (url == null) {
                 console.log("The url is null");
                 phantom.exit(1);
             }
             console.log("Current Url: ", url);
+            phantom.exit(0);
         });
 
 getHtml()
@@ -376,6 +434,7 @@ Example:
                     phantom.exit(1);
                 }
                 console.log("HTML: ", html);
+                phantom.exit(0);
             });
         });
 
@@ -398,11 +457,13 @@ Example:
 
         nick.open("https://phantombuster.com/cloud-services", function() {
             var html = nick.getHtmlOrNull();
+
             if (html == null) {
                 console.log("html is null");
                 phantom.exit(1);
             }
-            console.log("HTML: ", url);
+            console.log("HTML: ", html);
+            phantom.exit(0);
         });
 
 getPageContent()
@@ -432,6 +493,7 @@ Example:
                     phantom.exit(1);
                 }
                 console.log("Page content: ", content);
+                phantom.exit(0);
             });
         });
 
@@ -454,11 +516,13 @@ Example:
 
         nick.open("https://phantombuster.com/cloud-services", function() {
             var content = nick.getPageContentOrNull();
+
             if (content == null) {
                 console.log("content is null");
                 phantom.exit(1);
             }
             console.log("Content: ", content);
+            phantom.exit(0);
         });
 
 getTitle()
@@ -488,6 +552,7 @@ Example:
                     phantom.exit(1);
                 }
                 console.log("Page title: ", title);
+                phantom.exit(0);
             });
         });
 
@@ -511,11 +576,13 @@ Example:
 
         nick.open("https://phantombuster.com/cloud-services", function() {
             var title = nick.getTitleOrNull();
+
             if (title == null) {
                 console.log("title is null");
                 phantom.exit(1);
             }
             console.log("Title: ", title);
+            phantom.exit(0);
         });
 
 fill()
@@ -579,6 +646,7 @@ A Nick script filling the form and sending it:
                     phantom.exit(1);
                 }
                 console.log("Form sent!");
+                phantom.exit(0);
             });
         });
 
@@ -588,7 +656,7 @@ screenshot()
 
     ::
 
-        nick.screenshot(filename, [clipRect, imgOptions,] callback)
+        nick.screenshot(filename[, clipRect[, imgOptions]], callback)
 
 Take a screenshot of the current page. Without optional arguments, this method take a screenshot of the entire page.
 
@@ -639,10 +707,44 @@ Example:
                     phantom.exit(1);
                 }
                 console.log("Screenshot saved!")
+                phantom.exit(0);
             });
         });
 
 
+Example with options:
+
+    ::
+
+        var buster = require('phantombuster').create()
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.screenshot('./image.jpg'
+            , {
+                top: 90,
+                left: 190,
+                width: 900,
+                height: 360
+            }
+            , {
+                format: 'png',
+                quality: 100
+            }
+            , function(err) {
+                if (err) {
+                    console.log(err);
+                    phantom.exit(1);
+                }
+                console.log("Screenshot saved!")
+                buster.saveFolder(function(err) {
+                    if (err) {
+                        console.log(err);
+                        phantom.exit(1);
+                    }
+                    phantom.exit(0);
+                });
+            });
+        });
 
 sendKeys()
 ----------
@@ -683,6 +785,7 @@ Example:
                     phantom.exit(1);
                 }
                 console.log("Keys sent!")
+                phantom.exit(0);
             });
         });
 
@@ -702,9 +805,6 @@ Example with optional argument:
                     phantom.exit(1);
                 }
                 console.log("Keys sent!")
+                phantom.exit(0);
             });
         });
-
-
-
-
