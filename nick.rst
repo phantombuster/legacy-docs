@@ -183,8 +183,44 @@ waitUntilVisible
 waitWhileVisible
 ----------------
 
-evaluate
---------
+evaluate()
+----------
+    ::
+
+        nick.evaluate(sandboxedFunction[, argumentObject], callback);
+
+Evaluates the function in the current page DOM context. The execution is sandboxed, the web page has no access to Nick context. Data can be given through ``argumentObject``.
+
+This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
+
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#evaluate
+
+``sandboxedFunction (Function([Object argumentObject]))``
+    The function evaluated in the DOM context. argumentObject is a copy of the object given in second optional argument.
+
+``argumentObject (object)``
+    Object to copy to the DOM context and given to the ``sandboxedFunction`` optional argument.
+
+``callback (Function(String err[, Object ret]))``
+    Function called when finish. When there is no error, ``err`` is null and ``ret`` is a copy of the object returned by sandboxedFunction call in DOM context.
+
+Example:
+
+    ::
+
+        var num = 21;
+
+        nick.evaluate(function(arg) {
+            return arg.n * 2;
+        }, {
+            'n': num
+        }, function(err, ret) {
+            if (err) {
+                console.log(err);
+                phantom.exit(1);
+            }
+            console.log("Evaluation succeeded. Return value is", ret); // "Evaluation succeeded. Return value is 42"
+        });
 
 click()
 -------
