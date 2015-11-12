@@ -39,7 +39,7 @@ The agent module is named ``phantombuster``. Use ``require('phantombuster')`` an
 Asynchronous methods
 --------------------
 
-Following the philosophy of Node.js, most methods of the agent module are asynchronous. You have to use the callback function to know when (and if) a call finished successfully.
+Following the philosophy of Node, most methods of the agent module are asynchronous. You have to use the callback function to know when (and if) a call finished successfully.
 
 For example, this is bad:
 
