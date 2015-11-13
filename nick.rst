@@ -14,7 +14,7 @@ Your agents must be launched with the CasperJS command when using this module. N
 Initialization
 --------------
 
-The module is named ``Nick``. Use ``require('lib-Nick-beta')`` and create an instance ``var nick = new Nick()`` to use it.
+The module is named ``Nick``. Use ``require('lib-Nick-beta')`` and create an instance to use it.
 
 ::
 
@@ -28,7 +28,7 @@ The module is named ``Nick``. Use ``require('lib-Nick-beta')`` and create an ins
 Asynchronous methods
 --------------------
 
-Following the philosophy of Node, most methods of the agent module are asynchronous. You have to use the callback function to know when (and if) a call finished successfully.
+Following the philosophy of Node, most of Nick's methods are asynchronous. You have to use the callback function to know when (and if) a call finished successfully.
 
 For example, this is bad:
 
@@ -52,6 +52,12 @@ This is better:
         }
     });
 
+Warning: no parallelism
+-----------------------
+
+Options
+-------
+
 open()
 ------
 
@@ -65,10 +71,10 @@ This method is asynchronous and returns nothing. Use the ``callback`` to know wh
 
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#open
 
-``url (string)``
+``url`` (``String``)
     URL of the page to visit.
 
-``options (object)``
+``options`` (``PlainObject``)
     Optional request headers.
 
     ::
@@ -84,7 +90,7 @@ More info: http://docs.casperjs.org/en/latest/modules/casper.html#open
             }
         }
 
-``callback (Function())``
+``callback`` (``Function()``)
     Function called when finished. No arguments are returned. To know if the page opened successfully, use `waitUntilPresent()`_ or similar.
 
 Example:
@@ -109,10 +115,10 @@ This method is asynchronous and returns nothing. Use the ``callback`` to know wh
 
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#wait
 
-``duration (Number)``
+``duration`` (``Number``)
     Milliseconds to wait before calling ``callback`` function.
 
-``callback (Function())``
+``callback`` (``Function()``)
     Function called when finished. This function never fails, no arguments will be passed.
 
 Example:
@@ -142,16 +148,16 @@ This method is asynchronous and returns nothing. Use the ``callback`` to know wh
 
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#waitforselector
 
-``selectors (Array or String)``
+``selectors`` (``Array or String``)
     An array of CSS3 or XPath expression that describes the path to DOM elements.
 
-``timeout (Number)``
+``timeout`` (``Number``)
     Milliseconds to wait before calling ``callback`` function with an error.
 
-``condition (String)``
+``condition`` (``String``)
     If ``selectors`` is an array, this argument set the condition to wait. If ``condition`` is ``"and"``, the method will wait for the presence of all ``selectors``. Otherwise if ``condition`` is ``"or"``, the method will wait for the first ``selector`` of the array to be present.
 
-``callback (Function(String err, String sel))``
+``callback`` (``Function(String err, String sel)``)
     Function called when finish. When there is no error, ``err`` is null.
 
     - In case of success (``err`` is *null*):
@@ -435,8 +441,8 @@ Example:
             });
         });
 
-getHtmlOrNull
--------------
+getHtmlOrNull()
+---------------
 
 ::
 
@@ -462,12 +468,12 @@ Example:
             phantom.exit(0);
         });
 
-getPageContent()
-----------------
+getContent()
+------------
 
 ::
 
-    nick.getPageContent(callback)
+    nick.getContent(callback)
 
 Retrieves current page content and call the ``callback`` function with the page content in second argument.
 
@@ -493,14 +499,14 @@ Example:
             });
         });
 
-getPageContentOrNull()
-----------------------
+getContentOrNull()
+------------------
 
 ::
 
-    nick.getPageContentOrNull()
+    nick.getContentOrNull()
 
-This method is synchronous and returns *null* if it fails otherwise it returns a the page content (String).
+This method is synchronous and returns *null* if it fails otherwise it returns the page content (string).
 
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#getpagecontent
 
