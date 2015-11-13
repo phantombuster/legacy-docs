@@ -3,13 +3,13 @@
 Nick
 ====
 
-Nick is a special module made by the Phantombuster team. It provides an easy navigation/web automation/scraping system. It's based on CasperJS and written in CoffeeScript.
+Nick is a special module made by the Phantombuster team. It provides an easy navigation/web automation/scraping system. It's based on CasperJS and is written in CoffeeScript.
 
 CasperJS is a powerful library with many methods. But only a few are essential. Nick limits the number of methods and replaces the step-by-step CasperJS paradigm with the async/callback paradigm of Node.
 
 Before ``Nick`` methods can be used, you need to ``require()`` a ``Nick`` class and instantiate it.
 
-This module is compatible with CapserJS commands (but not with PhantomJS or Node).
+Your agents must be launched with the CasperJS command when using this module. Nick is not compatible with Node or PhantomJS.
 
 Initialization
 --------------
@@ -18,16 +18,12 @@ The module is named ``Nick``. Use ``require('lib-Nick-beta')`` and create an ins
 
 ::
 
+    'use strict';
+    'phantombuster command: casperjs';
+    'phantombuster dependencies: lib-Nick-beta.coffee'
+
     var Nick = require('lib-Nick-beta');
-
     var nick = new Nick();
-
-Or
-
-::
-
-    var nick = new (require('lib-Nick-beta'));
-
 
 Asynchronous methods
 --------------------
@@ -113,7 +109,7 @@ This method is asynchronous and returns nothing. Use the ``callback`` to know wh
 
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#wait
 
-``duration (number)``
+``duration (Number)``
     Milliseconds to wait before calling ``callback`` function.
 
 ``callback (Function())``
@@ -138,20 +134,22 @@ waitUntilPresent()
 
     nick.waitUntilPresent(selectors, timeout [, condition = "and"], callback);
 
-Waits until a DOM element, matching the provided selector, is present. If the method has to wait more than ``timeout`` milliseconds, ``callback`` is called with a timout error. If ``condition`` is not defined, the value is automatically set to ``"and"``. A wait* method has to be called before working on selectors.
+Waits until a DOM element, matching the provided selector, is present. If the method has to wait more than ``timeout`` milliseconds, ``callback`` is called with a ``"timeout"`` error. By default, ``condition`` is set to ``"and"``.
+
+It is considered good practive to always use a ``wait*()`` method after a page load and before any action on selectors.
 
 This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
 
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#waitforselector
 
-``selectors (array)``
-    An array of CSS3 or XPath expression that describe the path to DOM elements.
+``selectors (Array or String)``
+    An array of CSS3 or XPath expression that describes the path to DOM elements.
 
-``timeout (number)``
+``timeout (Number)``
     Milliseconds to wait before calling ``callback`` function with an error.
 
-``condition (string)``
-    If ``selectors`` is an array, this argument set the condition to wait. If ``condition`` is ``"and"``, the method will wait for every ``selectors`` to be present. Otherwise if ``condition`` is ``"or"``, the method will wait for the first ``selector`` of the array to be present.
+``condition (String)``
+    If ``selectors`` is an array, this argument set the condition to wait. If ``condition`` is ``"and"``, the method will wait for the presence of all ``selectors``. Otherwise if ``condition`` is ``"or"``, the method will wait for the first ``selector`` of the array to be present.
 
 ``callback (Function(String err, String sel))``
     Function called when finish. When there is no error, ``err`` is null.
@@ -248,13 +246,13 @@ This method is asynchronous and returns nothing. Use the ``callback`` to know wh
 
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#evaluate
 
-``sandboxedFunction (Function([Object argumentObject]))``
-    The function evaluated in the DOM context. argumentObject is a copy of the object given in second optional argument.
+``sandboxedFunction`` (``Function([Object argumentObject])``)
+    The function evaluated in the DOM context. ``argumentObject`` is a copy of the object given in the second optional argument.
 
-``argumentObject (object)``
+``argumentObject`` (``PlainObject``)
     Object to copy to the DOM context and given to the ``sandboxedFunction`` optional argument.
 
-``callback (Function(String err[, Object ret]))``
+``callback`` (``Function(String err[, Object ret])``)
     Function called when finish. When there is no error, ``err`` is null and ``ret`` is a copy of the object returned by sandboxedFunction call in DOM context.
 
 Example:
@@ -287,10 +285,10 @@ Inject script to the current DOM page context. The script can be hosted locally 
 
 This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
 
-``url (object)``
+``url`` (``object``)
     Path to a script hosted locally or remotely.
 
-``callback (Function(String err))``
+``callback`` (``Function(String err)``)
     Function called when finish. When there is no error, ``err`` is null.
 
 Example:
@@ -319,10 +317,10 @@ This method is asynchronous and returns nothing. Use the ``callback`` to know wh
 
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#click
 
-``selector (string)``
+``selector`` (``string``)
     A CSS3 or XPath expression that describe the path to DOM elements.
 
-``callback (Function(String err))``
+``callback`` (``Function(String err)``)
     Function called when finished. When there is no error, ``err`` is *null* and object is a valid object (which may be empty but never null).
 
 Example:
@@ -361,8 +359,8 @@ This method is asynchronous and returns nothing. Use the ``callback`` to know wh
 
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#getcurrenturl
 
-``callback (Function(String err, String decodeddUrl))``
-    Function called when finish. When there is no error, ``err`` is *null* and ``decodeddUrl`` is a url-decoded string.
+``callback`` (``Function(String err, String decodedUrl)``)
+    Function called when finish. When there is no error, ``err`` is *null* and ``decodedUrl`` is a url-decoded string.
 
 Example:
 
@@ -386,7 +384,7 @@ getCurrentUrlOrNull()
 
     nick.getCurrentUrlOrNull()
 
-This method is synchronous and returns *null* if it fails otherwise it returns a the current URL (String). Note that the url will be url-decoded.
+This method is synchronous and returns *null* if it fails otherwise it returns a the current URL as a string. Note that the url will be url-decoded.
 
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#getcurrenturl
 
@@ -398,12 +396,11 @@ Example:
 
         nick.open("https://phantombuster.com/cloud-services", function() {
             var url = nick.getCurrentUrlOrNull();
-
             if (url == null) {
                 console.log("The url is null");
                 phantom.exit(1);
             }
-            console.log("Current Url: ", url);
+            console.log("Current url: ", url);
             phantom.exit(0);
         });
 
@@ -420,7 +417,7 @@ This method is asynchronous and returns nothing. Use the ``callback`` to know wh
 
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#gethtml
 
-``callback (Function(String err, String html))``
+``callback`` (``Function(String err, String html)``)
     Function called when finish. When there is no error, ``err`` is *null* and ``html`` is the HTML string.
 
 Example:
@@ -443,9 +440,9 @@ getHtmlOrNull
 
 ::
 
-    nick.getHtmlOrNull    },
+    nick.getHtmlOrNull()
 
-This method is synchronous and returns *null* if it fails otherwise it returns a the page HTML (String).
+This method is synchronous and returns *null* if it fails otherwise it returns a the page HTML (string).
 
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#gethtml
 
@@ -457,7 +454,6 @@ Example:
 
         nick.open("https://phantombuster.com/cloud-services", function() {
             var html = nick.getHtmlOrNull();
-
             if (html == null) {
                 console.log("html is null");
                 phantom.exit(1);
@@ -479,7 +475,7 @@ This method is asynchronous and returns nothing. Use the ``callback`` to know wh
 
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#getpagecontent
 
-``callback (Function(String err, String html))``
+``callback`` (``Function(String err, String html)``)
     Function called when finish. When there is no error, ``err`` is *null* and ``html`` is the HTML string.
 
 Example:
@@ -502,7 +498,7 @@ getPageContentOrNull()
 
 ::
 
-    nick.getPageContentOrNull
+    nick.getPageContentOrNull()
 
 This method is synchronous and returns *null* if it fails otherwise it returns a the page content (String).
 
@@ -538,7 +534,7 @@ This method is asynchronous and returns nothing. Use the ``callback`` to know wh
 
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#gettitle
 
-``callback (Function(String err, String title))``
+``callback`` (``Function(String err, String title)``)
     Function called when finish. When there is no error, ``err`` is *null* and ``title`` is the current page title string.
 
 Example:
@@ -598,16 +594,16 @@ This method is asynchronous and returns nothing. Use the ``callback`` to know wh
 
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#gettitle
 
-``selector (string)``
+``selector`` (``String``)
     A CSS3 or XPath expression that describe the path to DOM elements.
 
-``inputs (object)``
+``inputs`` (``PlainObject``)
     An object composed by name:value, with name, the input name and value, the value to set.
 
-``submit (boolean)``
+``submit`` (``Boolean``)
     If ``true`` the form will be automatically sent.
 
-``callback (Function(String err))``
+``callback`` (``Function(String err)``)
     Function called when finish. When there is no error, ``err`` is *null*.
 
 
@@ -631,7 +627,7 @@ A Nick script filling the form and sending it:
 
     ::
 
-        nick.open("https://some.url", function() {
+        nick.open("https://example.com", function() {
             nick.fill('form#contact-form', {
                 'subject': 'I am watching you',
                 'content': 'So be careful.',
@@ -656,7 +652,7 @@ screenshot()
 
     ::
 
-        nick.screenshot(filename[, clipRect[, imgOptions]], callback)
+        nick.screenshot(filename [, clipRect, imgOptions], callback)
 
 Take a screenshot of the current page. Without optional arguments, this method take a screenshot of the entire page.
 
@@ -664,10 +660,10 @@ This method is asynchronous and returns nothing. Use the ``callback`` to know wh
 
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#capture
 
-``path (string)``
+``path`` (``String``)
     The path of the screenshot. The format is defined by the file extention. 'image.jpg' will create a JPEG image in the current folder.
 
-``clipRect (object)``
+``clipRect`` (``PlainObject``)
     This optional argument set the position and the size of the screenshot square.
 
     Example:
@@ -681,7 +677,7 @@ More info: http://docs.casperjs.org/en/latest/modules/casper.html#capture
             height: 400
         }
 
-``imgOptions (object)``
+``imgOptions`` (``PlainObject``)
     This optional argument set the two avalaible image options. Such as the format and the quality of the screenshot image.
 
     Example:
@@ -693,7 +689,7 @@ More info: http://docs.casperjs.org/en/latest/modules/casper.html#capture
             quality: 50
         }
 
-``callback (Function(String err))``
+``callback`` (``Function(String err)``)
     Function called when finish. When there is no error, ``err`` is *null*.
 
 Example:
@@ -751,28 +747,28 @@ sendKeys()
 
 ::
 
-    nick.sendKeys(selector, keys[, options], callback)
+    nick.sendKeys(selector, keys [, options], callback)
 
-Write keys in an ``input`, ``textarea`` of every DOM element with ``contenteditable="true"`` of the current page.
+Write keys in an ``<input>``, ``<textarea>`` or any DOM element with ``contenteditable="true"`` in the current page.
 
 This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
 
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#sendkeys
 
-``selector (string)``
-    A CSS3 or XPath expression that describe the path to DOM elements.
+``selector`` (``String``)
+    A CSS3 or XPath expression that describes the path to DOM elements.
 
-``keys (string)``
-    The keys to send in an ``input`, ``textarea`` of every DOM element with ``contenteditable="true"`` attribute.
+``keys`` (``String``)
+    Keys to send to the editable DOM element.
 
-``options (object)``
+``options`` (``PlainObject``)
     The three options avalable are:
-        * reset (boolean), remove the content of the targetd element.
-        * keepFocus (boolean), keep the focus in the editable DOM element after keys have been sent.
-        * modifiers (object), modifier string appent by a '+'. Available modifiers are ``ctrl``, ``alt``, ``shift``, ``meta`` and ``keypad``
+        - ``reset`` (``Boolean``): remove the content of the targeted element before sending key presses.
+        - ``keepFocus`` (``Boolean``): keep the focus in the editable DOM element after keys have been sent.
+        - ``modifiers`` (``PlainObject``): modifier string concatenated with a ``+`` (available modifiers are ``ctrl``, ``alt``, ``shift``, ``meta`` and ``keypad``).
 
-``callback (Function(String err))``
-    Function called when finish. When there is no error, ``err`` is *null*.
+``callback`` (``Function(String err)``)
+    Function called when finished. When there is no error, ``err`` is *null*.
 
 Example:
 
