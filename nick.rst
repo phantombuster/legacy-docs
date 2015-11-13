@@ -748,6 +748,9 @@ Example with options:
             });
         });
 
+selectorScreenshot()
+--------------------
+
 sendKeys()
 ----------
 
