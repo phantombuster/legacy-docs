@@ -516,7 +516,67 @@ Sample response:
             "url": null,
             "text": " ... script contents ... ",
             "httpHeaders": null,
+            "lastSaveDate": 1427806874,
+            "nonce": 123
         }
+    }
+
+List scripts
+------------
+
+::
+
+    GET /api/v1/scripts.json
+
+Get the list of all your scripts.
+
+Sample response:
+
+::
+
+    {
+        "status": "success",
+        "data": [
+            {
+                "id": 450,
+                "name": "script1.coffee",
+                "source": "phantombuster",
+                "url": "",
+                "httpHeaders": null,
+                "lastSaveDate": 1446562593,
+                "nonce": 12
+            },
+            {
+                "id": 452,
+                "name": "script2.js",
+                "source": "sdk",
+                "url": "",
+                "httpHeaders": null,
+                "lastSaveDate": 1446562789,
+                "nonce": 4
+            }
+        ]
+    }
+
+Delete a script
+---------------
+
+::
+
+    DELETE /api/v1/script/{id}.json
+
+Delete one of your script.
+
+``{id}`` (``Number``)
+    ID of the script to delete.
+
+Sample response:
+
+::
+
+    {
+        "status": "success",
+        "data": null
     }
 
 Update or create a script
