@@ -449,6 +449,8 @@ Sample response:
         ]
     }
 
+.. _get-script-by-id:
+
 Get a script by its ID
 ----------------------
 
@@ -484,6 +486,8 @@ Sample response:
             "nonce": 123
         }
     }
+
+.. _get-script-by-name:
 
 Get a script by its name
 ------------------------
@@ -528,7 +532,7 @@ List scripts
 
     GET /api/v1/scripts.json
 
-Get the list of all your scripts.
+Get the list of all your scripts without text. To get a script contents, fetch it individually by its :ref:`ID <get-script-by-id>` or :ref:`name <get-script-by-name>`.
 
 Sample response:
 
@@ -593,6 +597,12 @@ Update an existing script or create a new one if it does not exist (in this case
 
 ``text`` (``String``)
     Full text contents of the script. This parameter must be in the request body in ``x-www-form-urlencoded`` format.
+
+``insertOnly`` (``String``)
+    If present and not empty, make sure that we don't update an existing script (optional). An error will be returned if a script with the same name already exists.
+
+``source`` (``String``)
+    Optional ``String`` describing from where the script comes from. Reserved sources keywords are ``phantombuster``, ``web``, ``sdk`` and ``bot builder``. Only 20 alpha-numeric characters (and space) are allowed.
 
 Sample response:
 
