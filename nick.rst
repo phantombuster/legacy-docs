@@ -158,7 +158,7 @@ More info: http://docs.casperjs.org/en/latest/modules/casper.html#waitforselecto
     If ``selectors`` is an array, this argument set the condition to wait. If ``condition`` is ``"and"``, the method will wait for the presence of all ``selectors``. Otherwise if ``condition`` is ``"or"``, the method will wait for the first ``selector`` of the array to be present.
 
 ``callback`` (``Function(String err, String sel)``)
-    Function called when finish. When there is no error, ``err`` is null.
+    Function called when finished. When there is no error, ``err`` is null.
 
     - In case of success (``err`` is *null*):
         - if ``condition`` is ``"and"`` then, ``sel`` is *null* because all selectors are present
@@ -259,7 +259,7 @@ More info: http://docs.casperjs.org/en/latest/modules/casper.html#evaluate
     Object to copy to the DOM context and given to the ``sandboxedFunction`` optional argument.
 
 ``callback`` (``Function(String err[, Object ret])``)
-    Function called when finish. When there is no error, ``err`` is null and ``ret`` is a copy of the object returned by sandboxedFunction call in DOM context.
+    Function called when finished. When there is no error, ``err`` is null and ``ret`` is a copy of the object returned by sandboxedFunction call in DOM context.
 
 Example:
 
@@ -280,6 +280,20 @@ Example:
             phantom.exit(0);
         });
 
+evaluate()
+----------
++       evaluateAsync: (func, param, callback) =>
++               if (typeof(param) is 'function') and (not callback?)
++                       callback = param
++                       param = null
++               if typeof(func) isnt 'function'
++                       throw new Error 'evaluate: func parameter must be of type function'
++               if typeof(param) isnt 'object'
++                       throw new Error 'evaluate: param parameter must be of type object'
++               if typeof(callback) isnt 'function'
++                       throw new Error 'evaluate: callback parameter must be of type function'
+
+
 inject()
 --------
 
@@ -295,7 +309,7 @@ This method is asynchronous and returns nothing. Use the ``callback`` to know wh
     Path to a script hosted locally or remotely.
 
 ``callback`` (``Function(String err)``)
-    Function called when finish. When there is no error, ``err`` is null.
+    Function called when finished. When there is no error, ``err`` is null.
 
 Example:
 
@@ -366,7 +380,7 @@ This method is asynchronous and returns nothing. Use the ``callback`` to know wh
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#getcurrenturl
 
 ``callback`` (``Function(String err, String decodedUrl)``)
-    Function called when finish. When there is no error, ``err`` is *null* and ``decodedUrl`` is a url-decoded string.
+    Function called when finished. When there is no error, ``err`` is *null* and ``decodedUrl`` is a url-decoded string.
 
 Example:
 
@@ -424,7 +438,7 @@ This method is asynchronous and returns nothing. Use the ``callback`` to know wh
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#gethtml
 
 ``callback`` (``Function(String err, String html)``)
-    Function called when finish. When there is no error, ``err`` is *null* and ``html`` is the HTML string.
+    Function called when finished. When there is no error, ``err`` is *null* and ``html`` is the HTML string.
 
 Example:
 
@@ -482,7 +496,7 @@ This method is asynchronous and returns nothing. Use the ``callback`` to know wh
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#getpagecontent
 
 ``callback`` (``Function(String err, String html)``)
-    Function called when finish. When there is no error, ``err`` is *null* and ``html`` is the HTML string.
+    Function called when finished. When there is no error, ``err`` is *null* and ``html`` is the HTML string.
 
 Example:
 
@@ -541,7 +555,7 @@ This method is asynchronous and returns nothing. Use the ``callback`` to know wh
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#gettitle
 
 ``callback`` (``Function(String err, String title)``)
-    Function called when finish. When there is no error, ``err`` is *null* and ``title`` is the current page title string.
+    Function called when finished. When there is no error, ``err`` is *null* and ``title`` is the current page title string.
 
 Example:
 
@@ -610,7 +624,7 @@ More info: http://docs.casperjs.org/en/latest/modules/casper.html#gettitle
     If ``true`` the form will be automatically sent.
 
 ``callback`` (``Function(String err)``)
-    Function called when finish. When there is no error, ``err`` is *null*.
+    Function called when finished. When there is no error, ``err`` is *null*.
 
 
 Example with simple HTML form:
@@ -696,7 +710,7 @@ More info: http://docs.casperjs.org/en/latest/modules/casper.html#capture
         }
 
 ``callback`` (``Function(String err)``)
-    Function called when finish. When there is no error, ``err`` is *null*.
+    Function called when finished. When there is no error, ``err`` is *null*.
 
 Example:
 
