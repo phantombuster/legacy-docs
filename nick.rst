@@ -280,6 +280,8 @@ Example:
             phantom.exit(0);
         });
 
+.. _nick-inject:
+
 inject()
 --------
 
