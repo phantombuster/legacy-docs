@@ -142,7 +142,7 @@ waitUntilPresent()
 
 Waits until a DOM element, matching the provided selector, is present. If the method has to wait more than ``timeout`` milliseconds, ``callback`` is called with a ``"timeout"`` error. By default, ``condition`` is set to ``"and"``.
 
-It is considered good practive to always use a ``wait*()`` method after a page load and before any action on selectors.
+It is considered good practice to always use a ``wait*()`` method after a page load and before any action on selectors.
 
 This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
 
@@ -279,20 +279,6 @@ Example:
             console.log("Evaluation succeeded. Return value is", ret); // "Evaluation succeeded. Return value is 42"
             phantom.exit(0);
         });
-
-evaluate()
-----------
-+       evaluateAsync: (func, param, callback) =>
-+               if (typeof(param) is 'function') and (not callback?)
-+                       callback = param
-+                       param = null
-+               if typeof(func) isnt 'function'
-+                       throw new Error 'evaluate: func parameter must be of type function'
-+               if typeof(param) isnt 'object'
-+                       throw new Error 'evaluate: param parameter must be of type object'
-+               if typeof(callback) isnt 'function'
-+                       throw new Error 'evaluate: callback parameter must be of type function'
-
 
 inject()
 --------
