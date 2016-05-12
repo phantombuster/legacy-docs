@@ -48,3 +48,12 @@ These modules are also available and compatible with Node. However, we have not 
 - `lodash <https://www.npmjs.com/package/lodash>`_ — JavaScript utility library
 - `qs <https://www.npmjs.com/package/qs>`_ — Querystring parser
 - `is-my-json-valid <https://www.npmjs.com/package/is-my-json-valid>`_, `jsen <https://www.npmjs.com/package/jsen>`_ — JSON Schema validation
+
+Injectable modules
+------------------
+
+These modules come preloaded on all agent disks. They can be injected in visited pages for easier DOM manipulation (mainly for scraping and automation purposes).
+
+Use :ref:`nick.inject() <nick-inject>` or `page.injectJs() from PhantomJS <http://phantomjs.org/api/webpage/method/inject-js.html>`_ to add them in web pages.
+
+- ``../injectables/jquery-2.2.3.min.js`` - `jQuery <https://jquery.com/>`_

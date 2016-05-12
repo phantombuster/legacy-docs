@@ -280,6 +280,8 @@ Example:
             phantom.exit(0);
         });
 
+.. _nick-inject:
+
 inject()
 --------
 
@@ -307,6 +309,7 @@ Example:
                 phantom.exit(1);
             }
             console.log("Jquery script inserted!");
+            // do your DOM manipulation...
             phantom.exit(0);
         });
 
