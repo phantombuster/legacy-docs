@@ -282,6 +282,48 @@ Example:
 
 .. _nick-inject:
 
+evaluateAsync()
+--------------
+
+    ::
+
+        nick.evaluateAsync(sandboxedFunction [, argumentObject], callback);
+
+Evaluates the function in the current page DOM context. The execution is sandboxed and asynchronous, the web page has no access to the Nick context. Data can be given through ``argumentObject``. Because ``sandboxedFunction`` is asynchronous the function ``done`` must be called.
+
+This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
+
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#evaluate
+
+``sandboxedFunction`` (``Function([Object argumentObject], done)``)
+    The function evaluated in the DOM context. ``argumentObject`` is a copy of the object given in the second optional argument. ``done`` must be called before the function ends with the same arguments as ``callback``.
+
+``argumentObject`` (``PlainObject``)
+    Object to copy to the DOM context and given to the ``sandboxedFunction`` optional argument.
+
+``callback`` (``Function(String err[, Object ret])``)
+    Function called when finished. When there is no error, ``err`` is null and ``ret`` is a copy of the object returned by sandboxedFunction call in DOM context.
+
+Example:
+
+    ::
+
+        var num = 21;
+
+        nick.evaluateAsync(function(arg, done) {
+            return done(null, arg.n * 2;)
+        }, {
+            'n': num
+        }, function(err, ret) {
+            if (err) {
+                console.log(err);
+                phantom.exit(1);
+            }
+            console.log("Evaluation succeeded. Return value is", ret); // "Evaluation succeeded. Return value is 42"
+            phantom.exit(0);
+        });
+
+
 inject()
 --------
 
