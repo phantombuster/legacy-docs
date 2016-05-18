@@ -280,8 +280,6 @@ Example:
             phantom.exit(0);
         });
 
-.. _nick-inject:
-
 evaluateAsync()
 --------------
 
@@ -323,6 +321,7 @@ Example:
             phantom.exit(0);
         });
 
+.. _nick-inject:
 
 inject()
 --------
