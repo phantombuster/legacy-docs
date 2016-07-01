@@ -21,6 +21,13 @@ These modules are compatible with all the Phantombuster commands (CasperJS, Phan
 - `resemblejs <https://www.npmjs.com/package/resemblejs>`_ — Image analysis and comparison with HTML5
 - `deep-diff <https://www.npmjs.com/package/deep-diff>`_ — Calculate object differences
 
+For CasperJS and PhantomJS only
+-------------------------------
+
+These modules are only compatible with CasperJS or PhantomJS.
+
+- `papaparse <https://www.npmjs.com/package/papaparse>`_ — Fast, in-browser CSV parser
+
 For Node only
 -------------
 
@@ -56,4 +63,8 @@ These modules come preloaded on all agent disks. They can be injected in visited
 
 Use :ref:`nick.inject() <nick-inject>` or `page.injectJs() from PhantomJS <http://phantomjs.org/api/webpage/method/inject-js.html>`_ to add them in web pages.
 
-- ``../injectables/jquery-2.2.3.min.js`` - `jQuery <https://jquery.com/>`_
+- ``../injectables/jquery-2.2.3.min.js`` - `jQuery 2 <https://jquery.com/>`_ (84kB)
+- ``../injectables/jquery-3.0.0.min.js`` - `jQuery 3 <https://jquery.com/>`_ (85kB)
+- ``../injectables/underscore-1.8.3.min.js`` - `Underscore <http://underscorejs.org/>`_ (17kB)
+- ``../injectables/lodash-core-4.13.1.min.js`` - `Lodash <https://lodash.com/>`_ (core build, 12kB)
+- ``../injectables/lodash-full-4.13.1.min.js`` - `Lodash <https://lodash.com/>`_ (full build, 67kB)
