@@ -6,6 +6,7 @@ Documentation
 
     writing_scripts
     modules
+    packages
     agent_module
     agent_module_return_data
     agent_module_file_storage

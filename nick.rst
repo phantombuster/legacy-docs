@@ -14,16 +14,19 @@ Your agents must be launched with the CasperJS command when using this module. N
 Initialization
 --------------
 
-The module is named ``Nick``. Use ``require('lib-Nick-beta')`` and create an instance to use it.
+The module is named ``Nick``. Use ``require('lib-Nick-beta')`` and create an instance to use it. A typical Nick-based script starts like this:
 
 ::
 
     'use strict';
     'phantombuster command: casperjs';
+    'phantombuster package: 2';
     'phantombuster dependencies: lib-Nick-beta.coffee'
 
     var Nick = require('lib-Nick-beta');
     var nick = new Nick();
+
+An instance of Nick is similar to a browser tab. If you want to open multiple pages/tabs simultaneously, instantiate multiple Nicks.
 
 Asynchronous methods
 --------------------
@@ -126,7 +129,7 @@ Example:
     ::
 
         nick.open("https://phantombuster.com/cloud-services", function() {
-            console.log('Hello ')
+            console.log('Hello')
             nick.wait(1000, function() {
                 console.log('world!');
                 phantom.exit(1)
@@ -330,7 +333,7 @@ inject()
 
         nick.inject(url, callback);
 
-Inject script to the current DOM page context. The script can be hosted locally or on a remote server.
+Inject a script in the current DOM page context. The script can be hosted locally on the agent's disk or on a remote server.
 
 This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
 

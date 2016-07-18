@@ -9,7 +9,6 @@ Here's a short list of what the API allows:
 - Get console output, status, progress and messages from an agent
 - Get real-time console output from an agent
 - Get user, agent and script records
-- Send emails
 - Write scripts
 - ...
 

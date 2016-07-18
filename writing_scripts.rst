@@ -91,14 +91,16 @@ All your scripts (and samples/libraries) can be required. The requiring script m
 
 ::
 
+    "use strict";
+    "phantombuster command: casperjs";
+    "phantombuster package: 2";
     // Comma separated list of dependencies
     // Specify the full name (with extension)
-    "phantombuster dependencies: my-script.js, lib-CasperPool.coffee";
-    "use strict";
+    "phantombuster dependencies: my-lib.js, lib-Nick-beta.coffee";
 
     // The rest of your script...
-    require("my-script");
-    CasperPool = require("lib-CasperPool");
+    MyLib = require("my-lib");
+    Nick = require("lib-Nick-beta");
 
 Writing libraries/modules
 -------------------------
@@ -119,6 +121,9 @@ When the name of a script starts with ``lib``, its launch will be disabled. This
 
     // In script "my-script.js"
 
+    "use strict";
+    "phantombuster command: casperjs";
+    "phantombuster package: 2";
     "phantombuster dependencies: lib-Foo.js";
 
     require("lib-Foo").foo(); // outputs "bar"
@@ -132,6 +137,7 @@ If you want to make sure a script is always launched with the same command, add 
 
     // Possible values are: casperjs, phantomjs and node
     "phantombuster command: node";
+    "phantombuster package: 2";
     "use strict";
 
     // The rest of your script...
