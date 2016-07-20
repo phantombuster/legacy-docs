@@ -48,11 +48,13 @@ Exact versions of all bundled modules:
 	aws-sdk@2.4.6
 	axios@0.13.1
 	bluebird@3.4.1
+	babel-polyfill@6.9.1
 	cheerio@0.20.0
 	coffee-script@1.10.0
 	data2xml@1.2.5
 	deep-diff@0.3.4
 	easyxml@2.0.1
+	es6-promise@3.2.1
 	fast-csv@2.0.1
 	fs-extra@0.30.0
 	is-my-json-valid@2.13.1
@@ -117,11 +119,13 @@ Exact versions of all bundled modules:
 	aws-sdk@2.3.9
 	axios@0.13.1
 	bluebird@3.4.1
+	babel-polyfill@6.9.1
 	cheerio@0.20.0
 	coffee-script@1.10.0
 	data2xml@1.2.5
 	deep-diff@0.3.4
 	easyxml@2.0.1
+	es6-promise@3.2.1
 	fast-csv@2.0.0
 	fs-extra@0.30.0
 	is-my-json-valid@2.13.1

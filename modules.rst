@@ -52,7 +52,9 @@ Other modules
 These modules are also available and compatible with Node. However, we have not yet tested them for CasperJS or PhantomJS compatibility.
 
 - `axios <https://www.npmjs.com/package/axios>`_ — Promise based HTTP client
+- `babel-polyfill <https://www.npmjs.com/package/babel-polyfill>`_ — ES2015 environment emulation
 - `cheerio <https://www.npmjs.com/package/cheerio>`_ — Implementation of core jQuery for the server
+- `es6-promise <https://www.npmjs.com/package/es6-promise>`_ — Tools for organizing asynchronous code (ES6 Promise polyfill)
 - `is-my-json-valid <https://www.npmjs.com/package/is-my-json-valid>`_, `jsen <https://www.npmjs.com/package/jsen>`_ — JSON Schema validation
 - `jsdom <https://www.npmjs.com/package/jsdom>`_ — Implementation of the DOM and HTML standards
 - `lodash <https://www.npmjs.com/package/lodash>`_ — JavaScript utility library
