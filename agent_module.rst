@@ -183,7 +183,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     Intermediate directories are not created automatically on your agent's disk.
 
 ``headers`` (``PlainObject``)
-    HTTP headers to use when requesting the file (optional). Cookies are automatically set when using CasperJS or PhantomJs.
+    HTTP headers to use when requesting the file (optional). Cookies are automatically set when using CasperJS or PhantomJS.
 
 ``callback`` (``Function(String err, String path)``)
     Function to call when finished (optional). When there is no error, ``err`` is *null* and ``path`` contains the path to the file on your agent's disk.
@@ -304,6 +304,51 @@ This method is asynchronous and returns nothing. Use the callback to know when i
 
 ``casperInstance`` (``CasperJS``)
     CasperJS instance that will be used for capturing the image (optional). When using Nick, simply put ``nick.casper`` here. Ignore this parameter if you called ``create()`` with a CasperJS instance already.
+
+``callback`` (``Function(String err, String result)``)
+    Function to call when finished. When there is no error, ``err`` is *null* and ``result`` contains the solved CAPTCHA text.
+
+solveCaptchaBase64()
+--------------------
+
+::
+
+    buster.solveCaptchaBase64(base64String, callback)
+
+Tries to solve a CAPTCHA image. This method takes `Base64 <https://en.wikipedia.org/wiki/Base64>`_ encoded image and sends it to one of our partners for solving.
+
+If your CAPTCHA image is trivial, an OCR algorithm will quickly return the text, otherwise a human will solve it. This process generally takes less than 30 seconds and accuracy is >90%.
+
+When a result string is returned, 1 is substracted from your daily CAPTCHA counter. In approximately 10% of the cases the result will be incorrect — retry at will.
+
+This method is asynchronous and returns nothing. Use the callback to know when it has finished.
+
+``base64String`` (``String``)
+    CAPTCHA image to solve. Can be pure Base64 or a `Data URI Scheme <https://en.wikipedia.org/wiki/Data_URI_scheme>`_ string starting with ``data:``.
+
+``callback`` (``Function(String err, String result)``)
+    Function to call when finished. When there is no error, ``err`` is *null* and ``result`` contains the solved CAPTCHA text.
+
+solveCaptchaImage()
+-------------------
+
+::
+
+    buster.solveCaptchaImage(urlOrPath [, headers], callback)
+
+Tries to solve a CAPTCHA image. This method takes an URL or a path of an image and sends it to one of our partners for solving.
+
+If your CAPTCHA image is trivial, an OCR algorithm will quickly return the text, otherwise a human will solve it. This process generally takes less than 30 seconds and accuracy is >90%.
+
+When a result string is returned, 1 is substracted from your daily CAPTCHA counter. In approximately 10% of the cases the result will be incorrect — retry at will.
+
+This method is asynchronous and returns nothing. Use the callback to know when it has finished.
+
+``urlOrPath`` (``String``)
+    URL or path of the CAPTCHA image to be solved.
+
+``headers`` (``PlainObject``)
+    HTTP headers to use when requesting the image (optional). Cookies are automatically set when using CasperJS or PhantomJS.
 
 ``callback`` (``Function(String err, String result)``)
     Function to call when finished. When there is no error, ``err`` is *null* and ``result`` contains the solved CAPTCHA text.
