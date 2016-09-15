@@ -289,7 +289,7 @@ solveCaptcha()
 
     buster.solveCaptcha(selector [, casperInstance], callback)
 
-**CasperJS only.**
+**This method is only available with Nick or CasperJS.**
 
 Tries to solve a CAPTCHA image. This method takes a screenshot of the area indicated by ``selector`` and sends it to one of our partners for solving.
 
@@ -303,7 +303,7 @@ This method is asynchronous and returns nothing. Use the callback to know when i
     CSS3 selector pointing to the CAPTCHA image.
 
 ``casperInstance`` (``CasperJS``)
-    Optional CasperJS instance that will be used for capturing the image. Ignore this parameter if you called ``create()`` with a CasperJS instance already.
+    CasperJS instance that will be used for capturing the image (optional). When using Nick, simply put ``nick.casper`` here. Ignore this parameter if you called ``create()`` with a CasperJS instance already.
 
 ``callback`` (``Function(String err, String result)``)
     Function to call when finished. When there is no error, ``err`` is *null* and ``result`` contains the solved CAPTCHA text.
