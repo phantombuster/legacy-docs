@@ -3,7 +3,7 @@ Writing scripts
 
 At its core, Phantombuster allows you to script "web robots" in two languages: JavaScript and `CoffeeScript <http://coffeescript.org/>`_.
 
-To create a new script, `log in <https://phantombuster.com/login>`_ and go to your `scripts page <https://phantombuster.com/scripts?createNew>`_, enter a filename ending in ``.js`` or ``.coffee`` and click `Create`.
+To create a new bot script, `log in <https://phantombuster.com/login>`_, go to your `scripts page <https://phantombuster.com/scripts>`_ and simply enter a name. Click `Advanced` to select what kind of script you want to create.
 
 Each script can be launched on our platform by one of the following commands (in fact, binaries):
 
@@ -96,23 +96,26 @@ All your scripts (and samples/libraries) can be required. The requiring script m
     "phantombuster package: 2";
     // Comma separated list of dependencies
     // Specify the full name (with extension)
-    "phantombuster dependencies: my-lib.js, lib-Nick-beta.coffee";
+    "phantombuster dependencies: lib-Foo.js, lib-Nick-beta.coffee";
 
     // The rest of your script...
-    MyLib = require("my-lib");
+    MyLib = require("lib-Foo");
     Nick = require("lib-Nick-beta");
 
-Writing libraries/modules
--------------------------
+Writing your own modules
+------------------------
 
-When the name of a script starts with ``lib``, its launch will be disabled. This allows you to safely write libraries that can later be required using ``phantombuster dependencies`` then ``require()``.
+When the name of a script starts with ``lib``, its launch will be disabled. This allows you to safely write **reusable modules** that can later be required using ``phantombuster dependencies`` and then ``require()``.
+
+To create a new module, `log in <https://phantombuster.com/login>`_, go to your `scripts page <https://phantombuster.com/scripts>`_, select the `reusable module` tab and enter your module name.
 
 ::
 
     // In script "lib-Foo.js"
+    "use strict";
 
     module.exports = {
-        foo = function() {
+        foo: function() {
             console.log("bar");
         }
     }
@@ -127,6 +130,8 @@ When the name of a script starts with ``lib``, its launch will be disabled. This
     "phantombuster dependencies: lib-Foo.js";
 
     require("lib-Foo").foo(); // outputs "bar"
+
+:ref:`There are a few more subtleties to consider when writing your own modules → <writing-modules>`
 
 Locking a script's launch command
 ---------------------------------

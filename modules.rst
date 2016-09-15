@@ -1,7 +1,7 @@
 Modules
 =======
 
-This page lists all the installed modules that you can ``require()`` within your scripts. All modules are installed directly from NPM.
+Below are listed all the installed modules that you can ``require()`` within your scripts. All modules are installed directly from NPM.
 
 If you need us to install a specific module, contact us at contact@phantombuster.com and we'll do what we can.
 
@@ -86,3 +86,42 @@ For example, to use jQuery in a page that doesn't include it already, you could 
         if (!err)
             console.log('jQuery injected in current page')
     });
+
+.. _writing-modules:
+
+Writing your own modules
+------------------------
+
+When the name of a script starts with ``lib``, its launch will be disabled. This allows you to safely write **reusable modules** that can later be required using ``phantombuster dependencies`` and then ``require()``.
+
+To create a new module, `log in <https://phantombuster.com/login>`_, go to your `scripts page <https://phantombuster.com/scripts>`_, select the `reusable module` tab and enter your module name.
+
+::
+
+    // In script "lib-Foo.js"
+    "use strict";
+
+    module.exports = {
+        foo: function() {
+            console.log("bar");
+        }
+    }
+
+::
+
+    // In script "my-script.js"
+
+    "use strict";
+    "phantombuster command: casperjs";
+    "phantombuster package: 2";
+    "phantombuster dependencies: lib-Foo.js";
+
+    require("lib-Foo").foo(); // outputs "bar"
+
+Please note that there is no need to specify your script extension when you require it. Both JavaScript and CoffeeScript modules can be required without their extensions.
+
+There are a few more subtleties to consider when writing your own modules:
+
+    - If you write a CoffeeScript module and want to require it from a JavaScript script using Phantombuster package 1, you will need to add this ``require('coffee-script/register')`` to the requiring script. Package 2+ scripts do not need this because in this case CoffeeScript is transpiled to JavaScript before the bot is started.
+
+    - If you want to use CasperJS internal modules in your own module, you will need to add this ``require = patchRequire(require);``. Obviously the requiring script must be started with the ``casperjs`` command in this case. `More info here <http://docs.casperjs.org/en/latest/writing_modules.html>`_
