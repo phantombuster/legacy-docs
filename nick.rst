@@ -24,7 +24,9 @@ The module is named ``Nick``. Use ``require('lib-Nick-beta')`` and create an ins
     'phantombuster dependencies: lib-Nick-beta.coffee'
 
     var Nick = require('lib-Nick-beta');
-    var nick = new Nick();
+    var nick = new Nick({
+        printNavigation: true
+    });
 
 An instance of Nick is similar to a browser tab. If you want to open multiple pages/tabs simultaneously, instantiate multiple Nicks.
 
@@ -37,21 +39,21 @@ For example, this is bad:
 
 ::
 
-    nick.screenshot("image.jpg", function() {
-        console.log('Image saved');
+    nick.screenshot('image.jpg', function() {
+        console.log('Screenshot taken');
     });
-    phantom.exit(); // BAD! nick.screenshot() will not have finished here!
+    nick.exit(); // BAD! nick.screenshot() will not have finished here!
 
 This is better:
 
 ::
 
-    nick.screenshot(function(err) {
+    nick.screenshot('image.jpg', function(err) {
         if (err) {
-            console.log('Error when capturing the screen shot: ' + err);
-            phantom.exit(1);
+            console.log('Error when capturing the screenshot: ' + err);
+            nick.exit(1);
         } else {
-            phantom.exit(0);
+            nick.exit(0);
         }
     });
 
@@ -68,7 +70,7 @@ open()
 
     nick.open(url [, options], callback);
 
-Performs an HTTP request for opening a given ``url``. You can forge GET, POST, PUT, DELETE and HEAD requests.
+Opens the webpage at ``url``. You can forge GET, POST, PUT, DELETE and HEAD requests.
 
 This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
 
@@ -94,15 +96,15 @@ More info: http://docs.casperjs.org/en/latest/modules/casper.html#open
         }
 
 ``callback`` (``Function()``)
-    Function called when finished. No arguments are returned. To know if the page opened successfully, use `waitUntilPresent()`_ or similar.
+    Function called when finished. No arguments are returned. To know if the page opened successfully, use `waitUntilVisible()`_ or similar.
 
 Example:
 
     ::
 
         nick.open("https://phantombuster.com/cloud-services", function() {
-            console.log("The page is loaded");
-            phantom.exit(1)
+            console.log("The page is loaded (or not!) — use waitUntilVisible() or similar to be sure");
+            nick.exit();
         });
 
 wait()
@@ -132,7 +134,7 @@ Example:
             console.log('Hello')
             nick.wait(1000, function() {
                 console.log('world!');
-                phantom.exit(1)
+                nick.exit();
             })
         });
 
@@ -152,24 +154,24 @@ This method is asynchronous and returns nothing. Use the ``callback`` to know wh
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#waitforselector
 
 ``selectors`` (``Array or String``)
-    An array of CSS3 or XPath expression that describes the path to DOM elements.
+    An array of CSS3 selectors describing the path to DOM elements.
 
 ``timeout`` (``Number``)
     Milliseconds to wait before calling ``callback`` function with an error.
 
 ``condition`` (``String``)
-    If ``selectors`` is an array, this argument set the condition to wait. If ``condition`` is ``"and"``, the method will wait for the presence of all ``selectors``. Otherwise if ``condition`` is ``"or"``, the method will wait for the first ``selector`` of the array to be present.
+    When ``selectors`` is an array, this argument lets you choose how to wait for the elements. If ``condition`` is ``"and"``, the method will wait for the presence of all ``selectors`` in the DOM. Otherwise if ``condition`` is ``"or"``, the method will wait until any ``selector`` of the array is present in the DOM.
 
 ``callback`` (``Function(String err, String sel)``)
     Function called when finished. When there is no error, ``err`` is null.
 
     - In case of success (``err`` is *null*):
-        - if ``condition`` is ``"and"`` then, ``sel`` is *null* because all selectors are present
-        - if ``condition`` is ``"or"`` then, ``sel`` is the first present selector of the given array
+        - if ``condition`` is ``"and"`` then ``sel`` is *null* because all selectors are present
+        - if ``condition`` is ``"or"`` then ``sel`` is one of the present selectors of the given array
 
     - In case of failure (``err`` is ``"timeout"``)
-        - if ``condition`` is ``"and"`` then, ``sel`` is the first not present selector of the given array
-        - if ``condition`` is ``"or"`` then, ``sel`` is *null* because no selectors were found
+        - if ``condition`` is ``"and"`` then ``sel`` is one of the absent selectors of the given array
+        - if ``condition`` is ``"or"`` then ``sel`` is *null* because no selectors were found
 
 Example with selector argument as a string:
 
@@ -179,25 +181,10 @@ Example with selector argument as a string:
             nick.waitUntilPresent('html', 2000, function(err) {
                 if (err) {
                     console.log(err);
-                    phantom.exit(1);
+                    nick.exit(1);
                 }
                 console.log("'html' selector is present");
-                phantom.exit(0);
-            });
-        });
-
-Example with selectors argument as an array of one element:
-
-    ::
-
-        nick.open("https://phantombuster.com/cloud-services", function() {
-            nick.waitUntilPresent(['html'], 2000, function(err) {
-                if (err) {
-                    console.log(err);
-                    phantom.exit(1);
-                }
-                console.log("'html' selector is present");
-                phantom.exit(0);
+                nick.exit(0);
             });
         });
 
@@ -206,14 +193,14 @@ This example succeeds if all selectors are present in the DOM:
     ::
 
         nick.open("https://phantombuster.com/cloud-services", function() {
-            nick.waitUntilPresent(['html', 'foo', 'bar'], 2000, 'and', function(err, selector) {
+            nick.waitUntilPresent(['p', 'span', 'h2.title'], 2000, 'and', function(err, selector) {
                 if (err) {
                     console.log(err);
-                    console.log("First missing selector:", selector);
-                    phantom.exit(1);
+                    console.log("One of the missing selectors is:", selector);
+                    nick.exit(1);
                 }
                 console.log("'html', 'foo', 'bar' selectors are present");
-                phantom.exit(0);
+                nick.exit(0);
             });
         });
 
@@ -222,14 +209,14 @@ This example succeeds if one or more selector is present in the DOM:
     ::
 
         nick.open("https://phantombuster.com/cloud-services", function() {
-            nick.waitUntilPresent(['foo', 'html', 'bar'], 2000, 'or', function(err, selector) {
+            nick.waitUntilPresent(['p', 'span', 'h2.title'], 2000, 'or', function(err, selector) {
                 if (err) {
                     console.log(err);
-                    console.log("'foo', 'html', 'bar' selectors are missing");
-                    phantom.exit(1);
+                    console.log("'p', 'span', 'h2.title' selectors are missing");
+                    nick.exit(1);
                 }
                 console.log("First matching selector:", selector);
-                phantom.exit(0);
+                nick.exit(0);
             });
         });
 
@@ -241,6 +228,12 @@ waitUntilVisible()
 
 waitWhileVisible()
 ------------------
+
+end()
+-----
+
+exit()
+------
 
 evaluate()
 ----------
@@ -277,10 +270,10 @@ Example:
         }, function(err, ret) {
             if (err) {
                 console.log(err);
-                phantom.exit(1);
+                nick.exit(1);
             }
             console.log("Evaluation succeeded. Return value is", ret); // "Evaluation succeeded. Return value is 42"
-            phantom.exit(0);
+            nick.exit(0);
         });
 
 evaluateAsync()
@@ -318,10 +311,10 @@ Example:
         }, function(err, ret) {
             if (err) {
                 console.log(err);
-                phantom.exit(1);
+                nick.exit(1);
             }
             console.log("Evaluation succeeded. Return value is", ret); // "Evaluation succeeded. Return value is 42"
-            phantom.exit(0);
+            nick.exit(0);
         });
 
 .. _nick-inject:
@@ -350,10 +343,10 @@ Example:
         nick.inject("https://code.jquery.com/jquery-2.1.4.min.js", function(err) {
             if (err) {
                 console.log(err);
-                phantom.exit(1);
+                nick.exit(1);
             }
             console.log("Jquery script inserted!");
-            phantom.exit(0);
+            nick.exit(0);
         });
 
 click()
@@ -385,15 +378,15 @@ Example:
             nick.waitUntilVisible(selector, 2000, function(err) {
                 if (err) {
                     console.log(err)
-                    phantom.exit(1);
+                    nick.exit(1);
                 }
                 nick.click(selector, function(err) {
                     if (err) {
                         console.log(err)
-                        phantom.exit(1);
+                        nick.exit(1);
                     }
                     console.log("Click on 'TRY FREE' button done.");
-                    phantom.exit(0);
+                    nick.exit(0);
                 });
             });
         });
@@ -405,7 +398,7 @@ getCurrentUrl()
 
         nick.getCurrentUrl(callback)
 
-Retrieves current page URL and call the ``callback`` function with the URL in second argument. Note that the url will be url-decoded.
+Retrieves current page URL and calls the ``callback`` function with the URL in second argument. Note that the url will be url-decoded.
 
 This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
 
@@ -422,10 +415,10 @@ Example:
             nick.getCurrentUrl(function(err, url) {
                 if (err) {
                     console.log(err);
-                    phantom.exit(1);
+                    nick.exit(1);
                 }
                 console.log("Current Url: ", url);
-                phantom.exit(0);
+                nick.exit(0);
             });
         });
 
@@ -447,13 +440,8 @@ Example:
     ::
 
         nick.open("https://phantombuster.com/cloud-services", function() {
-            var url = nick.getCurrentUrlOrNull();
-            if (url == null) {
-                console.log("The url is null");
-                phantom.exit(1);
-            }
-            console.log("Current url: ", url);
-            phantom.exit(0);
+            console.log(nick.getCurrentUrlOrNull());
+            nick.exit();
         });
 
 getHtml()
@@ -463,7 +451,7 @@ getHtml()
 
     nick.getHtml(callback)
 
-Retrieves current page HTML and call the ``callback`` function with the HTML in second argument.
+Retrieves current page HTML and calls the ``callback`` function with the HTML as a string in second argument.
 
 This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
 
@@ -480,10 +468,10 @@ Example:
             nick.getHtml(function(err, html) {
                 if (err) {
                     console.log(err);
-                    phantom.exit(1);
+                    nick.exit(1);
                 }
                 console.log("HTML: ", html);
-                phantom.exit(0);
+                nick.exit(0);
             });
         });
 
@@ -494,7 +482,7 @@ getHtmlOrNull()
 
     nick.getHtmlOrNull()
 
-This method is synchronous and returns *null* if it fails otherwise it returns a the page HTML (string).
+This method is synchronous and returns *null* if it fails otherwise it returns the page HTML as a string.
 
 More info: http://docs.casperjs.org/en/latest/modules/casper.html#gethtml
 
@@ -505,13 +493,8 @@ Example:
     ::
 
         nick.open("https://phantombuster.com/cloud-services", function() {
-            var html = nick.getHtmlOrNull();
-            if (html == null) {
-                console.log("html is null");
-                phantom.exit(1);
-            }
-            console.log("HTML: ", html);
-            phantom.exit(0);
+            console.log(nick.getHtmlOrNull());
+            nick.exit();
         });
 
 getContent()
@@ -521,7 +504,7 @@ getContent()
 
     nick.getContent(callback)
 
-Retrieves current page content and call the ``callback`` function with the page content in second argument.
+Retrieves current page content and call the ``callback`` function with the page content as a string in the second argument.
 
 This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
 
@@ -538,10 +521,10 @@ Example:
             nick.getPageContent(function(err, content) {
                 if (err) {
                     console.log(err);
-                    phantom.exit(1);
+                    nick.exit(1);
                 }
                 console.log("Page content: ", content);
-                phantom.exit(0);
+                nick.exit(0);
             });
         });
 
@@ -567,10 +550,10 @@ Example:
 
             if (content == null) {
                 console.log("content is null");
-                phantom.exit(1);
+                nick.exit(1);
             }
             console.log("Content: ", content);
-            phantom.exit(0);
+            nick.exit(0);
         });
 
 getTitle()
@@ -597,10 +580,10 @@ Example:
             nick.getTitle(function(err, title) {
                 if (err) {
                     console.log(err);
-                    phantom.exit(1);
+                    nick.exit(1);
                 }
                 console.log("Page title: ", title);
-                phantom.exit(0);
+                nick.exit(0);
             });
         });
 
@@ -627,10 +610,10 @@ Example:
 
             if (title == null) {
                 console.log("title is null");
-                phantom.exit(1);
+                nick.exit(1);
             }
             console.log("Title: ", title);
-            phantom.exit(0);
+            nick.exit(0);
         });
 
 fill()
@@ -640,7 +623,7 @@ fill()
 
     nick.fill(selector, inputs [, submit], callback);
 
-Fills form inputs with given values and optionally submits it. Inputs are referenced by their name attribute.
+Fills form inputs with the given values and optionally submits it. Inputs are referenced by their name attribute.
 
 This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
 
@@ -691,10 +674,10 @@ A Nick script filling the form and sending it:
             }, true, function(err) {
                 if (err) {
                     console.log(err);
-                    phantom.exit(1);
+                    nick.exit(1);
                 }
                 console.log("Form sent!");
-                phantom.exit(0);
+                nick.exit(0);
             });
         });
 
@@ -752,10 +735,10 @@ Example:
             nick.screenshot('./image.jpg', function(err) {
                 if (err) {
                     console.log(err);
-                    phantom.exit(1);
+                    nick.exit(1);
                 }
                 console.log("Screenshot saved!")
-                phantom.exit(0);
+                nick.exit(0);
             });
         });
 
@@ -781,15 +764,15 @@ Example with options:
             , function(err) {
                 if (err) {
                     console.log(err);
-                    phantom.exit(1);
+                    nick.exit(1);
                 }
                 console.log("Screenshot saved!")
                 buster.saveFolder(function(err) {
                     if (err) {
                         console.log(err);
-                        phantom.exit(1);
+                        nick.exit(1);
                     }
-                    phantom.exit(0);
+                    nick.exit(0);
                 });
             });
         });
@@ -833,10 +816,10 @@ Example:
             nick.sendKeys('#message', "Boo!", function(err) {
                 if (err) {
                     console.log(err);
-                    phantom.exit(1);
+                    nick.exit(1);
                 }
                 console.log("Keys sent!")
-                phantom.exit(0);
+                nick.exit(0);
             });
         });
 
@@ -853,9 +836,9 @@ Example with optional argument:
             }, function(err) {
                 if (err) {
                     console.log(err);
-                    phantom.exit(1);
+                    nick.exit(1);
                 }
                 console.log("Keys sent!")
-                phantom.exit(0);
+                nick.exit(0);
             });
         });
