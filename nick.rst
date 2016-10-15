@@ -223,17 +223,263 @@ This example succeeds if one or more selector is present in the DOM:
 waitWhilePresent()
 ------------------
 
+::
+
+    nick.waitWhilePresent(selectors, timeout [, condition = "and"], callback);
+
+Waits while a DOM element, matching the provided selector, is present. If the method has to wait more than ``timeout`` milliseconds, ``callback`` is called with a ``"timeout"`` error. By default, ``condition`` is set to ``"and"``.
+
+It is considered good practice to always use a ``wait*()`` method after a page load and before any action on selectors.
+
+This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
+
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#waitwhileselector
+
+``selectors`` (``Array or String``)
+    An array of CSS3 selectors describing the path to DOM elements.
+
+``timeout`` (``Number``)
+    Milliseconds to wait before calling ``callback`` function with an error.
+
+``condition`` (``String``)
+    When ``selectors`` is an array, this argument lets you choose how to wait for the elements. If ``condition`` is ``"and"``, the method will wait for the presence of all ``selectors`` in the DOM. Otherwise if ``condition`` is ``"or"``, the method will wait until any ``selector`` of the array is present in the DOM.
+
+``callback`` (``Function(String err, String sel)``)
+    Function called when finished. When there is no error, ``err`` is null.
+
+    - In case of success (``err`` is *null*):
+        - if ``condition`` is ``"and"`` then ``sel`` is *null* because all selectors are present
+        - if ``condition`` is ``"or"`` then ``sel`` is one of the present selectors of the given array
+
+    - In case of failure (``err`` is ``"timeout"``)
+        - if ``condition`` is ``"and"`` then ``sel`` is one of the absent selectors of the given array
+        - if ``condition`` is ``"or"`` then ``sel`` is *null* because no selectors were found
+
+Example with selector argument as a string:
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.waitWhilePresent('html', 2000, function(err) {
+                if (err) {
+                    console.log(err);
+                    nick.exit(1);
+                }
+                console.log("'html' selector is not present anymore");
+                nick.exit(0);
+            });
+        });
+
+This example succeeds if all selectors is not present in the DOM:
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.waitWhilePresent(['p', 'span', 'h2.title'], 2000, 'and', function(err, selector) {
+                if (err) {
+                    console.log(err);
+                    console.log("One of the missing selectors is:", selector);
+                    nick.exit(1);
+                }
+                console.log("'html', 'foo', 'bar' selectors are present");
+                nick.exit(0);
+            });
+        });
+
+This example succeeds if one or more selector is not present in the DOM:
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.waitWhilePresent(['p', 'span', 'h2.title'], 2000, 'or', function(err, selector) {
+                if (err) {
+                    console.log(err);
+                    console.log("'p', 'span', 'h2.title' selectors are missing");
+                    nick.exit(1);
+                }
+                console.log("First matching selector:", selector);
+                nick.exit(0);
+            });
+        });
+
+
 waitUntilVisible()
 ------------------
+
+::
+
+    nick.waitUntilVisible(selectors, timeout [, condition = "and"], callback);
+
+Waits until a DOM element, matching the provided selector, is visible. If the method has to wait more than ``timeout`` milliseconds, ``callback`` is called with a ``"timeout"`` error. By default, ``condition`` is set to ``"and"``.
+
+It is considered good practice to always use a ``wait*()`` method after a page load and before any action on selectors.
+
+This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
+
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#waituntilvisible
+
+``selectors`` (``Array or String``)
+    An array of CSS3 selectors describing the path to DOM elements.
+
+``timeout`` (``Number``)
+    Milliseconds to wait before calling ``callback`` function with an error.
+
+``condition`` (``String``)
+    When ``selectors`` is an array, this argument lets you choose how to wait for the elements. If ``condition`` is ``"and"``, the method will wait for the presence of all ``selectors`` in the DOM. Otherwise if ``condition`` is ``"or"``, the method will wait until any ``selector`` of the array is present in the DOM.
+
+``callback`` (``Function(String err, String sel)``)
+    Function called when finished. When there is no error, ``err`` is null.
+
+    - In case of success (``err`` is *null*):
+        - if ``condition`` is ``"and"`` then ``sel`` is *null* because all selectors are present
+        - if ``condition`` is ``"or"`` then ``sel`` is one of the present selectors of the given array
+
+    - In case of failure (``err`` is ``"timeout"``)
+        - if ``condition`` is ``"and"`` then ``sel`` is one of the absent selectors of the given array
+        - if ``condition`` is ``"or"`` then ``sel`` is *null* because no selectors were found
+
+Example with selector argument as a string:
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.waitUntilVisible('html', 2000, function(err) {
+                if (err) {
+                    console.log(err);
+                    nick.exit(1);
+                }
+                console.log("'html' selector is not present anymore");
+                nick.exit(0);
+            });
+        });
+
+This example succeeds if all selectors is visible in the DOM:
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.waitUntilVisible(['p', 'span', 'h2.title'], 2000, 'and', function(err, selector) {
+                if (err) {
+                    console.log(err);
+                    console.log("One of the missing selectors is:", selector);
+                    nick.exit(1);
+                }
+                console.log("'html', 'foo', 'bar' selectors are present");
+                nick.exit(0);
+            });
+        });
+
+This example succeeds if one or more selector is visible in the DOM:
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.waitUntilVisible(['p', 'span', 'h2.title'], 2000, 'or', function(err, selector) {
+                if (err) {
+                    console.log(err);
+                    console.log("'p', 'span', 'h2.title' selectors are missing");
+                    nick.exit(1);
+                }
+                console.log("First matching selector:", selector);
+                nick.exit(0);
+            });
+        });
 
 waitWhileVisible()
 ------------------
 
+::
+
+    nick.waitWhileVisible(selectors, timeout [, condition = "and"], callback);
+
+Waits while a DOM element, matching the provided selector, is visible. If the method has to wait more than ``timeout`` milliseconds, ``callback`` is called with a ``"timeout"`` error. By default, ``condition`` is set to ``"and"``.
+
+It is considered good practice to always use a ``wait*()`` method after a page load and before any action on selectors.
+
+This method is asynchronous and returns nothing. Use the ``callback`` to know when it has finished.
+
+More info: http://docs.casperjs.org/en/latest/modules/casper.html#waitwhilevisible
+
+``selectors`` (``Array or String``)
+    An array of CSS3 selectors describing the path to DOM elements.
+
+``timeout`` (``Number``)
+    Milliseconds to wait before calling ``callback`` function with an error.
+
+``condition`` (``String``)
+    When ``selectors`` is an array, this argument lets you choose how to wait for the elements. If ``condition`` is ``"and"``, the method will wait for the presence of all ``selectors`` in the DOM. Otherwise if ``condition`` is ``"or"``, the method will wait until any ``selector`` of the array is present in the DOM.
+
+``callback`` (``Function(String err, String sel)``)
+    Function called when finished. When there is no error, ``err`` is null.
+
+    - In case of success (``err`` is *null*):
+        - if ``condition`` is ``"and"`` then ``sel`` is *null* because all selectors are present
+        - if ``condition`` is ``"or"`` then ``sel`` is one of the present selectors of the given array
+
+    - In case of failure (``err`` is ``"timeout"``)
+        - if ``condition`` is ``"and"`` then ``sel`` is one of the absent selectors of the given array
+        - if ``condition`` is ``"or"`` then ``sel`` is *null* because no selectors were found
+
+Example with selector argument as a string:
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.waitWhileVisible('html', 2000, function(err) {
+                if (err) {
+                    console.log(err);
+                    nick.exit(1);
+                }
+                console.log("'html' selector is not present anymore");
+                nick.exit(0);
+            });
+        });
+
+This example succeeds if all selectors are not visible:
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.waitWhileVisible(['p', 'span', 'h2.title'], 2000, 'and', function(err, selector) {
+                if (err) {
+                    console.log(err);
+                    console.log("One of the missing selectors is:", selector);
+                    nick.exit(1);
+                }
+                console.log("'html', 'foo', 'bar' selectors are present");
+                nick.exit(0);
+            });
+        });
+
+This example succeeds if one or more selector is not visible:
+
+    ::
+
+        nick.open("https://phantombuster.com/cloud-services", function() {
+            nick.waitWhileVisible(['p', 'span', 'h2.title'], 2000, 'or', function(err, selector) {
+                if (err) {
+                    console.log(err);
+                    console.log("'p', 'span', 'h2.title' selectors are missing");
+                    nick.exit(1);
+                }
+                console.log("First matching selector:", selector);
+                nick.exit(0);
+            });
+        });
+
 end()
 -----
 
+::
+
+        Exit the process.
+
 exit()
 ------
+
+::
+
+    Exit the process.
 
 evaluate()
 ----------
