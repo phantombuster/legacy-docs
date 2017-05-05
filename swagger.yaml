@@ -65,97 +65,93 @@ paths:
               data:
                 type: object
                 example:
-                  type: object
-                  properties:
-                    id:
-                      type: number
-                      example: 1763
-                    name:
-                      type: string
-                      example: Nice Agent
-                    scriptId:
-                      type: number
-                      example: 1902
-                    proxy:
-                      type: string
-                      example: none
-                    proxyAddress:
-                      type: string
-                      example: 'null'
-                    proxyUsername:
-                      type: string
-                      example: 'null'
-                    proxyPassword:
-                      type: string
-                      example: 'null'
-                    disableWebSecurity:
-                      type: boolean
-                      example: false
-                    ignoreSslErrors:
-                      type: boolean
-                      example: false
-                    loadImages:
-                      type: boolean
-                      example: true
-                    launch:
-                      type: string
-                      example: manually
-                    nbLaunches:
-                      type: number
-                      example: 94
-                    showDebug:
-                      type: boolean
-                      example: true
-                    awsFolder:
-                      type: string
-                      example: nVFRid8kvsuPeuCL80DnBg
-                    executionTimeLimit:
-                      type: number
-                      example: 5
-                    fileMgmt:
-                      type: string
-                      example: folders
-                    fileMgmtMaxFolders:
-                      type: number
-                      example: 10
-                    lastEndMessage:
-                      type: string
-                      example: Execution time limit reached
-                    lastEndStatus:
-                      type: string
-                      example: error
-                    maxParallelExecs:
-                      type: number
-                      example: 1
-                    userAwsFolder:
-                      type: string
-                      example: QwYH17CB0Xj
-                    nonce:
-                      type: number
-                      example: 123
-                    script:
+                  id: 1763
+                  name:
+                    type: string
+                    example: Nice Agent
+                  scriptId:
+                    type: number
+                    example: 1902
+                  proxy:
+                    type: string
+                    example: none
+                  proxyAddress:
+                    type: string
+                    example: 'null'
+                  proxyUsername:
+                    type: string
+                    example: 'null'
+                  proxyPassword:
+                    type: string
+                    example: 'null'
+                  disableWebSecurity:
+                    type: boolean
+                    example: false
+                  ignoreSslErrors:
+                    type: boolean
+                    example: false
+                  loadImages:
+                    type: boolean
+                    example: true
+                  launch:
+                    type: string
+                    example: manually
+                  nbLaunches:
+                    type: number
+                    example: 94
+                  showDebug:
+                    type: boolean
+                    example: true
+                  awsFolder:
+                    type: string
+                    example: nVFRid8kvsuPeuCL80DnBg
+                  executionTimeLimit:
+                    type: number
+                    example: 5
+                  fileMgmt:
+                    type: string
+                    example: folders
+                  fileMgmtMaxFolders:
+                    type: number
+                    example: 10
+                  lastEndMessage:
+                    type: string
+                    example: Execution time limit reached
+                  lastEndStatus:
+                    type: string
+                    example: error
+                  maxParallelExecs:
+                    type: number
+                    example: 1
+                  userAwsFolder:
+                    type: string
+                    example: QwYH17CB0Xj
+                  nonce:
+                    type: number
+                    example: 123
+                  script:
+                    type: object
+                    example:
                       type: object
-                      example:
-                        type: object
-                        properties:
-                          id:
-                            type: number
-                            example: 1902
-                          name:
-                            type: string
-                            example: nice_agent.coffee
-                          source:
-                            type: string
-                            example: phantombuster
-                          url:
-                            type: string
-                            example: 'null'
-                          text:
-                            type: string
-                            example: ' ... script contents ... '
-                          httpHeaders:
-                            type: string
-                            example: 'null'
+                      properties:
+                        id:
+                          type: number
+                          example: 1902
+                        name:
+                          type: string
+                          example: nice_agent.coffee
+                        source:
+                          type: string
+                          example: phantombuster
+                        url:
+                          type: string
+                          example: 'null'
+                        text:
+                          type: string
+                          example: ' ... script contents ... '
+                        httpHeaders:
+                          type: string
+                          example: 'null'
         default:
           description: Error
           schema:
