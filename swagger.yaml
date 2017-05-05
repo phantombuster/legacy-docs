@@ -43,7 +43,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: ID of the agent to retrieve ending with `.json`.
+          description: ID of the agent to retrieve.
           required: true
           type: integer
         - name: withScript
@@ -318,7 +318,7 @@ paths:
             $ref: '#/definitions/FailApiResponse'
       security:
         - internalApiKey: []
-  /scripts.json:
+  /scripts:
     get:
       tags:
         - Script
