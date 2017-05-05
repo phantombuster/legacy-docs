@@ -65,6 +65,7 @@ paths:
               data:
                 type: object
                 example:
+                  type: object
                   properties:
                     id:
                       type: number
@@ -135,6 +136,7 @@ paths:
                     script:
                       type: object
                       example:
+                        type: object
                         properties:
                           id:
                             type: number
