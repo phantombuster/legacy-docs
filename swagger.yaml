@@ -64,36 +64,10 @@ paths:
                 example: success
               data:
                 type: object
-                example:
-                  id: 1763
-                  name: Nice Agent
-                  scriptId: 1902
-                  proxy: none
-                  proxyAddress: null
-                  proxyUsername: null
-                  proxyPassword: null
-                  disableWebSecurity: false
-                  ignoreSslErrors: false
-                  loadImages: true
-                  launch: manually
-                  nbLaunches: 94
-                  showDebug: true
-                  awsFolder: nVFRid8kvsuPeuCL80DnBg
-                  executionTimeLimit: 5
-                  fileMgmt: folders
-                  fileMgmtMaxFolders: 10
-                  lastEndMessage: Execution time limit reached
-                  lastEndStatus: error
-                  maxParallelExecs: 1
-                  userAwsFolder: QwYH17CB0Xj
-                  nonce: 123
-                  script:
-                    id: 1902
-                    name: nice_agent.coffee
-                    source: phantombuster
-                    url: null
-                    text: ' ... script contents ... '
-                    httpHeaders: null
+                properties:
+                  id:
+                    type: integer
+                    example: 1763
         default:
           description: Error
           schema:
