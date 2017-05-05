@@ -57,6 +57,7 @@ paths:
         '200':
           description: Success
           schema:
+            type: object
             properties:
               status:
                 type: string
