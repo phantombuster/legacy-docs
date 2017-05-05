@@ -66,34 +66,92 @@ paths:
                 type: object
                 example:
                   id: 1763
-                  name: Nice Agent
-                  scriptId: 1902
-                  proxy: none
-                  proxyAddress: null
-                  proxyUsername: null
-                  proxyPassword: null
-                  disableWebSecurity: false
-                  ignoreSslErrors: false
-                  loadImages: true
-                  launch: manually
-                  nbLaunches: 94
-                  showDebug: true
-                  awsFolder: nVFRid8kvsuPeuCL80DnBg
-                  executionTimeLimit: 5
-                  fileMgmt: folders
-                  fileMgmtMaxFolders: 10
-                  lastEndMessage: Execution time limit reached
-                  lastEndStatus: error
-                  maxParallelExecs: 1
-                  userAwsFolder: QwYH17CB0Xj
-                  nonce: 123
+                  name:
+                    type: string
+                    example: Nice Agent
+                  scriptId:
+                    type: number
+                    example: 1902
+                  proxy:
+                    type: string
+                    example: none
+                  proxyAddress:
+                    type: string
+                    example: 'null'
+                  proxyUsername:
+                    type: string
+                    example: 'null'
+                  proxyPassword:
+                    type: string
+                    example: 'null'
+                  disableWebSecurity:
+                    type: boolean
+                    example: false
+                  ignoreSslErrors:
+                    type: boolean
+                    example: false
+                  loadImages:
+                    type: boolean
+                    example: true
+                  launch:
+                    type: string
+                    example: manually
+                  nbLaunches:
+                    type: number
+                    example: 94
+                  showDebug:
+                    type: boolean
+                    example: true
+                  awsFolder:
+                    type: string
+                    example: nVFRid8kvsuPeuCL80DnBg
+                  executionTimeLimit:
+                    type: number
+                    example: 5
+                  fileMgmt:
+                    type: string
+                    example: folders
+                  fileMgmtMaxFolders:
+                    type: number
+                    example: 10
+                  lastEndMessage:
+                    type: string
+                    example: Execution time limit reached
+                  lastEndStatus:
+                    type: string
+                    example: error
+                  maxParallelExecs:
+                    type: number
+                    example: 1
+                  userAwsFolder:
+                    type: string
+                    example: QwYH17CB0Xj
+                  nonce:
+                    type: number
+                    example: 123
                   script:
-                    id: 1902
-                    name: nice_agent.coffee
-                    source: phantombuster
-                    url: null
-                    text: ' ... script contents ... '
-                    httpHeaders: null
+                    type: object
+                    example:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          example: 1902
+                        name:
+                          type: string
+                          example: nice_agent.coffee
+                        source:
+                          type: string
+                          example: phantombuster
+                        url:
+                          type: string
+                          example: 'null'
+                        text:
+                          type: string
+                          example: ' ... script contents ... '
+                        httpHeaders:
+                          type: string
+                          example: 'null'
         default:
           description: Error
           schema:
@@ -174,15 +232,37 @@ paths:
               data:
                 type: object
                 example:
-                  containerId: 76426
-                  executionTime: 17
-                  exitCode: 0
-                  resultObject:
-                    your: data
-                    is:
-                      here:
-                        - 123
-                  output: "This is a console output line!\r\nAnd this is another one :)\r\n"
+                  properties:
+                    containerId:
+                      type: number
+                      example: 76426
+                    executionTime:
+                      type: number
+                      example: 17
+                    exitCode:
+                      type: number
+                      example: 0
+                    resultObject:
+                      type: object
+                      example:
+                        properties:
+                          your:
+                            type: string
+                            example: data
+                          is:
+                            type: object
+                            example:
+                              properties:
+                                here:
+                                  type: object
+                                  example:
+                                    properties:
+                                      '0':
+                                        type: number
+                                        example: 123
+                    output:
+                      type: string
+                      example: "This is a console output line!\r\nAnd this is another one :)\r\n"
         default:
           description: Error
           schema:
@@ -210,8 +290,8 @@ paths:
                 type: string
                 example: success
               data:
-                type: object
-                example: null
+                type: string
+                example: 'null'
         default:
           description: Error
           schema:
@@ -277,32 +357,91 @@ paths:
               data:
                 type: object
                 example:
-                  agentStatus: running
-                  containerStatus: running
-                  runningContainers: 1
-                  queuedContainers: 0
-                  containerId: 76427
-                  progress:
-                    progress: 0.1
-                    label: Initializing...
-                    runtime: 3
-                  messages:
-                    - id: 65444
-                      date: 1414080820
-                      text: Agent started
-                      type: normal
-                      context:
-                        - 'Launch type: manual'
-                        - 'Execution time limit: 60s'
-                  output: >-
-                    * Container a255b8220379 started in directory
-                    /home/phantom/agent
-                  outputPos: 245
-                  resultObject:
-                    your: data
-                    is:
-                      here:
-                        - 123
+                  properties:
+                    agentStatus:
+                      type: string
+                      example: running
+                    containerStatus:
+                      type: string
+                      example: running
+                    runningContainers:
+                      type: number
+                      example: 1
+                    queuedContainers:
+                      type: number
+                      example: 0
+                    containerId:
+                      type: number
+                      example: 76427
+                    progress:
+                      type: object
+                      example:
+                        properties:
+                          progress:
+                            type: number
+                            example: 0.1
+                          label:
+                            type: string
+                            example: Initializing...
+                          runtime:
+                            type: number
+                            example: 3
+                    messages:
+                      type: object
+                      example:
+                        properties:
+                          '0':
+                            type: object
+                            example:
+                              properties:
+                                id:
+                                  type: number
+                                  example: 65444
+                                date:
+                                  type: number
+                                  example: 1414080820
+                                text:
+                                  type: string
+                                  example: Agent started
+                                type:
+                                  type: string
+                                  example: normal
+                                context:
+                                  type: object
+                                  example:
+                                    properties:
+                                      '0':
+                                        type: string
+                                        example: 'Launch type: manual'
+                                      '1':
+                                        type: string
+                                        example: 'Execution time limit: 60s'
+                    output:
+                      type: string
+                      example: >-
+                        * Container a255b8220379 started in directory
+                        /home/phantom/agent
+                    outputPos:
+                      type: number
+                      example: 245
+                    resultObject:
+                      type: object
+                      example:
+                        properties:
+                          your:
+                            type: string
+                            example: data
+                          is:
+                            type: object
+                            example:
+                              properties:
+                                here:
+                                  type: object
+                                  example:
+                                    properties:
+                                      '0':
+                                        type: number
+                                        example: 123
         default:
           description: Error
           schema:
@@ -334,24 +473,69 @@ paths:
               data:
                 type: object
                 example:
-                  - id: 195119
-                    queueDate: 1427810471
-                    launchDate: 1427810471
-                    launchType: automatic
-                    launchNumber: 476
-                    endDate: 1427812088
-                    lastEndMessage: Agent finished (error)
-                    lastEndStatus: error
-                    exitCode: 1
-                  - id: 195050
-                    queueDate: 1427806874
-                    launchDate: 1427806874
-                    launchType: automatic
-                    launchNumber: 475
-                    endDate: 1427810029
-                    lastEndMessage: Agent finished (success)
-                    lastEndStatus: success
-                    exitCode: 0
+                  properties:
+                    '0':
+                      type: object
+                      example:
+                        properties:
+                          id:
+                            type: number
+                            example: 195119
+                          queueDate:
+                            type: number
+                            example: 1427810471
+                          launchDate:
+                            type: number
+                            example: 1427810471
+                          launchType:
+                            type: string
+                            example: automatic
+                          launchNumber:
+                            type: number
+                            example: 476
+                          endDate:
+                            type: number
+                            example: 1427812088
+                          lastEndMessage:
+                            type: string
+                            example: Agent finished (error)
+                          lastEndStatus:
+                            type: string
+                            example: error
+                          exitCode:
+                            type: number
+                            example: 1
+                    '1':
+                      type: object
+                      example:
+                        properties:
+                          id:
+                            type: number
+                            example: 195050
+                          queueDate:
+                            type: number
+                            example: 1427806874
+                          launchDate:
+                            type: number
+                            example: 1427806874
+                          launchType:
+                            type: string
+                            example: automatic
+                          launchNumber:
+                            type: number
+                            example: 475
+                          endDate:
+                            type: number
+                            example: 1427810029
+                          lastEndMessage:
+                            type: string
+                            example: Agent finished (success)
+                          lastEndStatus:
+                            type: string
+                            example: success
+                          exitCode:
+                            type: number
+                            example: 0
         default:
           description: Error
           schema:
@@ -396,14 +580,31 @@ paths:
               data:
                 type: object
                 example:
-                  id: 1902
-                  name: nice_agent.coffee
-                  source: phantombuster
-                  url: null
-                  text: ' ... script contents ... '
-                  httpHeaders: null
-                  lastSaveDate: 1427806874
-                  nonce: 123
+                  properties:
+                    id:
+                      type: number
+                      example: 1902
+                    name:
+                      type: string
+                      example: nice_agent.coffee
+                    source:
+                      type: string
+                      example: phantombuster
+                    url:
+                      type: string
+                      example: 'null'
+                    text:
+                      type: string
+                      example: ' ... script contents ... '
+                    httpHeaders:
+                      type: string
+                      example: 'null'
+                    lastSaveDate:
+                      type: number
+                      example: 1427806874
+                    nonce:
+                      type: number
+                      example: 123
         default:
           description: Error
           schema:
@@ -448,14 +649,31 @@ paths:
               data:
                 type: object
                 example:
-                  id: 1902
-                  name: nice_agent.coffee
-                  source: phantombuster
-                  url: null
-                  text: ' ... script contents ... '
-                  httpHeaders: null
-                  lastSaveDate: 1427806874
-                  nonce: 123
+                  properties:
+                    id:
+                      type: number
+                      example: 1902
+                    name:
+                      type: string
+                      example: nice_agent.coffee
+                    source:
+                      type: string
+                      example: phantombuster
+                    url:
+                      type: string
+                      example: 'null'
+                    text:
+                      type: string
+                      example: ' ... script contents ... '
+                    httpHeaders:
+                      type: string
+                      example: 'null'
+                    lastSaveDate:
+                      type: number
+                      example: 1427806874
+                    nonce:
+                      type: number
+                      example: 123
         default:
           description: Error
           schema:
@@ -479,20 +697,57 @@ paths:
               data:
                 type: object
                 example:
-                  - id: 450
-                    name: script1.coffee
-                    source: phantombuster
-                    url: ''
-                    httpHeaders: null
-                    lastSaveDate: 1446562593
-                    nonce: 12
-                  - id: 452
-                    name: script2.js
-                    source: sdk
-                    url: ''
-                    httpHeaders: null
-                    lastSaveDate: 1446562789
-                    nonce: 4
+                  properties:
+                    '0':
+                      type: object
+                      example:
+                        properties:
+                          id:
+                            type: number
+                            example: 450
+                          name:
+                            type: string
+                            example: script1.coffee
+                          source:
+                            type: string
+                            example: phantombuster
+                          url:
+                            type: string
+                            example: ''
+                          httpHeaders:
+                            type: string
+                            example: 'null'
+                          lastSaveDate:
+                            type: number
+                            example: 1446562593
+                          nonce:
+                            type: number
+                            example: 12
+                    '1':
+                      type: object
+                      example:
+                        properties:
+                          id:
+                            type: number
+                            example: 452
+                          name:
+                            type: string
+                            example: script2.js
+                          source:
+                            type: string
+                            example: sdk
+                          url:
+                            type: string
+                            example: ''
+                          httpHeaders:
+                            type: string
+                            example: 'null'
+                          lastSaveDate:
+                            type: number
+                            example: 1446562789
+                          nonce:
+                            type: number
+                            example: 4
         default:
           description: Error
           schema:
@@ -520,8 +775,8 @@ paths:
                 type: string
                 example: success
               data:
-                type: object
-                example: null
+                type: string
+                example: 'null'
         default:
           description: Error
           schema:
@@ -594,6 +849,10 @@ paths:
         '200':
           description: Success
           schema:
+            $ref: '#/definitions/SuccessApiResponse'
+        default:
+          description: Error
+          schema:
             properties:
               status:
                 type: string
@@ -601,35 +860,92 @@ paths:
               data:
                 type: object
                 example:
-                  email: excellent.customer@gmail.com
-                  timeLeft: 14087
-                  emailsLeft: 100
-                  captchasLeft: 10
-                  storageLeft: 9991347906
-                  databaseLeft: 239222784
-                  agents:
-                    - id: 1388
-                      name: My first agent
-                      scriptId: 0
-                      lastEndMessage: Agent has no associated script
-                      lastEndStatus: launch failed
-                      queuedContainers: 2
-                      runningContainers: 0
-                    - id: 1713
-                      name: My second agent
-                      scriptId: 2003
-                      lastEndMessage: Agent finished with exit code 0
-                      lastEndStatus: success
-                      queuedContainers: 0
-                      runningContainers: 1
-                      progress:
-                        progress: 0.544
-                        label: A progress label
-                        runtime: 477
-        default:
-          description: Error
-          schema:
-            $ref: '#/definitions/FailApiResponse'
+                  properties:
+                    email:
+                      type: string
+                      example: excellent.customer@gmail.com
+                    timeLeft:
+                      type: number
+                      example: 14087
+                    emailsLeft:
+                      type: number
+                      example: 100
+                    captchasLeft:
+                      type: number
+                      example: 10
+                    storageLeft:
+                      type: number
+                      example: 9991347906
+                    databaseLeft:
+                      type: number
+                      example: 239222784
+                    agents:
+                      type: object
+                      example:
+                        properties:
+                          '0':
+                            type: object
+                            example:
+                              properties:
+                                id:
+                                  type: number
+                                  example: 1388
+                                name:
+                                  type: string
+                                  example: My first agent
+                                scriptId:
+                                  type: number
+                                  example: 0
+                                lastEndMessage:
+                                  type: string
+                                  example: Agent has no associated script
+                                lastEndStatus:
+                                  type: string
+                                  example: launch failed
+                                queuedContainers:
+                                  type: number
+                                  example: 2
+                                runningContainers:
+                                  type: number
+                                  example: 0
+                          '1':
+                            type: object
+                            example:
+                              properties:
+                                id:
+                                  type: number
+                                  example: 1713
+                                name:
+                                  type: string
+                                  example: My second agent
+                                scriptId:
+                                  type: number
+                                  example: 2003
+                                lastEndMessage:
+                                  type: string
+                                  example: Agent finished with exit code 0
+                                lastEndStatus:
+                                  type: string
+                                  example: success
+                                queuedContainers:
+                                  type: number
+                                  example: 0
+                                runningContainers:
+                                  type: number
+                                  example: 1
+                                progress:
+                                  type: object
+                                  example:
+                                    properties:
+                                      progress:
+                                        type: number
+                                        example: 0.544
+                                      label:
+                                        type: string
+                                        example: A progress label
+                                      runtime:
+                                        type: number
+                                        example: 477
       security:
         - internalApiKey: []
 securityDefinitions:
