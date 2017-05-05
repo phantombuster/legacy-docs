@@ -26,7 +26,7 @@ info:
     We deliberately made the API extremely simple to use. Any developer should
     be able to get responses in a matter of minutes.
 host: phantombuster.com
-basePath: /api/v1/
+basePath: /api/v1
 schemes:
   - https
 consumes:
