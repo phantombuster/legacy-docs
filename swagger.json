@@ -1,0 +1,1163 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "v1",
+    "title": "Phantombuster API",
+    "description": "The Phantombuster API gives you control over your account. It is composed of HTTPS endpoints returning JSON data.\n\nHere’s a short list of what the API allows\\:\n\n- Launch and abort agents\n- Get console output, status, progress and messages from an agent\n- Get real-time console output from an agent\n- Get user, agent and script records\n- Write scripts\n- ...\n\nWe deliberately made the API extremely simple to use. Any developer should be able to get responses in a matter of minutes.\n"
+  },
+  "host": "phantombuster.com",
+  "basePath": "/api/v1",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/agent/{id}": {
+      "get": {
+        "tags": [
+          "Agent"
+        ],
+        "description": "Get an agent record.",
+        "operationId": "getAgentRecord",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the agent to retrieve.",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "withScript",
+            "in": "query",
+            "description": "If present and not empty, and if the agent has an associated script, also return the script record.",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1763
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Nice Agent"
+                    },
+                    "scriptId": {
+                      "type": "number",
+                      "example": 1902
+                    },
+                    "proxy": {
+                      "type": "string",
+                      "example": "none"
+                    },
+                    "proxyAddress": {
+                      "type": "object",
+                      "example": null
+                    },
+                    "proxyUsername": {
+                      "type": "object",
+                      "example": null
+                    },
+                    "proxyPassword": {
+                      "type": "object",
+                      "example": null
+                    },
+                    "disableWebSecurity": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "ignoreSslErrors": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "loadImages": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "launch": {
+                      "type": "string",
+                      "example": "manually"
+                    },
+                    "nbLaunches": {
+                      "type": "number",
+                      "example": 94
+                    },
+                    "showDebug": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "awsFolder": {
+                      "type": "string",
+                      "example": "nVFRid8kvsuPeuCL80DnBg"
+                    },
+                    "executionTimeLimit": {
+                      "type": "number",
+                      "example": 5
+                    },
+                    "fileMgmt": {
+                      "type": "string",
+                      "example": "folders"
+                    },
+                    "fileMgmtMaxFolders": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "lastEndMessage": {
+                      "type": "string",
+                      "example": "Execution time limit reached"
+                    },
+                    "lastEndStatus": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "maxParallelExecs": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "userAwsFolder": {
+                      "type": "string",
+                      "example": "QwYH17CB0Xj"
+                    },
+                    "nonce": {
+                      "type": "number",
+                      "example": 123
+                    },
+                    "script": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "example": 1902
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "nice_agent.coffee"
+                        },
+                        "source": {
+                          "type": "string",
+                          "example": "phantombuster"
+                        },
+                        "url": {
+                          "type": "object",
+                          "example": null
+                        },
+                        "text": {
+                          "type": "string",
+                          "example": " ... script contents ... "
+                        },
+                        "httpHeaders": {
+                          "type": "object",
+                          "example": null
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/FailApiResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "internalApiKey": []
+          }
+        ]
+      }
+    },
+    "/agent/{id}/launch": {
+      "post": {
+        "tags": [
+          "Agent"
+        ],
+        "description": "Add an agent to the launch queue.",
+        "operationId": "launchAgent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the agent to launch.",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "output",
+            "in": "query",
+            "description": "This allows you to choose what type of response to receive.\n\n* `json` - todo\n* `result-object` - todo\n* `first-result-object` - todo\n* `result-object-with-output` - todo\n* `event-stream` - todo\n* `raw` - todo\n",
+            "required": false,
+            "enum": [
+              "json",
+              "result-object",
+              "first-result-object",
+              "result-object-with-output",
+              "event-stream",
+              "raw"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "command",
+            "in": "query",
+            "description": "Command to use when launching the agent (optional).\n\n* `casperjs` - todo\n* `phantomjs` - todo\n* `node` - todo\n",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "casperjs",
+              "phantomjs",
+              "node"
+            ]
+          },
+          {
+            "name": "argument",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "JSON argument as a String.The argument can be retrieved with buster.argument in the agent’s script."
+          },
+          {
+            "name": "saveArgument",
+            "in": "query",
+            "type": "boolean",
+            "required": false,
+            "description": "If present and not empty, `command` and `argument` will be saved as the default launch options for the agent."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Agent finished (success)"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "containerId": {
+                      "type": "number",
+                      "example": 76426
+                    },
+                    "executionTime": {
+                      "type": "number",
+                      "example": 17
+                    },
+                    "exitCode": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "output": {
+                      "type": "string",
+                      "example": "This is a console output line!\r\nAnd this is another one :)\r\n"
+                    },
+                    "resultObject": {
+                      "type": "object",
+                      "description": "Call buster.setResultObject() to set this PlainObject."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/FailApiResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "internalApiKey": []
+          }
+        ]
+      }
+    },
+    "/agent/{id}/abort": {
+      "post": {
+        "tags": [
+          "Agent"
+        ],
+        "description": "Abort all running instances of the agent.",
+        "operationId": "abortAgent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the agent to stop.",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "object",
+                  "example": null
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/FailApiResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "internalApiKey": []
+          }
+        ]
+      }
+    },
+    "/agent/{id}/output": {
+      "get": {
+        "tags": [
+          "Agent"
+        ],
+        "description": "Get data from an agent: console output, status, progress and messages. This API endpoint is specifically designed so that it’s easy to get incremental data from an agent.",
+        "operationId": "outputAgent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the agent from which to retrieve the output, status and messages.",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "description": "This allows you to choose what type of response to receive.\n\n* `track` -  the console output from a particular instance is returned, as specified by the containerId parameter.\n* `most-recent` - the most recent instance is selected each time a request is made.\n",
+            "required": false,
+            "enum": [
+              "track",
+              "most-recent"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "containerId",
+            "in": "query",
+            "description": "ID of the instance from which to get console output.",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "fromMessageId",
+            "in": "query",
+            "description": "Return the agent’s messages starting from this ID.",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "fromOutputPos",
+            "in": "query",
+            "description": "Return the agent’s console output starting from this position.",
+            "required": false,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "agentStatus": {
+                      "type": "string",
+                      "example": "running"
+                    },
+                    "containerStatus": {
+                      "type": "string",
+                      "example": "running"
+                    },
+                    "runningContainers": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "queuedContainers": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "containerId": {
+                      "type": "number",
+                      "example": 76427
+                    },
+                    "progress": {
+                      "type": "object",
+                      "properties": {
+                        "progress": {
+                          "type": "number",
+                          "example": 0.1
+                        },
+                        "label": {
+                          "type": "string",
+                          "example": "Initializing..."
+                        },
+                        "runtime": {
+                          "type": "number",
+                          "example": 3
+                        }
+                      }
+                    },
+                    "messages": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "example": 65444
+                          },
+                          "date": {
+                            "type": "number",
+                            "example": 1414080820
+                          },
+                          "text": {
+                            "type": "string",
+                            "example": "Agent started"
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "normal"
+                          },
+                          "context": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "example": "Launch type: manual"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "output": {
+                      "type": "string",
+                      "example": "* Container a255b8220379 started in directory /home/phantom/agent"
+                    },
+                    "outputPos": {
+                      "type": "number",
+                      "example": 245
+                    },
+                    "resultObject": {
+                      "type": "object",
+                      "description": "Call buster.setResultObject() to set this PlainObject."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/FailApiResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "internalApiKey": []
+          }
+        ]
+      }
+    },
+    "/agent/{id}/containers": {
+      "get": {
+        "tags": [
+          "Agent"
+        ],
+        "description": "Get a list of ended containers for an agent, ordered by date. Useful for listing the last available output logs from an agent.",
+        "operationId": "containerAgent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the agent from which to retrieve the containers.",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "example": 195119
+                      },
+                      "queueDate": {
+                        "type": "number",
+                        "example": 1427810471
+                      },
+                      "launchDate": {
+                        "type": "number",
+                        "example": 1427810471
+                      },
+                      "launchType": {
+                        "type": "string",
+                        "example": "automatic"
+                      },
+                      "launchNumber": {
+                        "type": "number",
+                        "example": 476
+                      },
+                      "endDate": {
+                        "type": "number",
+                        "example": 1427812088
+                      },
+                      "lastEndMessage": {
+                        "type": "string",
+                        "example": "Agent finished (error)"
+                      },
+                      "lastEndStatus": {
+                        "type": "string",
+                        "example": "error"
+                      },
+                      "exitCode": {
+                        "type": "number",
+                        "example": 1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/FailApiResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "internalApiKey": []
+          }
+        ]
+      }
+    },
+    "/script/by-id/{mode}/{id}": {
+      "get": {
+        "tags": [
+          "Script"
+        ],
+        "description": "Get a script record by its ID.",
+        "operationId": "getScriptById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the script to retrieve.",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "mode",
+            "in": "path",
+            "description": "JSON or raw text.",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "json",
+              "raw"
+            ]
+          },
+          {
+            "name": "withoutText",
+            "in": "query",
+            "description": "If present and not empty, do not send the script’s contents but only its metadata (only in JSON mode).",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1902
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "nice_agent.coffee"
+                    },
+                    "source": {
+                      "type": "string",
+                      "example": "phantombuster"
+                    },
+                    "url": {
+                      "type": "object",
+                      "example": null
+                    },
+                    "text": {
+                      "type": "string",
+                      "example": " ... script contents ... "
+                    },
+                    "httpHeaders": {
+                      "type": "object",
+                      "example": null
+                    },
+                    "lastSaveDate": {
+                      "type": "number",
+                      "example": 1427806874
+                    },
+                    "nonce": {
+                      "type": "number",
+                      "example": 123
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/FailApiResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "internalApiKey": []
+          }
+        ]
+      }
+    },
+    "/script/by-name/{mode}/{name}": {
+      "get": {
+        "tags": [
+          "Script"
+        ],
+        "description": "Get a script record by its name.",
+        "operationId": "getScriptByName",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "Name of the script to retrieve, with its extension (.js or .coffee).",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "mode",
+            "in": "path",
+            "description": "JSON or raw text.",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "json",
+              "raw"
+            ]
+          },
+          {
+            "name": "withoutText",
+            "in": "query",
+            "description": "If present and not empty, do not send the script’s contents but only its metadata (only in JSON mode).",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1902
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "nice_agent.coffee"
+                    },
+                    "source": {
+                      "type": "string",
+                      "example": "phantombuster"
+                    },
+                    "url": {
+                      "type": "object",
+                      "example": null
+                    },
+                    "text": {
+                      "type": "string",
+                      "example": " ... script contents ... "
+                    },
+                    "httpHeaders": {
+                      "type": "object",
+                      "example": null
+                    },
+                    "lastSaveDate": {
+                      "type": "number",
+                      "example": 1427806874
+                    },
+                    "nonce": {
+                      "type": "number",
+                      "example": 123
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/FailApiResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "internalApiKey": []
+          }
+        ]
+      }
+    },
+    "/scripts": {
+      "get": {
+        "tags": [
+          "Script"
+        ],
+        "description": "Get the list of all your scripts without text.",
+        "operationId": "listScripts",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "example": 450
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "script1.coffee"
+                      },
+                      "source": {
+                        "type": "string",
+                        "example": "phantombuster"
+                      },
+                      "url": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "httpHeaders": {
+                        "type": "object",
+                        "example": null
+                      },
+                      "lastSaveDate": {
+                        "type": "number",
+                        "example": 1446562593
+                      },
+                      "nonce": {
+                        "type": "number",
+                        "example": 12
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/FailApiResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "internalApiKey": []
+          }
+        ]
+      }
+    },
+    "/script/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Script"
+        ],
+        "description": "Delete one of your script.",
+        "operationId": "deleteScript",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the script to delete.",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "object",
+                  "example": null
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/FailApiResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "internalApiKey": []
+          }
+        ]
+      }
+    },
+    "/script/{name}": {
+      "post": {
+        "tags": [
+          "Script"
+        ],
+        "description": "Update an existing script or create a new one if it does not exist (in this case, the new script ID is returned in the data field).",
+        "operationId": "updateScript",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "Name of the script to update or create, with its extension (.js or .coffee).",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "text",
+            "in": "query",
+            "description": "Full text contents of the script. This parameter must be in the request body in x-www-form-urlencoded format.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "insertOnly",
+            "in": "query",
+            "description": "If present and not empty, make sure that we don’t update an existing script (optional). An error will be returned if a script with the same name already exists.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "description": "Optional String describing from where the script comes from. Reserved sources keywords are phantombuster, web, sdk and bot builder. Only 20 alpha-numeric characters (and space) are allowed.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "number",
+                  "example": 345
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/FailApiResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "internalApiKey": []
+          }
+        ]
+      }
+    },
+    "/user": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Get information about your Phantombuster account and your agents.",
+        "operationId": "getUser",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "example": "excellent.customer@gmail.com"
+                    },
+                    "timeLeft": {
+                      "type": "number",
+                      "example": 14087
+                    },
+                    "emailsLeft": {
+                      "type": "number",
+                      "example": 100
+                    },
+                    "captchasLeft": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "storageLeft": {
+                      "type": "number",
+                      "example": 9991347906
+                    },
+                    "databaseLeft": {
+                      "type": "number",
+                      "example": 239222784
+                    },
+                    "agents": {
+                      "type": "object",
+                      "properties": {
+                        "0": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number",
+                              "example": 1388
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "My first agent"
+                            },
+                            "scriptId": {
+                              "type": "number",
+                              "example": 0
+                            },
+                            "lastEndMessage": {
+                              "type": "string",
+                              "example": "Agent has no associated script"
+                            },
+                            "lastEndStatus": {
+                              "type": "string",
+                              "example": "launch failed"
+                            },
+                            "queuedContainers": {
+                              "type": "number",
+                              "example": 2
+                            },
+                            "runningContainers": {
+                              "type": "number",
+                              "example": 0
+                            }
+                          }
+                        },
+                        "1": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number",
+                              "example": 1713
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "My second agent"
+                            },
+                            "scriptId": {
+                              "type": "number",
+                              "example": 2003
+                            },
+                            "lastEndMessage": {
+                              "type": "string",
+                              "example": "Agent finished with exit code 0"
+                            },
+                            "lastEndStatus": {
+                              "type": "string",
+                              "example": "success"
+                            },
+                            "queuedContainers": {
+                              "type": "number",
+                              "example": 0
+                            },
+                            "runningContainers": {
+                              "type": "number",
+                              "example": 1
+                            },
+                            "progress": {
+                              "type": "object",
+                              "properties": {
+                                "progress": {
+                                  "type": "number",
+                                  "example": 0.544
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "example": "A progress label"
+                                },
+                                "runtime": {
+                                  "type": "number",
+                                  "example": 477
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/SuccessApiResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "internalApiKey": []
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "internalApiKey": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-Phantombuster-Key-1"
+    }
+  },
+  "definitions": {
+    "SuccessApiResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "data": {
+          "type": "object"
+        }
+      }
+    },
+    "FailApiResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
