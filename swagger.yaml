@@ -242,23 +242,12 @@ paths:
                   exitCode:
                     type: number
                     example: 0
-                  resultObject:
-                    type: object
-                    properties:
-                      your:
-                        type: string
-                        example: data
-                      is:
-                        type: object
-                        properties:
-                          here:
-                            type: array
-                            items:
-                              type: number
-                              example: 123
                   output:
                     type: string
                     example: "This is a console output line!\r\nAnd this is another one :)\r\n"
+                  resultObject:
+                    type: object
+                    description: Call buster.setResultObject() to set this PlainObject.
         default:
           description: Error
           schema:
@@ -414,18 +403,7 @@ paths:
                     example: 245
                   resultObject:
                     type: object
-                    properties:
-                      your:
-                        type: string
-                        example: data
-                      is:
-                        type: object
-                        properties:
-                          here:
-                            type: array
-                            items:
-                              type: number
-                              example: 123
+                    description: Call buster.setResultObject() to set this PlainObject.
         default:
           description: Error
           schema:
