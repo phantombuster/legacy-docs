@@ -52,7 +52,7 @@ paths:
             If present and not empty, and if the agent has an associated script,
             also return the script record.
           required: false
-          type: string
+          type: boolean
       responses:
         '200':
           description: Success
@@ -211,9 +211,9 @@ paths:
           description: >-
             JSON argument as a String.The argument can be retrieved with
             buster.argument in the agent’s script.
-        - name: saveLaunchOptions
+        - name: saveArgument
           in: query
-          type: string
+          type: boolean
           required: false
           description: >-
             If present and not empty, `command` and `argument` will be saved as
@@ -519,7 +519,7 @@ paths:
             If present and not empty, do not send the script’s contents but only
             its metadata (only in JSON mode).
           required: false
-          type: string
+          type: boolean
       responses:
         '200':
           description: Success
@@ -588,7 +588,7 @@ paths:
             If present and not empty, do not send the script’s contents but only
             its metadata (only in JSON mode).
           required: false
-          type: string
+          type: boolean
       responses:
         '200':
           description: Success
