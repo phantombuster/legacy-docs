@@ -175,12 +175,12 @@ paths:
           description: |
             This allows you to choose what type of response to receive.
 
-            * `json` - todo
-            * `result-object` - todo
-            * `first-result-object` - todo
-            * `result-object-with-output` - todo
-            * `event-stream` - todo
-            * `raw` - todo
+            * `json` - soon!
+            * `result-object` - soon!
+            * `first-result-object` - soon!
+            * `result-object-with-output` - soon!
+            * `event-stream` - soon!
+            * `raw` - soon!
           required: false
           enum:
             - json
