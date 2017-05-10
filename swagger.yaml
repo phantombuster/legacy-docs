@@ -49,8 +49,8 @@ paths:
         - name: withScript
           in: query
           description: >-
-            If present and not empty, and if the agent has an associated script,
-            also return the script record.
+            If true, and if the agent has an associated script, also return the
+            script record.
           required: false
           type: boolean
       responses:
@@ -190,20 +190,6 @@ paths:
             - event-stream
             - raw
           type: string
-        - name: command
-          in: query
-          description: |
-            Command to use when launching the agent (optional).
-
-            * `casperjs` - todo
-            * `phantomjs` - todo
-            * `node` - todo
-          required: false
-          type: string
-          enum:
-            - casperjs
-            - phantomjs
-            - node
         - name: argument
           in: query
           type: string
@@ -216,8 +202,8 @@ paths:
           type: boolean
           required: false
           description: >-
-            If present and not empty, `command` and `argument` will be saved as
-            the default launch options for the agent.
+            If true, `argument` will be saved as the default launch options for
+            the agent.
       responses:
         '200':
           description: Success
@@ -494,8 +480,8 @@ paths:
         - name: withoutText
           in: query
           description: >-
-            If present and not empty, do not send the script’s contents but only
-            its metadata (only in JSON mode).
+            If true, do not send the script’s contents but only its metadata
+            (only in JSON mode).
           required: false
           type: boolean
       responses:
@@ -563,8 +549,8 @@ paths:
         - name: withoutText
           in: query
           description: >-
-            If present and not empty, do not send the script’s contents but only
-            its metadata (only in JSON mode).
+            If true, do not send the script’s contents but only its metadata
+            (only in JSON mode).
           required: false
           type: boolean
       responses:
@@ -712,11 +698,11 @@ paths:
         - name: insertOnly
           in: query
           description: >-
-            If present and not empty, make sure that we don’t update an existing
-            script (optional). An error will be returned if a script with the
-            same name already exists.
+            If true, make sure that we don’t update an existing script
+            (optional). An error will be returned if a script with the same name
+            already exists.
           required: false
-          type: string
+          type: boolean
         - name: source
           in: query
           description: >-

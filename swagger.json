@@ -35,7 +35,7 @@
           {
             "name": "withScript",
             "in": "query",
-            "description": "If present and not empty, and if the agent has an associated script, also return the script record.",
+            "description": "If true, and if the agent has an associated script, also return the script record.",
             "required": false,
             "type": "boolean"
           }
@@ -220,18 +220,6 @@
             "type": "string"
           },
           {
-            "name": "command",
-            "in": "query",
-            "description": "Command to use when launching the agent (optional).\n\n* `casperjs` - todo\n* `phantomjs` - todo\n* `node` - todo\n",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "casperjs",
-              "phantomjs",
-              "node"
-            ]
-          },
-          {
             "name": "argument",
             "in": "query",
             "type": "string",
@@ -243,7 +231,7 @@
             "in": "query",
             "type": "boolean",
             "required": false,
-            "description": "If present and not empty, `command` and `argument` will be saved as the default launch options for the agent."
+            "description": "If true, `argument` will be saved as the default launch options for the agent."
           }
         ],
         "responses": {
@@ -625,7 +613,7 @@
           {
             "name": "withoutText",
             "in": "query",
-            "description": "If present and not empty, do not send the script’s contents but only its metadata (only in JSON mode).",
+            "description": "If true, do not send the script’s contents but only its metadata (only in JSON mode).",
             "required": false,
             "type": "boolean"
           }
@@ -723,7 +711,7 @@
           {
             "name": "withoutText",
             "in": "query",
-            "description": "If present and not empty, do not send the script’s contents but only its metadata (only in JSON mode).",
+            "description": "If true, do not send the script’s contents but only its metadata (only in JSON mode).",
             "required": false,
             "type": "boolean"
           }
@@ -934,9 +922,9 @@
           {
             "name": "insertOnly",
             "in": "query",
-            "description": "If present and not empty, make sure that we don’t update an existing script (optional). An error will be returned if a script with the same name already exists.",
+            "description": "If true, make sure that we don’t update an existing script (optional). An error will be returned if a script with the same name already exists.",
             "required": false,
-            "type": "string"
+            "type": "boolean"
           },
           {
             "name": "source",
@@ -1022,89 +1010,37 @@
                       "example": 239222784
                     },
                     "agents": {
-                      "type": "object",
-                      "properties": {
-                        "0": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "number",
-                              "example": 1388
-                            },
-                            "name": {
-                              "type": "string",
-                              "example": "My first agent"
-                            },
-                            "scriptId": {
-                              "type": "number",
-                              "example": 0
-                            },
-                            "lastEndMessage": {
-                              "type": "string",
-                              "example": "Agent has no associated script"
-                            },
-                            "lastEndStatus": {
-                              "type": "string",
-                              "example": "launch failed"
-                            },
-                            "queuedContainers": {
-                              "type": "number",
-                              "example": 2
-                            },
-                            "runningContainers": {
-                              "type": "number",
-                              "example": 0
-                            }
-                          }
-                        },
-                        "1": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "number",
-                              "example": 1713
-                            },
-                            "name": {
-                              "type": "string",
-                              "example": "My second agent"
-                            },
-                            "scriptId": {
-                              "type": "number",
-                              "example": 2003
-                            },
-                            "lastEndMessage": {
-                              "type": "string",
-                              "example": "Agent finished with exit code 0"
-                            },
-                            "lastEndStatus": {
-                              "type": "string",
-                              "example": "success"
-                            },
-                            "queuedContainers": {
-                              "type": "number",
-                              "example": 0
-                            },
-                            "runningContainers": {
-                              "type": "number",
-                              "example": 1
-                            },
-                            "progress": {
-                              "type": "object",
-                              "properties": {
-                                "progress": {
-                                  "type": "number",
-                                  "example": 0.544
-                                },
-                                "label": {
-                                  "type": "string",
-                                  "example": "A progress label"
-                                },
-                                "runtime": {
-                                  "type": "number",
-                                  "example": 477
-                                }
-                              }
-                            }
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "example": 1388
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "My first agent"
+                          },
+                          "scriptId": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "lastEndMessage": {
+                            "type": "string",
+                            "example": "Agent has no associated script"
+                          },
+                          "lastEndStatus": {
+                            "type": "string",
+                            "example": "launch failed"
+                          },
+                          "queuedContainers": {
+                            "type": "number",
+                            "example": 2
+                          },
+                          "runningContainers": {
+                            "type": "number",
+                            "example": 0
                           }
                         }
                       }
