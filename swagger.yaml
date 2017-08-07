@@ -318,6 +318,11 @@ paths:
           description: Return the agent’s console output starting from this position.
           required: false
           type: number
+        - name: withoutResultObject
+          in: query
+          description: If true, omit the agent’s result object from the response.
+          required: false
+          type: boolean
       responses:
         '200':
           description: Success
