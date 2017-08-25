@@ -162,10 +162,8 @@ paths:
     post:
       tags:
         - Agent
-      description: |
-      Add an agent to the launch queue.
-      The most important parameters is `output`, carefully choose yours when launching your agent with the API.
-      For agents which take times to end, Phantombuster will send a space character every 10 seconds to prevent any timeout.
+      description: Add an agent to the launch queue. The most important parameters is `output`, carefully choose yours when launching your agent with the API. For agents which take times to end, Phantombuster will send a space character every 10 seconds to prevent any timeout.
+
       operationId: launchAgent
       parameters:
         - name: id
