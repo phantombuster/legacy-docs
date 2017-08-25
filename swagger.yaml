@@ -175,12 +175,27 @@ paths:
           description: |
             This allows you to choose what type of response to receive.
 
-            * `json` - soon!
-            * `result-object` - soon!
-            * `first-result-object` - soon!
-            * `result-object-with-output` - soon!
-            * `event-stream` - soon!
-            * `raw` - soon!
+            * `json` - Standard JSON output to get back a `containerId` in JSON.
+            This ID can later be used to track this launch and get console output by calling `/api/v1/agent/{agentId}/output.json?containerId={containerId}`.
+
+            * `result-object` - Result object output to get a blocking JSON response which will close when your agent finishes.
+            The response will contain your agent’s exit code (`Number`) and its result object (`PlainObject`) if it was set (using setResultObject()).
+            This endpoint is very useful for getting a response from your agents “synchronously” — just make a single HTTP request and wait for your result object/exit code.
+
+            * `first-result-object` - Use first-result-object instead of `result-object` to have the request terminate immediately after the first call to setResultObject().
+            This is the fastest way to get a response from an agent using the API.
+            However you will only get the result object and nothing else (no exit code or console output for example).
+
+            * `result-object-with-output` - Use result-object-with-output instead of `result-object` to get the console output of your agent in addition to all the other fields.
+            Obviously this endpoint can be very slow to terminate (if your agent takes a long time or is queued). To prevent any risk of timeout, a space character is sent every 10 seconds to keep the HTTP socket alive (spaces do not prevent JSON parsing).
+            The HTTP headers are sent before your agent finishes, so you’ll get a 200 OK even if your agent fails during execution (but not if it fails to queue).
+
+            * `event-stream` - [Event stream output](https://developer.mozilla.org/en-US/docs/Server-sent_events/Using_server-sent_events) to get a text/event-stream HTTP response.
+            Each line of console output is sent as an event stream message starting with data:. When you receive the first message, you know the agent has started. When the agent has finished, the connection is closed. At regular intervals, event stream comments (starting with :) are sent to keep the connection alive.
+            [See a demo of this endpoint in action](http://demo.phantombuster.com/event-stream.html).
+
+            * `raw` - Raw output to get an HTTP text/plain, chunked, streaming response of the raw console output of the agent.
+            This is not recommended as almost all HTTP clients will timeout at one point or another, especially if your agent stays in queue for a few minutes (in which case the endpoint will send zero bytes for a few minutes, waiting for the agent to start — even cURL and Wget struggle to handle non-transmitting HTTP responses).
           required: false
           enum:
             - json
@@ -293,7 +308,7 @@ paths:
             This allows you to choose what type of response to receive.
 
 
-            * `track` -  the console output from a particular instance is
+            * `track` - the console output from a particular instance is
             returned, as specified by the containerId parameter.
 
             * `most-recent` - the most recent instance is selected each time a
