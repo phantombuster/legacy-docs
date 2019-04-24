@@ -174,7 +174,7 @@ This endpoint supports three types of outputs:
 
         Each line of console output is sent as an event stream message starting with ``data:``. When you receive the first message, you know the agent has started. When the agent has finished, the connection is closed. At regular intervals, event stream comments (starting with ``:``) are sent to keep the connection alive.
 
-        `See a demo of this endpoint in action. <http://demo.phantombuster.com/event-stream.html>`_
+        `See a demo of this endpoint in action. <https://jsfiddle.net/papsss/0u1k9tob/>`_
 
     **~ or ~**
 
