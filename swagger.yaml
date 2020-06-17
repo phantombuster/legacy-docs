@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   version: v1
-  title: Phantombuster API v1
+  title: API v1
   description: >
     The Phantombuster API gives you control over your account. It is composed of
     HTTPS endpoints returning JSON data.
