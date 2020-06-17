@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   version: v1
-  title: Phantombuster API
+  title: Phantombuster API v1
   description: >
     The Phantombuster API gives you control over your account. It is composed of
     HTTPS endpoints returning JSON data.
@@ -25,7 +25,7 @@ info:
 
     We deliberately made the API extremely simple to use. Any developer should
     be able to get responses in a matter of minutes.
-host: phantombuster.com
+host: api.phantombuster.com
 basePath: /api/v1
 schemes:
   - https
@@ -253,6 +253,11 @@ paths:
           description: ID of the agent to stop.
           required: true
           type: integer
+        - name: softAbort
+          in: query
+          description: If true, tries to soft abort the agent.
+          required: false
+          type: boolean
       responses:
         '200':
           description: Success
@@ -307,11 +312,6 @@ paths:
         - name: containerId
           in: query
           description: ID of the instance from which to get console output.
-          required: false
-          type: number
-        - name: fromMessageId
-          in: query
-          description: Return the agent’s messages starting from this ID.
           required: false
           type: number
         - name: fromOutputPos
@@ -463,75 +463,6 @@ paths:
             $ref: '#/definitions/FailApiResponse'
       security:
         - internalApiKey: []
-  '/script/by-id/{mode}/{id}':
-    get:
-      tags:
-        - Script
-      description: Get a script record by its ID.
-      operationId: getScriptById
-      parameters:
-        - name: id
-          in: path
-          description: ID of the script to retrieve.
-          required: true
-          type: integer
-        - name: mode
-          in: path
-          description: JSON or raw text.
-          required: true
-          type: string
-          enum:
-            - json
-            - raw
-        - name: withoutText
-          in: query
-          description: >-
-            If true, do not send the script’s contents but only its metadata
-            (only in JSON mode).
-          required: false
-          type: boolean
-      responses:
-        '200':
-          description: Success
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: success
-              data:
-                type: object
-                properties:
-                  id:
-                    type: number
-                    example: 1902
-                  name:
-                    type: string
-                    example: nice_agent.coffee
-                  source:
-                    type: string
-                    example: phantombuster
-                  url:
-                    type: object
-                    example: null
-                  text:
-                    type: string
-                    example: ' ... script contents ... '
-                  httpHeaders:
-                    type: object
-                    example: null
-                  lastSaveDate:
-                    type: number
-                    example: 1427806874
-                  nonce:
-                    type: number
-                    example: 123
-        default:
-          description: Error
-          schema:
-            $ref: '#/definitions/FailApiResponse'
-      security:
-        - internalApiKey: []
   '/script/by-name/{mode}/{name}':
     get:
       tags:
@@ -601,83 +532,6 @@ paths:
             $ref: '#/definitions/FailApiResponse'
       security:
         - internalApiKey: []
-  /scripts:
-    get:
-      tags:
-        - Script
-      description: Get the list of all your scripts without text.
-      operationId: listScripts
-      responses:
-        '200':
-          description: Success
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: success
-              data:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: number
-                      example: 450
-                    name:
-                      type: string
-                      example: script1.coffee
-                    source:
-                      type: string
-                      example: phantombuster
-                    url:
-                      type: string
-                      example: ''
-                    httpHeaders:
-                      type: object
-                      example: null
-                    lastSaveDate:
-                      type: number
-                      example: 1446562593
-                    nonce:
-                      type: number
-                      example: 12
-        default:
-          description: Error
-          schema:
-            $ref: '#/definitions/FailApiResponse'
-      security:
-        - internalApiKey: []
-  '/script/delete/{id}':
-    delete:
-      tags:
-        - Script
-      description: Delete one of your script.
-      operationId: deleteScript
-      parameters:
-        - name: id
-          in: path
-          description: ID of the script to delete.
-          required: true
-          type: integer
-      responses:
-        '200':
-          description: Success
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: success
-              data:
-                type: object
-                example: null
-        default:
-          description: Error
-          schema:
-            $ref: '#/definitions/FailApiResponse'
-      security:
-        - internalApiKey: []
   '/script/{name}':
     post:
       tags:
@@ -709,14 +563,6 @@ paths:
             already exists.
           required: false
           type: boolean
-        - name: source
-          in: query
-          description: >-
-            Optional String describing from where the script comes from.
-            Reserved sources keywords are phantombuster, web, sdk and bot
-            builder. Only 20 alpha-numeric characters (and space) are allowed.
-          required: false
-          type: string
       responses:
         '200':
           description: Success
